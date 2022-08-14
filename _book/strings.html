@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R for Data Science (2e) - 16&nbsp; Strings</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./regexps.html" rel="next">
+<link href="./numbers.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script><script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="site_libs/str_view-0.1.0/str_view.css" rel="stylesheet">
+<script src="site_libs/str_view-binding-1.4.0/str_view.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R for Data Science (2e)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/hadley/r4ds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">Preface to the second edition</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">Whole game</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Workflow: basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-pipes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data import</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Workflow: scripts and projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Workflow: Getting help</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">Transform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tibble.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tibbles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Dates and times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Missing values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./column-wise.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Column-wise operations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./wrangle.html" class="sidebar-item-text sidebar-link">Wrangle</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parsing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Spreadsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Databases</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data rectangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">Program</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vectors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prog-strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Programming with strings</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">Communicate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">R Markdown</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communicate-plots.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Graphics for communication</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-formats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">R Markdown formats</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-workflow.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R Markdown workflow</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">16.1</span> Introduction</a>
+  <ul class="collapse">
+<li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"> <span class="header-section-number">16.1.1</span> Prerequisites</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#creating-a-string" id="toc-creating-a-string" class="nav-link" data-scroll-target="#creating-a-string"> <span class="header-section-number">16.2</span> Creating a string</a>
+  <ul class="collapse">
+<li><a href="#escapes" id="toc-escapes" class="nav-link" data-scroll-target="#escapes"> <span class="header-section-number">16.2.1</span> Escapes</a></li>
+  <li><a href="#sec-raw-strings" id="toc-sec-raw-strings" class="nav-link" data-scroll-target="#sec-raw-strings"> <span class="header-section-number">16.2.2</span> Raw strings</a></li>
+  <li><a href="#other-special-characters" id="toc-other-special-characters" class="nav-link" data-scroll-target="#other-special-characters"> <span class="header-section-number">16.2.3</span> Other special characters</a></li>
+  <li><a href="#sec-string-vector" id="toc-sec-string-vector" class="nav-link" data-scroll-target="#sec-string-vector"> <span class="header-section-number">16.2.4</span> Vectors</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"> <span class="header-section-number">16.2.5</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#creating-strings-from-data" id="toc-creating-strings-from-data" class="nav-link" data-scroll-target="#creating-strings-from-data"> <span class="header-section-number">16.3</span> Creating strings from data</a>
+  <ul class="collapse">
+<li><a href="#str_c" id="toc-str_c" class="nav-link" data-scroll-target="#str_c"> <span class="header-section-number">16.3.1</span> <code>str_c()</code></a></li>
+  <li><a href="#str_glue" id="toc-str_glue" class="nav-link" data-scroll-target="#str_glue"> <span class="header-section-number">16.3.2</span> <code>str_glue()</code></a></li>
+  <li><a href="#str_flatten" id="toc-str_flatten" class="nav-link" data-scroll-target="#str_flatten"> <span class="header-section-number">16.3.3</span> <code>str_flatten()</code></a></li>
+  <li><a href="#exercises-1" id="toc-exercises-1" class="nav-link" data-scroll-target="#exercises-1"> <span class="header-section-number">16.3.4</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#working-with-patterns" id="toc-working-with-patterns" class="nav-link" data-scroll-target="#working-with-patterns"> <span class="header-section-number">16.4</span> Working with patterns</a>
+  <ul class="collapse">
+<li><a href="#detect-matches" id="toc-detect-matches" class="nav-link" data-scroll-target="#detect-matches"> <span class="header-section-number">16.4.1</span> Detect matches</a></li>
+  <li><a href="#introduction-to-regular-expressions" id="toc-introduction-to-regular-expressions" class="nav-link" data-scroll-target="#introduction-to-regular-expressions"> <span class="header-section-number">16.4.2</span> Introduction to regular expressions</a></li>
+  <li><a href="#count-matches" id="toc-count-matches" class="nav-link" data-scroll-target="#count-matches"> <span class="header-section-number">16.4.3</span> Count matches</a></li>
+  <li><a href="#replace-matches" id="toc-replace-matches" class="nav-link" data-scroll-target="#replace-matches"> <span class="header-section-number">16.4.4</span> Replace matches</a></li>
+  <li><a href="#advanced-replacements" id="toc-advanced-replacements" class="nav-link" data-scroll-target="#advanced-replacements"> <span class="header-section-number">16.4.5</span> Advanced replacements</a></li>
+  <li><a href="#pattern-control" id="toc-pattern-control" class="nav-link" data-scroll-target="#pattern-control"> <span class="header-section-number">16.4.6</span> Pattern control</a></li>
+  <li><a href="#exercises-2" id="toc-exercises-2" class="nav-link" data-scroll-target="#exercises-2"> <span class="header-section-number">16.4.7</span> Exercises</a></li>
+  </ul>
+</li>
+  <li><a href="#extract-data-from-strings" id="toc-extract-data-from-strings" class="nav-link" data-scroll-target="#extract-data-from-strings"> <span class="header-section-number">16.5</span> Extract data from strings</a></li>
+  <li><a href="#sec-other-languages" id="toc-sec-other-languages" class="nav-link" data-scroll-target="#sec-other-languages"> <span class="header-section-number">16.6</span> Locale dependent operations</a></li>
+  <li>
+<a href="#letters" id="toc-letters" class="nav-link" data-scroll-target="#letters"> <span class="header-section-number">16.7</span> Letters</a>
+  <ul class="collapse">
+<li><a href="#length" id="toc-length" class="nav-link" data-scroll-target="#length"> <span class="header-section-number">16.7.1</span> Length</a></li>
+  <li><a href="#subsetting" id="toc-subsetting" class="nav-link" data-scroll-target="#subsetting"> <span class="header-section-number">16.7.2</span> Subsetting</a></li>
+  <li><a href="#long-strings" id="toc-long-strings" class="nav-link" data-scroll-target="#long-strings"> <span class="header-section-number">16.7.3</span> Long strings</a></li>
+  <li><a href="#exercises-3" id="toc-exercises-3" class="nav-link" data-scroll-target="#exercises-3"> <span class="header-section-number">16.7.4</span> Exercises</a></li>
+  </ul>
+</li>
+  <li><a href="#other-functions" id="toc-other-functions" class="nav-link" data-scroll-target="#other-functions"> <span class="header-section-number">16.8</span> Other functions</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/hadley/r4ds/edit/main/strings.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/hadley/r4ds/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-strings" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><div class="status">
+<p>You are reading the work-in-progress second edition of R for Data Science. This chapter is undergoing heavy restructuring and may be confusing or incomplete. You can find the complete first edition at <a href="https://r4ds.had.co.nz" class="uri">https://r4ds.had.co.nz</a>.</p>
+</div>
+<section id="introduction" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">16.1</span> Introduction</h2>
+<p>So far, you’ve used a bunch of strings without learning much about the details. Now it’s time to dive into them, learning what makes strings tick, and mastering some of the powerful string manipulation tool you have at your disposal.</p>
+<p>We’ll begin with the details of creating strings and character vectors. You’ll then dive into creating strings from data. Next, we’ll discuss the basics of regular expressions, a powerful tool for describing patterns in strings, then use those tools to extract data from strings. The chapter finishes up with functions that work with individual letters, a brief discussion of where your expectations from English might steer you wrong when working with other languages, and a few useful non-stringr functions.</p>
+<p>This chapter is paired with two other chapters. Regular expression are a big topic, so we’ll come back to them again in <a href="regexps.html">Chapter&nbsp;<span>17</span></a>. We’ll also come back to strings again in <a href="prog-strings.html">Chapter&nbsp;<span>30</span></a> where we’ll look at them from a programming perspective rather than a data analysis perspective.</p>
+<section id="prerequisites" class="level3" data-number="16.1.1"><h3 data-number="16.1.1" class="anchored" data-anchor-id="prerequisites">
+<span class="header-section-number">16.1.1</span> Prerequisites</h3>
+<p>In this chapter, we’ll use functions from the stringr package which is part of the core tidyverse. We’ll also use the babynames data since it provides some fun strings to manipulate.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Similar functionality is available in base R (through functions like <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>, <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code>, and <code><a href="https://rdrr.io/r/base/regmatches.html">regmatches()</a></code>) but we think you’ll find stringr easier to use because it’s been carefully designed to be as consistent as possible. You can easily tell when you’re using a stringr function because all stringr functions start with <code>str_</code>. This is particularly useful if you use RStudio, because typing <code>str_</code> will trigger autocomplete, allowing you jog your memory of which functions are available.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="screenshots/stringr-autocomplete.png" class="img-fluid" width="678"></p>
+</div>
+</div>
+</section></section><section id="creating-a-string" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="creating-a-string">
+<span class="header-section-number">16.2</span> Creating a string</h2>
+<p>We’ve created strings in passing earlier in the book, but didn’t discuss the details. First, you can create a string using either single quotes (<code>'</code>) or double quotes (<code>"</code>). Unlike other languages, there is no difference in behavior, but in the interests of consistency the <a href="https://style.tidyverse.org/syntax.html#character-vectors">tidyverse style guide</a> recommends using <code>"</code>, unless the string contains multiple <code>"</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">string1</span> <span class="op">&lt;-</span> <span class="st">"This is a string"</span></span>
+<span><span class="va">string2</span> <span class="op">&lt;-</span> <span class="st">'If I want to include a "quote" inside a string, I use single quotes'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you forget to close a quote, you’ll see <code>+</code>, the continuation character:</p>
+<pre><code>&gt; "This is a string without a closing quote
++ 
++ 
++ HELP I'M STUCK</code></pre>
+<p>If this happen to you and you can’t figure out which quote you need to close, press Escape to cancel, and try again.</p>
+<section id="escapes" class="level3" data-number="16.2.1"><h3 data-number="16.2.1" class="anchored" data-anchor-id="escapes">
+<span class="header-section-number">16.2.1</span> Escapes</h3>
+<p>To include a literal single or double quote in a string you can use <code>\</code> to “escape” it:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">double_quote</span> <span class="op">&lt;-</span> <span class="st">"\""</span> <span class="co"># or '"'</span></span>
+<span><span class="va">single_quote</span> <span class="op">&lt;-</span> <span class="st">'\''</span> <span class="co"># or "'"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And if you want to include a literal backslash in your string, you’ll need to double it up: <code>"\\"</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">backslash</span> <span class="op">&lt;-</span> <span class="st">"\\"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Beware that the printed representation of a string is not the same as string itself, because the printed representation shows the escapes (in other words, when you print a string, you can copy and paste the output to recreate that string). To see the raw contents of the string, use <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">single_quote</span>, <span class="va">double_quote</span>, <span class="va">backslash</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "'"  "\"" "\\"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"html":"<ul>\n  <li><span class='match'>'<\/span><\/li>\n  <li><span class='match'>\"<\/span><\/li>\n  <li><span class='match'>\\<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="sec-raw-strings" class="level3" data-number="16.2.2"><h3 data-number="16.2.2" class="anchored" data-anchor-id="sec-raw-strings">
+<span class="header-section-number">16.2.2</span> Raw strings</h3>
+<p>Creating a string with multiple quotes or backslashes gets confusing quickly. To illustrate the problem, lets create a string that contains the contents of the chunk where we define the <code>double_quote</code> and <code>single_quote</code> variables:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tricky</span> <span class="op">&lt;-</span> <span class="st">"double_quote &lt;- \"\\\"\" # or '\"'</span></span>
+<span><span class="st">single_quote &lt;- '\\'' # or \"'\""</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">tricky</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-e5c8c404fe174e4c81bd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"html":"<ul>\n  <li><span class='match'>d<\/span>ouble_quote <- \"\\\"\" # or '\"'\nsingle_quote <- '\\'' # or \"'\"<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>That’s a lot of backslashes! (This is sometimes called <a href="https://en.wikipedia.org/wiki/Leaning_toothpick_syndrome">leaning toothpick syndome</a>.) To eliminate the escaping you can instead use a <strong>raw string</strong><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tricky</span> <span class="op">&lt;-</span> <span class="st">r"(double_quote &lt;- "\"" # or '"'</span></span>
+<span><span class="st">single_quote &lt;- '\'' # or "'")"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">tricky</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"html":"<ul>\n  <li><span class='match'>d<\/span>ouble_quote <- \"\\\"\" # or '\"'\nsingle_quote <- '\\'' # or \"'\"<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>A raw string usually starts with <code>r"(</code> and finishes with <code>)"</code>. But if your string contains <code>)"</code> you can instead use <code>r"[]"</code> or <code>r"{}"</code>, and if that’s still not enough, you can insert any number of dashes to make the opening and closing pairs unique, e.g.&nbsp;<code>`r"--()--"</code>, <code>`r"---()---"</code>, etc. Raw strings are flexible enough to handle any text.</p>
+</section><section id="other-special-characters" class="level3" data-number="16.2.3"><h3 data-number="16.2.3" class="anchored" data-anchor-id="other-special-characters">
+<span class="header-section-number">16.2.3</span> Other special characters</h3>
+<p>As well as <code>\"</code>, <code>\'</code>, and <code>\\</code> there are a handful of other special characters that may come in handy. The most common are <code>\n</code>, newline, and <code>\t</code>, tab. You’ll also sometimes see strings containing Unicode escapes that start with <code>\u</code> or <code>\U</code>. This is a way of writing non-English characters that works on all systems. You can see the complete list of other special characters in <code><a href="https://rdrr.io/r/base/Quotes.html">?'"'</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"one\ntwo"</span>, <span class="st">"one\ttwo"</span>, <span class="st">"\u00b5"</span>, <span class="st">"\U0001f604"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "one\ntwo" "one\ttwo" "µ"        "😄"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-febe03efa1a2d8d52a86" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"html":"<ul>\n  <li><span class='match'>o<\/span>ne\ntwo<\/li>\n  <li><span class='match'>o<\/span>ne\ttwo<\/li>\n  <li><span class='match'>µ<\/span><\/li>\n  <li><span class='match'>😄<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Note that <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> shows special whitespace characters (i.e.&nbsp;everything except spaces and newlines) with a blue background to make them easier to spot.</p>
+</section><section id="sec-string-vector" class="level3" data-number="16.2.4"><h3 data-number="16.2.4" class="anchored" data-anchor-id="sec-string-vector">
+<span class="header-section-number">16.2.4</span> Vectors</h3>
+<p>You can combine multiple strings into a character vector by using <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"first string"</span>, <span class="st">"second string"</span>, <span class="st">"third string"</span><span class="op">)</span></span>
+<span><span class="va">x</span></span>
+<span><span class="co">#&gt; [1] "first string"  "second string" "third string"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Technically, a string is a length-1 character vector, but this doesn’t have much bearing on your data analysis life. We’ll come back to this idea is more detail when we think about vectors as a programming tool in <a href="vectors.html">Chapter&nbsp;<span>28</span></a>.</p>
+</section><section id="exercises" class="level3" data-number="16.2.5"><h3 data-number="16.2.5" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">16.2.5</span> Exercises</h3>
+</section></section><section id="creating-strings-from-data" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="creating-strings-from-data">
+<span class="header-section-number">16.3</span> Creating strings from data</h2>
+<p>Now that you’ve learned the basics of creating strings by “hand”, we’ll go into the details of creating strings from other strings. It’s a common problem: you often have some fixed strings that you wrote that you want to combine some varying strings that come from the data. For example, to create a greeting you might combine “Hello” with a <code>name</code> variable. First, we’ll discuss two functions that make this easy. Then we’ll talk about a slightly different scenario where you want to summarise a character vector, collapsing any number of strings into one.</p>
+<section id="str_c" class="level3" data-number="16.3.1"><h3 data-number="16.3.1" class="anchored" data-anchor-id="str_c">
+<span class="header-section-number">16.3.1</span> <code>str_c()</code>
+</h3>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> takes any number of vectors as arguments and returns a character vector:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "xy"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "xyz"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"Hello "</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"John"</span>, <span class="st">"Susan"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Hello John"  "Hello Susan"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> is designed to be used with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> so it obeys the usual rules for recycling and missing values:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Timothy"</span>, <span class="st">"Dewey"</span>, <span class="st">"Mable"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>greeting <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"Hi "</span>, <span class="va">name</span>, <span class="st">"!"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   name    greeting   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 Timothy Hi Timothy!</span></span>
+<span><span class="co">#&gt; 2 Dewey   Hi Dewey!  </span></span>
+<span><span class="co">#&gt; 3 Mable   Hi Mable!  </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;    &lt;NA&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you want missing values to display in some other way, use <code><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce()</a></code> either inside or outside of <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>  greeting1 <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"Hi "</span>, <span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"you"</span><span class="op">)</span>, <span class="st">"!"</span><span class="op">)</span>,</span>
+<span>  greeting2 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"Hi "</span>, <span class="va">name</span>, <span class="st">"!"</span><span class="op">)</span>, <span class="st">"Hi!"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 3</span></span>
+<span><span class="co">#&gt;   name    greeting1   greeting2  </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1 Timothy Hi Timothy! Hi Timothy!</span></span>
+<span><span class="co">#&gt; 2 Dewey   Hi Dewey!   Hi Dewey!  </span></span>
+<span><span class="co">#&gt; 3 Mable   Hi Mable!   Hi Mable!  </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;    Hi you!     Hi!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="str_glue" class="level3" data-number="16.3.2"><h3 data-number="16.3.2" class="anchored" data-anchor-id="str_glue">
+<span class="header-section-number">16.3.2</span> <code>str_glue()</code>
+</h3>
+<p>If you are mixing many fixed and variable strings with <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code>, you’ll notice that you have to type <code>""</code> repeatedly, and this can make it hard to see the overall goal of the code. An alternative approach is provided by the <a href="https://glue.tidyverse.org">glue package</a> via <code><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue()</a></code><a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> . You give it a single string containing <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code> and anything inside <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code> will be evaluated like it’s outside of the string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>greeting <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"Hi {name}!"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   name    greeting   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;glue&gt;     </span></span>
+<span><span class="co">#&gt; 1 Timothy Hi Timothy!</span></span>
+<span><span class="co">#&gt; 2 Dewey   Hi Dewey!  </span></span>
+<span><span class="co">#&gt; 3 Mable   Hi Mable!  </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;    Hi NA!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can use any valid R code inside of <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code>, but it’s a good idea to pull complex calculations out into their own variables so you can more easily check your work.</p>
+<p>As you can see above, <code><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue()</a></code> currently converts missing values to the string “NA” making it slightly inconsistent with <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code>. We’ll hopefully fix that by the time the book is printed: <a href="https://github.com/tidyverse/glue/issues/246" class="uri">https://github.com/tidyverse/glue/issues/246</a></p>
+<p>You also might wonder what happens if you need to include a regular <code>{</code> or <code>}</code> in your string. You might expect that you’ll need to escape it, and you’d be right. But glue uses a slightly different escaping technique; instead of prefixing with special character like <code>\</code>, you just double up the <code>{</code> and <code>}</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>greeting <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_glue.html">str_glue</a></span><span class="op">(</span><span class="st">"{{Hi {name}!}}"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span><span class="co">#&gt;   name    greeting     </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;glue&gt;       </span></span>
+<span><span class="co">#&gt; 1 Timothy {Hi Timothy!}</span></span>
+<span><span class="co">#&gt; 2 Dewey   {Hi Dewey!}  </span></span>
+<span><span class="co">#&gt; 3 Mable   {Hi Mable!}  </span></span>
+<span><span class="co">#&gt; 4 &lt;NA&gt;    {Hi NA!}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="str_flatten" class="level3" data-number="16.3.3"><h3 data-number="16.3.3" class="anchored" data-anchor-id="str_flatten">
+<span class="header-section-number">16.3.3</span> <code>str_flatten()</code>
+</h3>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> and <code>glue()</code> work well with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> because their output is the same length as their inputs. What if you want a function that works well with <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, i.e.&nbsp;something that always returns a single string? That’s the job of <code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten()</a></code><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>: it takes a character vector and combines each element of the vector into a single string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "xyz"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="st">", "</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "x, y, z"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span>, <span class="st">"z"</span><span class="op">)</span>, <span class="st">", "</span></span>
+<span>            <span class="co">#, last = `",` &amp; `"` # unused arg?</span></span>
+<span>            <span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "x, y, z"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This makes it work well with <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span> <span class="va">name</span>, <span class="op">~</span> <span class="va">fruit</span>,</span>
+<span>  <span class="st">"Carmen"</span>, <span class="st">"banana"</span>,</span>
+<span>  <span class="st">"Carmen"</span>, <span class="st">"apple"</span>,</span>
+<span>  <span class="st">"Marvin"</span>, <span class="st">"nectarine"</span>,</span>
+<span>  <span class="st">"Terence"</span>, <span class="st">"cantaloupe"</span>,</span>
+<span>  <span class="st">"Terence"</span>, <span class="st">"papaya"</span>,</span>
+<span>  <span class="st">"Terence"</span>, <span class="st">"madarine"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>fruits <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">", "</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
+<span><span class="co">#&gt;   name    fruits                      </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt;                       </span></span>
+<span><span class="co">#&gt; 1 Carmen  banana, apple               </span></span>
+<span><span class="co">#&gt; 2 Marvin  nectarine                   </span></span>
+<span><span class="co">#&gt; 3 Terence cantaloupe, papaya, madarine</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="exercises-1" class="level3" data-number="16.3.4"><h3 data-number="16.3.4" class="anchored" data-anchor-id="exercises-1">
+<span class="header-section-number">16.3.4</span> Exercises</h3>
+<ol type="1">
+<li>
+<p>Compare and contrast the results of <code><a href="https://rdrr.io/r/base/paste.html">paste0()</a></code> with <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> for the following inputs:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"hi "</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>Convert the following expressions from <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> to <code>glue()</code> or vice versa:</p>
+<ol type="a">
+<li><p><code>str_c("The price of ", food, " is ", price)</code></p></li>
+<li><p><code>glue("I'm {age} years old and live in {country}")</code></p></li>
+<li><p><code>str_c("\\section{", title, "}")</code></p></li>
+</ol>
+</li>
+</ol></section></section><section id="working-with-patterns" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="working-with-patterns">
+<span class="header-section-number">16.4</span> Working with patterns</h2>
+<p>It’s probably even more useful to be able to extract data from string than create strings from data, but before we can tackle that, we need to take a brief digression to talk about <strong>regular expressions</strong>. Regular expressions are a very concise language that describes patterns in strings. For example, <code>"^The"</code> is shorthand for any string that starts with “The”, and <code>a.+e</code> is a shorthand for “a” followed by one or more other characters, followed by an “e”.</p>
+<p>We’ll start by using <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> which answers a simple question: “does this pattern occur anywhere in my vector?”. We’ll then ask progressively more complex questions by learning more about regular expressions and the stringr functions that use them.</p>
+<section id="detect-matches" class="level3" data-number="16.4.1"><h3 data-number="16.4.1" class="anchored" data-anchor-id="detect-matches">
+<span class="header-section-number">16.4.1</span> Detect matches</h3>
+<p>The term “regular expression” is a bit of a mouthful, so most people abbreviate to “regex”<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> or “regexp”. To learn about regexes, we’ll start with the simplest function that uses them: <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>. It takes a character vector and a pattern, and returns a logical vector that says if the pattern was found at each element of the vector. The following code shows the simplest type of pattern, an exact match.</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"e"</span><span class="op">)</span>   <span class="co"># does the word contain an e?</span></span>
+<span><span class="co">#&gt; [1]  TRUE FALSE  TRUE</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"b"</span><span class="op">)</span>   <span class="co"># does the word contain a b?</span></span>
+<span><span class="co">#&gt; [1] FALSE  TRUE FALSE</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"ear"</span><span class="op">)</span> <span class="co"># does the word contain "ear"?</span></span>
+<span><span class="co">#&gt; [1] FALSE FALSE  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> returns a logical vector the same length as the first argument, so it pairs well with <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>. For example, this code finds all names that contain a lower-case “x”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 16,317 × 5</span></span>
+<span><span class="co">#&gt;    year sex   name          n      prop</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  1880 F     Roxie        62 0.000635 </span></span>
+<span><span class="co">#&gt; 2  1880 F     Dixie        15 0.000154 </span></span>
+<span><span class="co">#&gt; 3  1880 F     Roxanna       9 0.0000922</span></span>
+<span><span class="co">#&gt; 4  1880 F     Texas         5 0.0000512</span></span>
+<span><span class="co">#&gt; 5  1880 M     Alexander   211 0.00178  </span></span>
+<span><span class="co">#&gt; 6  1880 M     Alex        147 0.00124  </span></span>
+<span><span class="co">#&gt; # … with 16,311 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can also use <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> with <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> by remembering that when you use a logical vector in a numeric context, <code>FALSE</code> becomes 0 and <code>TRUE</code> becomes 1. That means <code>sum(str_detect(x, pattern))</code> will tell you the number of observations that match, while <code>mean(str_detect(x, pattern))</code> tells you the proportion of observations that match. For example, the following snippet computes and visualizes the proportion of baby names that contain “x”, broken down by year:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>prop_x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"x"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">prop_x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="strings_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" alt="A timeseries showing the proportion of baby names that contain the letter x. The proportion declines gradually from 8 per 1000 in 1880 to 4 per 1000 in 1980, then increases rapidly to 16 per 1000 in 2019." width="576"></p>
+</div>
+</div>
+<p>(Note that this gives us the proportion of names that contain an x; if you wanted the proportion of babies given a name containing an x, you’d need to perform a weighted mean).</p>
+</section><section id="introduction-to-regular-expressions" class="level3" data-number="16.4.2"><h3 data-number="16.4.2" class="anchored" data-anchor-id="introduction-to-regular-expressions">
+<span class="header-section-number">16.4.2</span> Introduction to regular expressions</h3>
+<p>The simplest patterns, like those above, are exact: they match any strings that contain the exact sequence of characters in the pattern:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"X"</span><span class="op">)</span>, <span class="st">"x"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE FALSE</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"xyz"</span>, <span class="st">"xza"</span><span class="op">)</span>, <span class="st">"xy"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  TRUE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In general, any letter or number will match exactly, but punctuation characters like <code>.</code>, <code>+</code>, <code>*</code>, <code>[</code>, <code>]</code>, <code>?</code>, often have special meanings<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a>. For example, <code>.</code> will match any character<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a>, so <code>"a."</code> will match any string that contains an “a” followed by another character :</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"ae"</span>, <span class="st">"bd"</span>, <span class="st">"ea"</span>, <span class="st">"eab"</span><span class="op">)</span>, <span class="st">"a."</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To get a better sense of what’s happening, lets switch to <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all()</a></code>. This shows which characters are matched by surrounding it with <code>&lt;&gt;</code> and coloring it blue:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"ae"</span>, <span class="st">"bd"</span>, <span class="st">"ea"</span>, <span class="st">"eab"</span><span class="op">)</span>, <span class="st">"a."</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-1fb4450895fe099f74a1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"html":"<ul>\n  <li>a<\/li>\n  <li><span class='match'>ab<\/span><\/li>\n  <li><span class='match'>ae<\/span><\/li>\n  <li>bd<\/li>\n  <li>ea<\/li>\n  <li>e<span class='match'>ab<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Regular expressions are a powerful and flexible language which we’ll come back to in <a href="regexps.html">Chapter&nbsp;<span>17</span></a>. Here we’ll just introduce only the most important components: quantifiers and character classes.</p>
+<p><strong>Quantifiers</strong> control how many times an element that can be applied to other pattern: <code>?</code> makes a pattern optional (i.e.&nbsp;it matches 0 or 1 times), <code>+</code> lets a pattern repeat (i.e.&nbsp;it matches at least once), and <code>*</code> lets a pattern be optional or repeat (i.e.&nbsp;it matches any number of times, including 0).</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># ab? matches an "a", optionally followed by a "b".</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab?"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-10b3b7155e8045a1b2ad" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-10b3b7155e8045a1b2ad">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span><\/li>\n  <li><span class='match'>ab<\/span><\/li>\n  <li><span class='match'>ab<\/span>b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="co"># ab+ matches an "a", followed by at least one "b".</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-4018eef1a407a0df6b52" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4018eef1a407a0df6b52">{"x":{"html":"<ul>\n  <li>a<\/li>\n  <li><span class='match'>ab<\/span><\/li>\n  <li><span class='match'>abb<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="co"># ab* matches an "a", followed by any number of "b"s.</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"ab"</span>, <span class="st">"abb"</span><span class="op">)</span>, <span class="st">"ab*"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-5b1b2f4ad92281566982" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5b1b2f4ad92281566982">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span><\/li>\n  <li><span class='match'>ab<\/span><\/li>\n  <li><span class='match'>abb<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p><strong>Character classes</strong> are defined by <code>[]</code> and let you match a set set of characters, e.g.&nbsp;<code>[abcd]</code> matches “a”, “b”, “c”, or “d”. You can also invert the match by starting with <code>^</code>: <code>[^abcd]</code> matches anything <strong>except</strong> “a”, “b”, “c”, or “d”. We can use this idea to find the vowels in a few particularly special names:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Hadley"</span>, <span class="st">"Mine"</span>, <span class="st">"Garrett"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">names</span>, <span class="st">"[aeiou]"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-25c3e940e6859592f801" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-25c3e940e6859592f801">{"x":{"html":"<ul>\n  <li>H<span class='match'>a<\/span>dl<span class='match'>e<\/span>y<\/li>\n  <li>M<span class='match'>i<\/span>n<span class='match'>e<\/span><\/li>\n  <li>G<span class='match'>a<\/span>rr<span class='match'>e<\/span>tt<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>You can combine character classes and quantifiers. Notice the difference between the following two patterns that look for consonants. The same characters are matched, but the number of matches is different.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">names</span>, <span class="st">"[^aeiou]"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-3f27c09be0c60bb52829" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f27c09be0c60bb52829">{"x":{"html":"<ul>\n  <li><span class='match'>H<\/span>a<span class='match'>d<\/span><span class='match'>l<\/span>e<span class='match'>y<\/span><\/li>\n  <li><span class='match'>M<\/span>i<span class='match'>n<\/span>e<\/li>\n  <li><span class='match'>G<\/span>a<span class='match'>r<\/span><span class='match'>r<\/span>e<span class='match'>t<\/span><span class='match'>t<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">names</span>, <span class="st">"[^aeiou]+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-416566eb193bf50d04e6" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-416566eb193bf50d04e6">{"x":{"html":"<ul>\n  <li><span class='match'>H<\/span>a<span class='match'>dl<\/span>e<span class='match'>y<\/span><\/li>\n  <li><span class='match'>M<\/span>i<span class='match'>n<\/span>e<\/li>\n  <li><span class='match'>G<\/span>a<span class='match'>rr<\/span>e<span class='match'>tt<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Regular expressions are very compact and use a lot of punctuation characters, so they can seem overwhelming at first, and you’ll think a cat has walked across your keyboard. So don’t worry if they’re hard to understand at first; you’ll get better with practice. Lets start that practice with some other useful stringr functions.</p>
+</section><section id="count-matches" class="level3" data-number="16.4.3"><h3 data-number="16.4.3" class="anchored" data-anchor-id="count-matches">
+<span class="header-section-number">16.4.3</span> Count matches</h3>
+<p>A variation on <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> is <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code>: rather than a simple yes or no, it tells you how many matches there are in a string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"p"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2 0 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that regular expression matches never overlap so <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code> only starts looking for a new match after the end of the last match. For example, in <code>"abababa"</code>, how many times will the pattern <code>"aba"</code> match? Regular expressions say two, not three:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="st">"abababa"</span>, <span class="st">"aba"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abababa"</span>, <span class="st">"aba"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-72cbf064100ce560a04c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-72cbf064100ce560a04c">{"x":{"html":"<ul>\n  <li><span class='match'>aba<\/span>b<span class='match'>aba<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>It’s natural to use <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code> with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>. The following example uses <code><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count()</a></code> with character classes to count the number of vowels and consonants in each name.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    vowels <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[aeiou]"</span><span class="op">)</span>,</span>
+<span>    consonants <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_count.html">str_count</a></span><span class="op">(</span><span class="va">name</span>, <span class="st">"[^aeiou]"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 97,310 × 4</span></span>
+<span><span class="co">#&gt;   name          n vowels consonants</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;  &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Aaban        10      2          3</span></span>
+<span><span class="co">#&gt; 2 Aabha         5      2          3</span></span>
+<span><span class="co">#&gt; 3 Aabid         2      2          3</span></span>
+<span><span class="co">#&gt; 4 Aabir         1      2          3</span></span>
+<span><span class="co">#&gt; 5 Aabriella     5      4          5</span></span>
+<span><span class="co">#&gt; 6 Aada          1      2          2</span></span>
+<span><span class="co">#&gt; # … with 97,304 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you look closely, you’ll notice that there’s something off with our calculations: “Aaban” contains three “a”s, but our summary reports only two vowels. That’s because we’ve forgotten to tell you that regular expressions are case sensitive. There are three ways we could fix this:</p>
+<ul>
+<li>Add the upper case vowels to the character class: <code>str_count(name, "[aeiouAEIOU]")</code>.</li>
+<li>Tell the regular expression to ignore case: <code>str_count(regex(name, ignore.case = TRUE), "[aeiou]")</code>. We’ll talk about this next.</li>
+<li>Use <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> to convert the names to lower case: <code>str_count(str_to_lower(name), "[aeiou]")</code>. We’ll come back to this function in <a href="#sec-other-languages"><span>Section&nbsp;16.6</span></a>.</li>
+</ul>
+<p>This is pretty typical when working with strings — there are often multiple ways to reach your goal, either making your pattern more complicated or by doing some preprocessing on your string. If you get stuck trying one approach, it can often be useful to switch gears and tackle the problem from a different perspective.</p>
+</section><section id="replace-matches" class="level3" data-number="16.4.4"><h3 data-number="16.4.4" class="anchored" data-anchor-id="replace-matches">
+<span class="header-section-number">16.4.4</span> Replace matches</h3>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code> allows you to replace a match with the text of your choosing. This can be particularly useful if you need to standardize a vector. Unlike the regexp functions we’ve encountered so far, <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code> takes three arguments: a character vector, a pattern, and a replacement.</p>
+<p>The simplest use is to replace a pattern with a fixed string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"pear"</span>, <span class="st">"banana"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[aeiou]"</span>, <span class="st">"-"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "-ppl-"  "p--r"   "b-n-n-"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all()</a></code> is a short cut for <code>str_replace_all(x, pattern, "")</code> — it removes matching patterns from a string.</p>
+<p>Use in <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code></p>
+<p>Using pipe inside mutate. Recommendation to make a function, and think about testing it — don’t need formal tests, but useful to build up a set of positive and negative test cases as you.</p>
+</section><section id="advanced-replacements" class="level3" data-number="16.4.5"><h3 data-number="16.4.5" class="anchored" data-anchor-id="advanced-replacements">
+<span class="header-section-number">16.4.5</span> Advanced replacements</h3>
+<p>You can also perform multiple replacements by supplying a named vector. The name gives a regular expression to match, and the value gives the replacement.</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1 house"</span>, <span class="st">"1 person has 2 cars"</span>, <span class="st">"3 people"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1"</span> <span class="op">=</span> <span class="st">"one"</span>, <span class="st">"2"</span> <span class="op">=</span> <span class="st">"two"</span>, <span class="st">"3"</span> <span class="op">=</span> <span class="st">"three"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "one house"               "one person has two cars"</span></span>
+<span><span class="co">#&gt; [3] "three people"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alternatively, you can provide a replacement function: it’s called with a vector of matches, and should return what to replacement them with. We’ll come back to this powerful tool in <a href="prog-strings.html">Chapter&nbsp;<span>30</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1 house"</span>, <span class="st">"1 person has 2 cars"</span>, <span class="st">"3 people"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[aeiou]+"</span>, <span class="va">str_to_upper</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "1 hOUsE"             "1 pErsOn hAs 2 cArs" "3 pEOplE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="pattern-control" class="level3" data-number="16.4.6"><h3 data-number="16.4.6" class="anchored" data-anchor-id="pattern-control">
+<span class="header-section-number">16.4.6</span> Pattern control</h3>
+<p>Now that you’ve learn about regular expressions, you might be worried about them working when you don’t want them to. You can opt-out of the regular expression rules by using <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="st">"a"</span>, <span class="st">"."</span><span class="op">)</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"."</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-d11fc4360aa0230696d7" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d11fc4360aa0230696d7">{"x":{"html":"<ul>\n  <li><\/li>\n  <li>a<\/li>\n  <li><span class='match'>.<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Both fixed strings and regular expressions are case sensitive by default. You can opt out by setting <code>ignore_case = TRUE</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"x  X  xy"</span>, <span class="st">"X"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-21c7483268bafca56cec" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-21c7483268bafca56cec">{"x":{"html":"<ul>\n  <li>x  <span class='match'>X<\/span>  xy<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"x  X  xy"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">fixed</a></span><span class="op">(</span><span class="st">"X"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-1834a22cd196f3aa03a1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1834a22cd196f3aa03a1">{"x":{"html":"<ul>\n  <li><span class='match'>x<\/span>  <span class='match'>X<\/span>  <span class='match'>x<\/span>y<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"x  X  xy"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">".Y"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-28515d92cb327f90c9eb" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-28515d92cb327f90c9eb">{"x":{"html":"<ul>\n  <li>x  X  <span class='match'>xy<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="exercises-2" class="level3" data-number="16.4.7"><h3 data-number="16.4.7" class="anchored" data-anchor-id="exercises-2">
+<span class="header-section-number">16.4.7</span> Exercises</h3>
+<ol type="1">
+<li><p>What name has the most vowels? What name has the highest proportion of vowels? (Hint: what is the denominator?)</p></li>
+<li>
+<p>For each of the following challenges, try solving it by using both a single regular expression, and a combination of multiple <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code> calls.</p>
+<ol type="a">
+<li>Find all words that start or end with <code>x</code>.</li>
+<li>Find all words that start with a vowel and end with a consonant.</li>
+<li>Are there any words that contain at least one of each different vowel?</li>
+</ol>
+</li>
+<li><p>Replace all forward slashes in a string with backslashes.</p></li>
+<li><p>Implement a simple version of <code><a href="https://stringr.tidyverse.org/reference/case.html">str_to_lower()</a></code> using <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>.</p></li>
+<li><p>Switch the first and last letters in <code>words</code>. Which of those strings are still <code>words</code>?</p></li>
+</ol></section></section><section id="extract-data-from-strings" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="extract-data-from-strings">
+<span class="header-section-number">16.5</span> Extract data from strings</h2>
+<p>Common for multiple variables worth of data to be stored in a single string. In this section you’ll learn how to use various functions tidyr to extract them.</p>
+<p>Waiting on: <a href="https://github.com/tidyverse/tidyups/pull/15" class="uri">https://github.com/tidyverse/tidyups/pull/15</a></p>
+</section><section id="sec-other-languages" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="sec-other-languages">
+<span class="header-section-number">16.6</span> Locale dependent operations</h2>
+<p>So far all of our examples have been using English. The details of the many ways other languages are different to English are too diverse to detail here, but we wanted to give a quick outline of the functions who’s behavior differs based on your <strong>locale</strong>, the set of settings that vary from country to country.</p>
+<p>Locale is specified with lower-case language abbreviation, optionally followed by a <code>_</code> and a upper-case region identifier. For example, “en” is English, “en_GB” is British English, and “en_US” is American English. If you don’t already know the code for your language, <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes">Wikipedia</a> has a good list, and you can see which are supported with <code><a href="https://rdrr.io/pkg/stringi/man/stri_locale_list.html">stringi::stri_locale_list()</a></code>.</p>
+<p>Base R string functions automatically use your locale current locale. This means that string manipulation code works the way you expect when you’re working with text in your native language, but it might work differently when you share it with someone who lives in another country. To avoid this problem, stringr defaults to the “en” locale, and requires you to specify the <code>locale</code> argument to override it. This also makes it easy to tell if a function might have different behavior in different locales.</p>
+<p>Fortunately there are three sets of functions where the locale matters:</p>
+<ul>
+<li>
+<p><strong>Changing case</strong>: while only relatively few languages have upper and lower case (Latin, Greek, and Cyrillic, plus a handful of lessor known languages). The rules are not te same in every language that uses these alphabets. For example, Turkish has two i’s: with and without a dot, and it has a different rule for capitalising them:</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"i"</span>, <span class="st">"ı"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "I" "I"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/case.html">str_to_upper</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"i"</span>, <span class="st">"ı"</span><span class="op">)</span>, locale <span class="op">=</span> <span class="st">"tr"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "İ" "I"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><strong>Comparing strings</strong>: <code>str_equal()</code> lets you compare if two strings are equal, optionally ignoring case:</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#str_equal("i", "I", ignore_case = TRUE)</span></span>
+<span><span class="co">#str_equal("i", "I", ignore_case = TRUE, locale = "tr")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><strong>Sorting strings</strong>: <code><a href="https://stringr.tidyverse.org/reference/str_order.html">str_sort()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_order.html">str_order()</a></code> sort vectors alphabetically, but the alphabet is not the same in every language<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a>! Here’s an example: in Czech, “ch” is a compound letter that appears after <code>h</code> in the alphabet.</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_order.html">str_sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"ch"</span>, <span class="st">"h"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "a"  "c"  "ch" "h"  "z"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_order.html">str_sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"c"</span>, <span class="st">"ch"</span>, <span class="st">"h"</span>, <span class="st">"z"</span><span class="op">)</span>, locale <span class="op">=</span> <span class="st">"cs"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "a"  "c"  "h"  "ch" "z"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Danish has a similar problem. Normally, characters with diacritics (e.g.&nbsp;à, á, â) sort after the plain character (e.g.&nbsp;a). But in Danish ø and å are their own letters that come at the end of the alphabet:</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_order.html">str_sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"å"</span>, <span class="st">"o"</span>, <span class="st">"ø"</span>, <span class="st">"z"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "a" "å" "o" "ø" "z"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_order.html">str_sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"å"</span>, <span class="st">"o"</span>, <span class="st">"ø"</span>, <span class="st">"z"</span><span class="op">)</span>, locale <span class="op">=</span> <span class="st">"da"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "a" "o" "z" "ø" "å"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This also comes up when sorting strings with <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">dplyr::arrange()</a></code> which is why it also has a <code>locale</code> argument.</p>
+</li>
+</ul></section><section id="letters" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="letters">
+<span class="header-section-number">16.7</span> Letters</h2>
+<p>Functions that work with the components of strings called <strong>code points</strong>. Depending on the language involved, this might be a letter (like in most European languages), a syllable (like Japanese), or a logogram (like in Chinese). It might be something more exotic like an accent, or a special symbol used to join two emoji together. But to keep things simple, we’ll call these letters.</p>
+<section id="length" class="level3" data-number="16.7.1"><h3 data-number="16.7.1" class="anchored" data-anchor-id="length">
+<span class="header-section-number">16.7.1</span> Length</h3>
+<p><code><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length()</a></code> tells you the number of letters in the string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"R for data science"</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1 18 NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You could use this with <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> to find the distribution of lengths of US babynames, and then with <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> to look at the longest names<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span>length <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span>, wt <span class="op">=</span> <span class="va">n</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 14 × 2</span></span>
+<span><span class="co">#&gt;   length        n</span></span>
+<span><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1      2   338150</span></span>
+<span><span class="co">#&gt; 2      3  8589596</span></span>
+<span><span class="co">#&gt; 3      4 48506739</span></span>
+<span><span class="co">#&gt; 4      5 87011607</span></span>
+<span><span class="co">#&gt; 5      6 90749404</span></span>
+<span><span class="co">#&gt; 6      7 72120767</span></span>
+<span><span class="co">#&gt; # … with 8 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span>
+<span></span>
+<span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span> <span class="op">==</span> <span class="fl">15</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">name</span>, wt <span class="op">=</span> <span class="va">n</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 34 × 2</span></span>
+<span><span class="co">#&gt;   name                n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Franciscojavier   123</span></span>
+<span><span class="co">#&gt; 2 Christopherjohn   118</span></span>
+<span><span class="co">#&gt; 3 Johnchristopher   118</span></span>
+<span><span class="co">#&gt; 4 Christopherjame   108</span></span>
+<span><span class="co">#&gt; 5 Christophermich    52</span></span>
+<span><span class="co">#&gt; 6 Ryanchristopher    45</span></span>
+<span><span class="co">#&gt; # … with 28 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="subsetting" class="level3" data-number="16.7.2"><h3 data-number="16.7.2" class="anchored" data-anchor-id="subsetting">
+<span class="header-section-number">16.7.2</span> Subsetting</h3>
+<p>You can extract parts of a string using <code>str_sub(string, start, end)</code>. The <code>start</code> and <code>end</code> arguments are inclusive, so the length of the returned string will be <code>end - start + 1</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Apple"</span>, <span class="st">"Banana"</span>, <span class="st">"Pear"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "App" "Ban" "Pea"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can use negative values to count back from the end of the string: -1 is the last character, -2 is the second to last character, etc.</p>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">x</span>, <span class="op">-</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "ple" "ana" "ear"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code> won’t fail if the string is too short: it will just return as much as possible:</p>
+<div class="cell">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "a"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We could use <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code> with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> to find the first and last letter of each name:</p>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">babynames</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    first <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">name</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    last <span class="op">=</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub</a></span><span class="op">(</span><span class="va">name</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,924,665 × 7</span></span>
+<span><span class="co">#&gt;    year sex   name          n   prop first last </span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1  1880 F     Mary       7065 0.0724 M     y    </span></span>
+<span><span class="co">#&gt; 2  1880 F     Anna       2604 0.0267 A     a    </span></span>
+<span><span class="co">#&gt; 3  1880 F     Emma       2003 0.0205 E     a    </span></span>
+<span><span class="co">#&gt; 4  1880 F     Elizabeth  1939 0.0199 E     h    </span></span>
+<span><span class="co">#&gt; 5  1880 F     Minnie     1746 0.0179 M     e    </span></span>
+<span><span class="co">#&gt; 6  1880 F     Margaret   1578 0.0162 M     t    </span></span>
+<span><span class="co">#&gt; # … with 1,924,659 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="long-strings" class="level3" data-number="16.7.3"><h3 data-number="16.7.3" class="anchored" data-anchor-id="long-strings">
+<span class="header-section-number">16.7.3</span> Long strings</h3>
+<p>Sometimes the reason you care about the length of a string is because you’re trying to fit it into a label on a plot or in a table. stringr provides two useful tools for cases where your string is too long:</p>
+<ul>
+<li><p><code>str_trunc(x, 20)</code> ensures that no string is longer than 20 characters, replacing any thing too long with <code>…</code>.</p></li>
+<li><p><code>str_wrap(x, 20)</code> wraps a string introducing new lines so that each line is at most 20 characters (it doesn’t hyphenate, however, so any word longer than 20 characters will make a longer time)</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."</span></span>
+<span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_trunc.html">str_trunc</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Lorem ipsum dolor sit amet,..."</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_wrap.html">str_wrap</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">30</span><span class="op">)</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-0caf26d4e3c00206b0c5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0caf26d4e3c00206b0c5">{"x":{"html":"<ul>\n  <li><span class='match'>L<\/span>orem ipsum dolor sit amet,\nconsectetur adipiscing\nelit, sed do eiusmod tempor\nincididunt ut labore et dolore\nmagna aliqua. Ut enim ad\nminim veniam, quis nostrud\nexercitation ullamco laboris\nnisi ut aliquip ex ea commodo\nconsequat.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>TODO: add example with a plot.</p>
+</section><section id="exercises-3" class="level3" data-number="16.7.4"><h3 data-number="16.7.4" class="anchored" data-anchor-id="exercises-3">
+<span class="header-section-number">16.7.4</span> Exercises</h3>
+<ol type="1">
+<li>Use <code><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_sub.html">str_sub()</a></code> to extract the middle letter from each baby name. What will you do if the string has an even number of characters?</li>
+<li>Are there any major trends in the length of babynames over time? What about the popularity of first and last letters?</li>
+</ol></section></section><section id="other-functions" class="level2" data-number="16.8"><h2 data-number="16.8" class="anchored" data-anchor-id="other-functions">
+<span class="header-section-number">16.8</span> Other functions</h2>
+<p>The are a bunch of other places you can use regular expressions outside of stringr.</p>
+<ul>
+<li><p><code><a href="https://tidyselect.r-lib.org/reference/starts_with.html">matches()</a></code>: as you can tell from it’s lack of <code>str_</code> prefix, this isn’t a stringr fuction. It’s a “tidyselect” function, a fucntion that you can use anywhere in the tidyverse when selecting variables (e.g.&nbsp;<code><a href="https://dplyr.tidyverse.org/reference/select.html">dplyr::select()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code>, …).</p></li>
+<li>
+<p><code><a href="https://rdrr.io/r/utils/apropos.html">apropos()</a></code> searches all objects available from the global environment. This is useful if you can’t quite remember the name of the function.</p>
+<div class="cell">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/apropos.html">apropos</a></span><span class="op">(</span><span class="st">"replace"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "%+replace%"       "replace"          "replace_na"       "setReplaceMethod"</span></span>
+<span><span class="co">#&gt; [5] "str_replace"      "str_replace_all"  "str_replace_na"   "theme_replace"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><code><a href="https://rdrr.io/r/base/list.files.html">dir()</a></code> lists all the files in a directory. The <code>pattern</code> argument takes a regular expression and only returns file names that match the pattern. For example, you can find all the R Markdown files in the current directory with:</p>
+<div class="cell">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.Rmd$"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(If you’re more comfortable with “globs” like <code>*.Rmd</code>, you can convert them to regular expressions with <code><a href="https://rdrr.io/r/utils/glob2rx.html">glob2rx()</a></code>).</p>
+</li>
+</ul>
+
+
+</section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1" role="doc-endnote"><p>You can also use the base R function <code><a href="https://rdrr.io/r/base/writeLines.html">writeLines()</a></code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Available in R 4.0.0 and above.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> is very similar to the base <code><a href="https://rdrr.io/r/base/paste.html">paste0()</a></code>. There are two main reasons we recommend: it obeys the usual rules for handling <code>NA</code> and it uses the tidyverse recycling rules.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>If you’re not using stringr, you can also access it directly with <code>glue::glue().</code><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>The base R equivalent is <code><a href="https://rdrr.io/r/base/paste.html">paste()</a></code> used with the <code>collapse</code> argument.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6" role="doc-endnote"><p>With a hard g, sounding like “reg-x”.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7" role="doc-endnote"><p>You’ll learn how to escape this special behaviour in <a href="regexps.html#sec-regexp-escaping"><span>Section&nbsp;17.2.1</span></a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8" role="doc-endnote"><p>Well, any character apart from <code>\n</code>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9" role="doc-endnote"><p>Sorting in languages that don’t have an alphabet (like Chinese) is more complicated still.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10" role="doc-endnote"><p>Looking at these entries, we’d guess that the babynames data removes spaces or hyphens from names and truncates after 15 letters.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./numbers.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./regexps.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">R for Data Science (2e) was written by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

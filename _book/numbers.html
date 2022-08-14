@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R for Data Science (2e) - 15&nbsp; Numbers</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./strings.html" rel="next">
+<link href="./logicals.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R for Data Science (2e)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/hadley/r4ds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">Preface to the second edition</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">Whole game</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Workflow: basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-pipes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data import</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Workflow: scripts and projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Workflow: Getting help</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">Transform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tibble.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tibbles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Dates and times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Missing values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./column-wise.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Column-wise operations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./wrangle.html" class="sidebar-item-text sidebar-link">Wrangle</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parsing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Spreadsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Databases</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data rectangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">Program</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vectors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prog-strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Programming with strings</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">Communicate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">R Markdown</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communicate-plots.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Graphics for communication</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-formats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">R Markdown formats</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-workflow.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R Markdown workflow</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">15.1</span> Introduction</a>
+  <ul class="collapse">
+<li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"> <span class="header-section-number">15.1.1</span> Prerequisites</a></li>
+  <li><a href="#counts" id="toc-counts" class="nav-link" data-scroll-target="#counts"> <span class="header-section-number">15.1.2</span> Counts</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"> <span class="header-section-number">15.1.3</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#numeric-transformations" id="toc-numeric-transformations" class="nav-link" data-scroll-target="#numeric-transformations"> <span class="header-section-number">15.2</span> Numeric transformations</a>
+  <ul class="collapse">
+<li><a href="#arithmetic-and-recycling-rules" id="toc-arithmetic-and-recycling-rules" class="nav-link" data-scroll-target="#arithmetic-and-recycling-rules"> <span class="header-section-number">15.2.1</span> Arithmetic and recycling rules</a></li>
+  <li><a href="#minimum-and-maximum" id="toc-minimum-and-maximum" class="nav-link" data-scroll-target="#minimum-and-maximum"> <span class="header-section-number">15.2.2</span> Minimum and maximum</a></li>
+  <li><a href="#modular-arithmetic" id="toc-modular-arithmetic" class="nav-link" data-scroll-target="#modular-arithmetic"> <span class="header-section-number">15.2.3</span> Modular arithmetic</a></li>
+  <li><a href="#logarithms" id="toc-logarithms" class="nav-link" data-scroll-target="#logarithms"> <span class="header-section-number">15.2.4</span> Logarithms</a></li>
+  <li><a href="#sec-rounding" id="toc-sec-rounding" class="nav-link" data-scroll-target="#sec-rounding"> <span class="header-section-number">15.2.5</span> Rounding</a></li>
+  <li><a href="#cutting-numbers-into-ranges" id="toc-cutting-numbers-into-ranges" class="nav-link" data-scroll-target="#cutting-numbers-into-ranges"> <span class="header-section-number">15.2.6</span> Cutting numbers into ranges</a></li>
+  <li><a href="#cumulative-and-rolling-aggregates" id="toc-cumulative-and-rolling-aggregates" class="nav-link" data-scroll-target="#cumulative-and-rolling-aggregates"> <span class="header-section-number">15.2.7</span> Cumulative and rolling aggregates</a></li>
+  <li><a href="#exercises-1" id="toc-exercises-1" class="nav-link" data-scroll-target="#exercises-1"> <span class="header-section-number">15.2.8</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#general-transformations" id="toc-general-transformations" class="nav-link" data-scroll-target="#general-transformations"> <span class="header-section-number">15.3</span> General transformations</a>
+  <ul class="collapse">
+<li><a href="#sec-missing-values-numbers" id="toc-sec-missing-values-numbers" class="nav-link" data-scroll-target="#sec-missing-values-numbers"> <span class="header-section-number">15.3.1</span> Fill in missing values</a></li>
+  <li><a href="#ranks" id="toc-ranks" class="nav-link" data-scroll-target="#ranks"> <span class="header-section-number">15.3.2</span> Ranks</a></li>
+  <li><a href="#offsets" id="toc-offsets" class="nav-link" data-scroll-target="#offsets"> <span class="header-section-number">15.3.3</span> Offsets</a></li>
+  <li><a href="#exercises-2" id="toc-exercises-2" class="nav-link" data-scroll-target="#exercises-2"> <span class="header-section-number">15.3.4</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#summaries" id="toc-summaries" class="nav-link" data-scroll-target="#summaries"> <span class="header-section-number">15.4</span> Summaries</a>
+  <ul class="collapse">
+<li><a href="#center" id="toc-center" class="nav-link" data-scroll-target="#center"> <span class="header-section-number">15.4.1</span> Center</a></li>
+  <li><a href="#sec-min-max-summary" id="toc-sec-min-max-summary" class="nav-link" data-scroll-target="#sec-min-max-summary"> <span class="header-section-number">15.4.2</span> Minimum, maximum, and quantiles</a></li>
+  <li><a href="#spread" id="toc-spread" class="nav-link" data-scroll-target="#spread"> <span class="header-section-number">15.4.3</span> Spread</a></li>
+  <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions"> <span class="header-section-number">15.4.4</span> Distributions</a></li>
+  <li><a href="#positions" id="toc-positions" class="nav-link" data-scroll-target="#positions"> <span class="header-section-number">15.4.5</span> Positions</a></li>
+  <li><a href="#with-mutate" id="toc-with-mutate" class="nav-link" data-scroll-target="#with-mutate"> <span class="header-section-number">15.4.6</span> With <code>mutate()</code></a></li>
+  <li><a href="#exercises-3" id="toc-exercises-3" class="nav-link" data-scroll-target="#exercises-3"> <span class="header-section-number">15.4.7</span> Exercises</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/hadley/r4ds/edit/main/numbers.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/hadley/r4ds/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-numbers" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><div class="status">
+<p>You are reading the work-in-progress second edition of R for Data Science. This chapter should be readable but is currently undergoing final polishing. You can find the complete first edition at <a href="https://r4ds.had.co.nz" class="uri">https://r4ds.had.co.nz</a>.</p>
+</div>
+<section id="introduction" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">15.1</span> Introduction</h2>
+<p>In this chapter, you’ll learn useful tools for creating and manipulating numeric vectors. We’ll start by going into a little more detail of <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> before diving into various numeric transformations. You’ll then learn about more general transformations that can be applied to other types of vector, but are often used with numeric vectors. Then you’ll learn about a few more useful summaries and how they can also be used with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>.</p>
+<section id="prerequisites" class="level3" data-number="15.1.1"><h3 data-number="15.1.1" class="anchored" data-anchor-id="prerequisites">
+<span class="header-section-number">15.1.1</span> Prerequisites</h3>
+<p>This chapter mostly uses functions from base R, which are available without loading any packages. But we still need the tidyverse because we’ll use these base R functions inside of tidyverse functions like <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>. Like in the last chapter, we’ll use real examples from nycflights13, as well as toy examples made with <code><a href="https://rdrr.io/r/base/c.html">c()</a></code> and <code><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/nycflights13">nycflights13</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="counts" class="level3" data-number="15.1.2"><h3 data-number="15.1.2" class="anchored" data-anchor-id="counts">
+<span class="header-section-number">15.1.2</span> Counts</h3>
+<p>It’s surprising how much data science you can do with just counts and a little basic arithmetic, so dplyr strives to make counting as easy as possible with <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code>. This function is great for quick exploration and checks during analysis:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 105 × 2</span></span>
+<span><span class="co">#&gt;   dest      n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 ABQ     254</span></span>
+<span><span class="co">#&gt; 2 ACK     265</span></span>
+<span><span class="co">#&gt; 3 ALB     439</span></span>
+<span><span class="co">#&gt; 4 ANC       8</span></span>
+<span><span class="co">#&gt; 5 ATL   17215</span></span>
+<span><span class="co">#&gt; 6 AUS    2439</span></span>
+<span><span class="co">#&gt; # … with 99 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(Despite the advice in <a href="workflow-style.html"><span>Chapter&nbsp;7</span></a>, we usually put <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> on a single line because it’s usually used at the console for a quick check that a calculation is working as expected.)</p>
+<p>If you want to see the most common values add <code>sort = TRUE</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">dest</span>, sort <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 105 × 2</span></span>
+<span><span class="co">#&gt;   dest      n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 ORD   17283</span></span>
+<span><span class="co">#&gt; 2 ATL   17215</span></span>
+<span><span class="co">#&gt; 3 LAX   16174</span></span>
+<span><span class="co">#&gt; 4 BOS   15508</span></span>
+<span><span class="co">#&gt; 5 MCO   14082</span></span>
+<span><span class="co">#&gt; 6 CLT   14064</span></span>
+<span><span class="co">#&gt; # … with 99 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And remember that if you want to see all the values, you can use <code>|&gt; View()</code> or <code>|&gt; print(n = Inf)</code>.</p>
+<p>You can perform the same computation “by hand” with <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code> and <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code>. This is useful because it allows you to compute other summaries at the same time:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">arr_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 105 × 3</span></span>
+<span><span class="co">#&gt;   dest      n delay</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;int&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 ABQ     254  4.38</span></span>
+<span><span class="co">#&gt; 2 ACK     265  4.85</span></span>
+<span><span class="co">#&gt; 3 ALB     439 14.4 </span></span>
+<span><span class="co">#&gt; 4 ANC       8 -2.5 </span></span>
+<span><span class="co">#&gt; 5 ATL   17215 11.3 </span></span>
+<span><span class="co">#&gt; 6 AUS    2439  6.02</span></span>
+<span><span class="co">#&gt; # … with 99 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> is a special summary function that doesn’t take any arguments and instead access information about the “current” group. This means that it only works inside dplyr verbs:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in `n()`:</span></span>
+<span><span class="co">#&gt; ! Must be used inside dplyr verbs.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are a couple of variants of <code><a href="https://dplyr.tidyverse.org/reference/context.html">n()</a></code> that you might find useful:</p>
+<ul>
+<li>
+<p><code>n_distinct(x)</code> counts the number of distinct (unique) values of one or more variables. For example, we could figure out which destinations are served by the most carriers:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    carriers <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/n_distinct.html">n_distinct</a></span><span class="op">(</span><span class="va">carrier</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">carriers</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 105 × 2</span></span>
+<span><span class="co">#&gt;   dest  carriers</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 ATL          7</span></span>
+<span><span class="co">#&gt; 2 BOS          7</span></span>
+<span><span class="co">#&gt; 3 CLT          7</span></span>
+<span><span class="co">#&gt; 4 ORD          7</span></span>
+<span><span class="co">#&gt; 5 TPA          7</span></span>
+<span><span class="co">#&gt; 6 AUS          6</span></span>
+<span><span class="co">#&gt; # … with 99 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>A weighted count is a sum. For example you could “count” the number of miles each plane flew:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">tailnum</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>miles <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4,044 × 2</span></span>
+<span><span class="co">#&gt;   tailnum  miles</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 D942DN    3418</span></span>
+<span><span class="co">#&gt; 2 N0EGMQ  250866</span></span>
+<span><span class="co">#&gt; 3 N10156  115966</span></span>
+<span><span class="co">#&gt; 4 N102UW   25722</span></span>
+<span><span class="co">#&gt; 5 N103US   24619</span></span>
+<span><span class="co">#&gt; 6 N104UW   25157</span></span>
+<span><span class="co">#&gt; # … with 4,038 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Weighted counts are a common problem so <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> has a <code>wt</code> argument that does the same thing:</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">tailnum</span>, wt <span class="op">=</span> <span class="va">distance</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 4,044 × 2</span></span>
+<span><span class="co">#&gt;   tailnum      n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 D942DN    3418</span></span>
+<span><span class="co">#&gt; 2 N0EGMQ  250866</span></span>
+<span><span class="co">#&gt; 3 N10156  115966</span></span>
+<span><span class="co">#&gt; 4 N102UW   25722</span></span>
+<span><span class="co">#&gt; 5 N103US   24619</span></span>
+<span><span class="co">#&gt; 6 N104UW   25157</span></span>
+<span><span class="co">#&gt; # … with 4,038 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>You can count missing values by combining <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code> and <code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code>. In the flights dataset this represents flights that are cancelled:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>n_cancelled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">dep_time</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; # A tibble: 105 × 2</span></span>
+<span><span class="co">#&gt;   dest  n_cancelled</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 ABQ             0</span></span>
+<span><span class="co">#&gt; 2 ACK             0</span></span>
+<span><span class="co">#&gt; 3 ALB            20</span></span>
+<span><span class="co">#&gt; 4 ANC             0</span></span>
+<span><span class="co">#&gt; 5 ATL           317</span></span>
+<span><span class="co">#&gt; 6 AUS            21</span></span>
+<span><span class="co">#&gt; # … with 99 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul></section><section id="exercises" class="level3" data-number="15.1.3"><h3 data-number="15.1.3" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">15.1.3</span> Exercises</h3>
+<ol type="1">
+<li>How can you use <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> to count the number rows with a missing value for a given variable?</li>
+<li>Expand the following calls to <code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> to instead use <code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code>:
+<ol type="1">
+<li><p><code>flights |&gt; count(dest, sort = TRUE)</code></p></li>
+<li><p><code>flights |&gt; count(tailnum, wt = distance)</code></p></li>
+</ol>
+</li>
+</ol></section></section><section id="numeric-transformations" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="numeric-transformations">
+<span class="header-section-number">15.2</span> Numeric transformations</h2>
+<p>Transformation functions work well with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> because their output is the same length as the input. The vast majority of transformation functions are already built into base R. It’s impractical to list them all so this section will show the most useful ones. As an example, while R provides all the trigonometric functions that you might dream of, we don’t list them here because they’re rarely needed for data science.</p>
+<section id="arithmetic-and-recycling-rules" class="level3" data-number="15.2.1"><h3 data-number="15.2.1" class="anchored" data-anchor-id="arithmetic-and-recycling-rules">
+<span class="header-section-number">15.2.1</span> Arithmetic and recycling rules</h3>
+<p>We introduced the basics of arithmetic (<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code>) in <a href="workflow-basics.html">Chapter&nbsp;<span>3</span></a> and have used them a bunch since. These functions don’t need a huge amount of explanation because they do what you learned in grade school. But we need to briefly talk about the <strong>recycling rules</strong> which determine what happens when the left and right hand sides have different lengths. This is important for operations like <code>flights |&gt; mutate(air_time = air_time / 60)</code> because there are 336,776 numbers on the left of <code>/</code> but only one on the right.</p>
+<p>R handles mismatched lengths by <strong>recycling,</strong> or repeating, the short vector. We can see this in operation more easily if we create some vectors outside of a data frame:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">/</span> <span class="fl">5</span></span>
+<span><span class="co">#&gt; [1] 0.2 0.4 2.0 4.0</span></span>
+<span><span class="co"># is shorthand for</span></span>
+<span><span class="va">x</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.2 0.4 2.0 4.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Generally, you only want to recycle single numbers (i.e.&nbsp;vectors of length 1), but R will recycle any shorter length vector. It usually (but not always) gives you a warning if the longer vector isn’t a multiple of the shorter:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  4 10 40</span></span>
+<span><span class="va">x</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in x * c(1, 2, 3): longer object length is not a multiple of shorter</span></span>
+<span><span class="co">#&gt; object length</span></span>
+<span><span class="co">#&gt; [1]  1  4 30 20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These recycling rules are also applied to logical comparisons (<code>==</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>!=</code>) and can lead to a surprising result if you accidentally use <code>==</code> instead of <code>%in%</code> and the data frame has an unfortunate number of rows. For example, take this code which attempts to find all flights in January and February:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 25,977 × 19</span></span>
+<span><span class="co">#&gt;    year month   day dep_time sched_dep…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;       &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1  2013     1     1      517         515       2     830     819      11 UA     </span></span>
+<span><span class="co">#&gt; 2  2013     1     1      542         540       2     923     850      33 AA     </span></span>
+<span><span class="co">#&gt; 3  2013     1     1      554         600      -6     812     837     -25 DL     </span></span>
+<span><span class="co">#&gt; 4  2013     1     1      555         600      -5     913     854      19 B6     </span></span>
+<span><span class="co">#&gt; 5  2013     1     1      557         600      -3     838     846      -8 B6     </span></span>
+<span><span class="co">#&gt; 6  2013     1     1      558         600      -2     849     851      -2 B6     </span></span>
+<span><span class="co">#&gt; # … with 25,971 more rows, 9 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, and abbreviated variable names</span></span>
+<span><span class="co">#&gt; #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The code runs without error, but it doesn’t return what you want. Because of the recycling rules it finds flights in odd numbered rows that departed in January and flights in even numbered rows that departed in February. And unforuntately there’s no warning because <code>nycflights</code> has an even number of rows.</p>
+<p>To protect you from this type of silent failure, most tidyverse functions use a stricter form of recycling that only recycles single values. Unfortunately that doesn’t help here, or in many other cases, because the key computation is performed by the base R function <code>==</code>, not <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code>.</p>
+</section><section id="minimum-and-maximum" class="level3" data-number="15.2.2"><h3 data-number="15.2.2" class="anchored" data-anchor-id="minimum-and-maximum">
+<span class="header-section-number">15.2.2</span> Minimum and maximum</h3>
+<p>The arithmetic functions work with pairs of variables. Two closely related functions are <code><a href="https://rdrr.io/r/base/Extremes.html">pmin()</a></code> and <code><a href="https://rdrr.io/r/base/Extremes.html">pmax()</a></code>, which when given two or more variables will return the smallest or largest value in each row:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">x</span>, <span class="op">~</span><span class="va">y</span>,</span>
+<span>  <span class="fl">1</span>,  <span class="fl">3</span>,</span>
+<span>  <span class="fl">5</span>,  <span class="fl">2</span>,</span>
+<span>  <span class="fl">7</span>, <span class="cn">NA</span>,</span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmin</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">pmax</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;       x     y   min   max</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1     3     1     3</span></span>
+<span><span class="co">#&gt; 2     5     2     2     5</span></span>
+<span><span class="co">#&gt; 3     7    NA     7     7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that these are different to the summary functions <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code> and <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code> which take multiple observations and return a single value. You can tell that you’ve used the wrong form when all the minimums and all the maximums have the same value:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span><span class="co">#&gt;       x     y   min   max</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1     3     1     7</span></span>
+<span><span class="co">#&gt; 2     5     2     1     7</span></span>
+<span><span class="co">#&gt; 3     7    NA     1     7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="modular-arithmetic" class="level3" data-number="15.2.3"><h3 data-number="15.2.3" class="anchored" data-anchor-id="modular-arithmetic">
+<span class="header-section-number">15.2.3</span> Modular arithmetic</h3>
+<p>Modular arithmetic is the technical name for the type of math you did before you learned about real numbers, i.e.&nbsp;division that yields a whole number and a remainder. In R, <code>%/%</code> does integer division and <code>%%</code> computes the remainder:</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">3</span></span>
+<span><span class="co">#&gt;  [1] 0 0 1 1 1 2 2 2 3 3</span></span>
+<span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">3</span></span>
+<span><span class="co">#&gt;  [1] 1 2 0 1 2 0 1 2 0 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Modular arithmetic is handy for the flights dataset, because we can use it to unpack the <code>sched_dep_time</code> variable into and <code>hour</code> and <code>minute</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    hour <span class="op">=</span> <span class="va">sched_dep_time</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">100</span>,</span>
+<span>    minute <span class="op">=</span> <span class="va">sched_dep_time</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">100</span>,</span>
+<span>    .keep <span class="op">=</span> <span class="st">"used"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 336,776 × 3</span></span>
+<span><span class="co">#&gt;   sched_dep_time  hour minute</span></span>
+<span><span class="co">#&gt;            &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1            515     5     15</span></span>
+<span><span class="co">#&gt; 2            529     5     29</span></span>
+<span><span class="co">#&gt; 3            540     5     40</span></span>
+<span><span class="co">#&gt; 4            545     5     45</span></span>
+<span><span class="co">#&gt; 5            600     6      0</span></span>
+<span><span class="co">#&gt; 6            558     5     58</span></span>
+<span><span class="co">#&gt; # … with 336,770 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can combine that with the <code>mean(is.na(x))</code> trick from <a href="logicals.html#sec-logical-summaries"><span>Section&nbsp;14.4</span></a> to see how the proportion of cancelled flights varies over the course of the day. The results are shown in <a href="#fig-prop-cancelled">Figure&nbsp;<span>15.1</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span>hour <span class="op">=</span> <span class="va">sched_dep_time</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>prop_cancelled <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">dep_time</span><span class="op">)</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">hour</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">hour</span>, <span class="va">prop_cancelled</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>size <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-prop-cancelled" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="numbers_files/figure-html/fig-prop-cancelled-1.png" class="img-fluid figure-img" alt="A line plot showing how proportion of cancelled flights changes over the course of the day. The proportion starts low at around 0.5% at 6am, then steadily increases over the course of the day until peaking at 4% at 7pm. The proportion of cancelled flights then drops rapidly getting down to around 1% by midnight." width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 15.1: A line plot with scheduled departure hour on the x-axis, and proportion of cancelled flights on the y-axis. Cancellations seem to accumulate over the course of the day until 8pm, very late flights are much less likely to be cancelled.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="logarithms" class="level3" data-number="15.2.4"><h3 data-number="15.2.4" class="anchored" data-anchor-id="logarithms">
+<span class="header-section-number">15.2.4</span> Logarithms</h3>
+<p>Logarithms are an incredibly useful transformation for dealing with data that ranges across multiple orders of magnitude. They also convert exponential growth to linear growth. For example, take compounding interest — the amount of money you have at <code>year + 1</code> is the amount of money you had at <code>year</code> multiplied by the interest rate. That gives a formula like <code>money = starting * interest ^ year</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">starting</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
+<span><span class="va">interest</span> <span class="op">&lt;-</span> <span class="fl">1.05</span></span>
+<span></span>
+<span><span class="va">money</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span></span>
+<span>  year <span class="op">=</span> <span class="fl">2000</span> <span class="op">+</span> <span class="fl">1</span><span class="op">:</span><span class="fl">50</span>,</span>
+<span>  money <span class="op">=</span> <span class="va">starting</span> <span class="op">*</span> <span class="va">interest</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">50</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you plot this data, you’ll get an exponential curve:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">money</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">money</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="numbers_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>Log transforming the y-axis gives a straight line:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">money</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">money</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="numbers_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>This a straight line because a little algebra reveals that <code>log(money) = log(starting) + n * log(interest)</code>, which matches the pattern for a line, <code>y = m * x + b</code>. This is a useful pattern: if you see a (roughly) straight line after log-transforming the y-axis, you know that there’s underlying exponential growth.</p>
+<p>If you’re log-transforming your data with dplyr you have a choice of three logarithms provided by base R: <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> (the natural log, base e), <code><a href="https://rdrr.io/r/base/Log.html">log2()</a></code> (base 2), and <code><a href="https://rdrr.io/r/base/Log.html">log10()</a></code> (base 10). We recommend using <code><a href="https://rdrr.io/r/base/Log.html">log2()</a></code> or <code><a href="https://rdrr.io/r/base/Log.html">log10()</a></code>. <code><a href="https://rdrr.io/r/base/Log.html">log2()</a></code> is easy to interpret because difference of 1 on the log scale corresponds to doubling on the original scale and a difference of -1 corresponds to halving; whereas <code><a href="https://rdrr.io/r/base/Log.html">log10()</a></code> is easy to back-transform because (e.g) 3 is 10^3 = 1000.</p>
+<p>The inverse of <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> is <code><a href="https://rdrr.io/r/base/Log.html">exp()</a></code>; to compute the inverse of <code><a href="https://rdrr.io/r/base/Log.html">log2()</a></code> or <code><a href="https://rdrr.io/r/base/Log.html">log10()</a></code> you’ll need to use <code>2^</code> or <code>10^</code>.</p>
+</section><section id="sec-rounding" class="level3" data-number="15.2.5"><h3 data-number="15.2.5" class="anchored" data-anchor-id="sec-rounding">
+<span class="header-section-number">15.2.5</span> Rounding</h3>
+<p>Use <code>round(x)</code> to round a number to the nearest integer:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">123.456</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 123</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can control the precision of the rounding with the second argument, <code>digits</code>. <code>round(x, digits)</code> rounds to the nearest <code>10^-n</code> so <code>digits = 2</code> will round to the nearest 0.01. This definition is useful because it implies <code>round(x, -3)</code> will round to the nearest thousand, which indeed it does:</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">123.456</span>, <span class="fl">2</span><span class="op">)</span>  <span class="co"># two digits</span></span>
+<span><span class="co">#&gt; [1] 123.46</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">123.456</span>, <span class="fl">1</span><span class="op">)</span>  <span class="co"># one digit</span></span>
+<span><span class="co">#&gt; [1] 123.5</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">123.456</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="co"># round to nearest ten</span></span>
+<span><span class="co">#&gt; [1] 120</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fl">123.456</span>, <span class="op">-</span><span class="fl">2</span><span class="op">)</span> <span class="co"># round to nearest hundred</span></span>
+<span><span class="co">#&gt; [1] 100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There’s one weirdness with <code><a href="https://rdrr.io/r/base/Round.html">round()</a></code> that seems surprising at first glance:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.5</span>, <span class="fl">2.5</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 2 2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://rdrr.io/r/base/Round.html">round()</a></code> uses what’s known as “round half to even” or Banker’s rounding: if a number is half way between two integers, it will be rounded to the <strong>even</strong> integer. This is a good strategy because it keeps the rounding unbiased: half of all 0.5s are rounded up, and half are rounded down.</p>
+<p><code><a href="https://rdrr.io/r/base/Round.html">round()</a></code> is paired with <code><a href="https://rdrr.io/r/base/Round.html">floor()</a></code> which always rounds down and <code><a href="https://rdrr.io/r/base/Round.html">ceiling()</a></code> which always rounds up:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">123.456</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 123</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 124</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These functions don’t have a digits argument, so you can instead scale down, round, and then scale back up:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Round down to nearest two digits</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">floor</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.01</span></span>
+<span><span class="co">#&gt; [1] 123.45</span></span>
+<span><span class="co"># Round up to nearest two digits</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">ceiling</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="fl">0.01</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.01</span></span>
+<span><span class="co">#&gt; [1] 123.46</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can use the same technique if you want to <code><a href="https://rdrr.io/r/base/Round.html">round()</a></code> to a multiple of some other number:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Round to nearest multiple of 4</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="fl">4</span><span class="op">)</span> <span class="op">*</span> <span class="fl">4</span></span>
+<span><span class="co">#&gt; [1] 124</span></span>
+<span></span>
+<span><span class="co"># Round to nearest 0.25</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="fl">0.25</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.25</span></span>
+<span><span class="co">#&gt; [1] 123.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="cutting-numbers-into-ranges" class="level3" data-number="15.2.6"><h3 data-number="15.2.6" class="anchored" data-anchor-id="cutting-numbers-into-ranges">
+<span class="header-section-number">15.2.6</span> Cutting numbers into ranges</h3>
+<p>Use <code><a href="https://rdrr.io/r/base/cut.html">cut()</a></code><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> to break up a numeric vector into discrete buckets:</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] (0,5]   (0,5]   (0,5]   (5,10]  (10,15] (15,20]</span></span>
+<span><span class="co">#&gt; Levels: (0,5] (5,10] (10,15] (15,20]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The breaks don’t need to be evenly spaced:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] (0,5]    (0,5]    (0,5]    (5,10]   (10,100] (10,100]</span></span>
+<span><span class="co">#&gt; Levels: (0,5] (5,10] (10,100]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can optionally supply your own <code>labels</code>. Note that there should be one less <code>labels</code> than <code>breaks</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">x</span>, </span>
+<span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span>, </span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sm"</span>, <span class="st">"md"</span>, <span class="st">"lg"</span>, <span class="st">"xl"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] sm sm sm md lg xl</span></span>
+<span><span class="co">#&gt; Levels: sm md lg xl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Any values outside of the range of the breaks will become <code>NA</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cut.html">cut</a></span><span class="op">(</span><span class="va">y</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] &lt;NA&gt;   &lt;NA&gt;   (0,5]  (5,10] &lt;NA&gt;  </span></span>
+<span><span class="co">#&gt; Levels: (0,5] (5,10] (10,15] (15,20]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>See the documentation for other useful arguments like <code>right</code> and <code>include.lowest</code>, which control if the intervals are <code>[a, b)</code> or <code>(a, b]</code> and if the lowest interval should be <code>[a, b]</code>.</p>
+</section><section id="cumulative-and-rolling-aggregates" class="level3" data-number="15.2.7"><h3 data-number="15.2.7" class="anchored" data-anchor-id="cumulative-and-rolling-aggregates">
+<span class="header-section-number">15.2.7</span> Cumulative and rolling aggregates</h3>
+<p>Base R provides <code><a href="https://rdrr.io/r/base/cumsum.html">cumsum()</a></code>, <code><a href="https://rdrr.io/r/base/cumsum.html">cumprod()</a></code>, <code><a href="https://rdrr.io/r/base/cumsum.html">cummin()</a></code>, <code><a href="https://rdrr.io/r/base/cumsum.html">cummax()</a></code> for running, or cumulative, sums, products, mins and maxes. dplyr provides <code><a href="https://dplyr.tidyverse.org/reference/cumall.html">cummean()</a></code> for cumulative means. Cumulative sums tend to come up the most in practice:</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cumsum.html">cumsum</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1  3  6 10 15 21 28 36 45 55</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you need more complex rolling or sliding aggregates, try the <a href="https://davisvaughan.github.io/slider/">slider</a> package by Davis Vaughan. The following example illustrates some of its features.</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/DavisVaughan/slider">slider</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Same as a cumulative sum</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_vec</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">sum</span>, .before <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1  3  6 10 15 21 28 36 45 55</span></span>
+<span><span class="co"># Sum the current element and the one before it</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_vec</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">sum</span>, .before <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1  3  5  7  9 11 13 15 17 19</span></span>
+<span><span class="co"># Sum the current element and the two before and after it</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_vec</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">sum</span>, .before <span class="op">=</span> <span class="fl">2</span>, .after <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  6 10 15 20 25 30 35 40 34 27</span></span>
+<span><span class="co"># Only compute if the window is complete</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/slider/man/slide.html">slide_vec</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">sum</span>, .before <span class="op">=</span> <span class="fl">2</span>, .after <span class="op">=</span> <span class="fl">2</span>, .complete <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] NA NA 15 20 25 30 35 40 NA NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="exercises-1" class="level3" data-number="15.2.8"><h3 data-number="15.2.8" class="anchored" data-anchor-id="exercises-1">
+<span class="header-section-number">15.2.8</span> Exercises</h3>
+<ol type="1">
+<li><p>Explain in words what each line of the code used to generate <a href="#fig-prop-cancelled">Figure&nbsp;<span>15.1</span></a> does.</p></li>
+<li><p>What trigonometric functions does R provide? Guess some names and look up the documentation. Do they use degrees or radians?</p></li>
+<li>
+<p>Currently <code>dep_time</code> and <code>sched_dep_time</code> are convenient to look at, but hard to compute with because they’re not really continuous numbers. You can see the basic problem in this plot: there’s a gap between each hour.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">month</span> <span class="op">==</span> <span class="fl">1</span>, <span class="va">day</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">sched_dep_time</span>, <span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 4 rows containing missing values (geom_point).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="numbers_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="576"></p>
+</div>
+</div>
+<p>Convert them to a more truthful representation of time (either fractional hours or minutes since midnight).</p>
+</li>
+</ol></section></section><section id="general-transformations" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="general-transformations">
+<span class="header-section-number">15.3</span> General transformations</h2>
+<p>The following sections describe some general transformations which are often used with numeric vectors, but can be applied to all other column types.</p>
+<section id="sec-missing-values-numbers" class="level3" data-number="15.3.1"><h3 data-number="15.3.1" class="anchored" data-anchor-id="sec-missing-values-numbers">
+<span class="header-section-number">15.3.1</span> Fill in missing values</h3>
+<p>You can fill in missing values with dplyr’s <code><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="cn">NA</span>, <span class="fl">5</span>, <span class="cn">NA</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  0  5  0 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce()</a></code> is vectorised, so you can find the non-missing values from a pair of vectors:</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="cn">NA</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/coalesce.html">coalesce</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  3  5 NA 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="ranks" class="level3" data-number="15.3.2"><h3 data-number="15.3.2" class="anchored" data-anchor-id="ranks">
+<span class="header-section-number">15.3.2</span> Ranks</h3>
+<p>dplyr provides a number of ranking functions inspired by SQL, but you should always start with <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">dplyr::min_rank()</a></code>. It uses the typical method for dealing with ties, e.g.&nbsp;1st, 2nd, 2nd, 4th.</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  1  2  2  4  5 NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that the smallest values get the lowest ranks; use <code>desc(x)</code> to give the largest values the smallest ranks:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  5  3  3  2  1 NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank()</a></code> doesn’t do what you need, look at the variants <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">dplyr::row_number()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">dplyr::dense_rank()</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">dplyr::percent_rank()</a></code>, and <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">dplyr::cume_dist()</a></code>. See the documentation for details.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    row_number <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    dense_rank <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">dense_rank</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    percent_rank <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">percent_rank</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    cume_dist <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">cume_dist</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;       x row_number dense_rank percent_rank cume_dist</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;      &lt;int&gt;      &lt;int&gt;        &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1     1          1          1         0          0.2</span></span>
+<span><span class="co">#&gt; 2     2          2          2         0.25       0.6</span></span>
+<span><span class="co">#&gt; 3     2          3          2         0.25       0.6</span></span>
+<span><span class="co">#&gt; 4     3          4          3         0.75       0.8</span></span>
+<span><span class="co">#&gt; 5     4          5          4         1          1  </span></span>
+<span><span class="co">#&gt; 6    NA         NA         NA        NA         NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can achieve many of the same results by picking the appropriate <code>ties.method</code> argument to base R’s <code><a href="https://rdrr.io/r/base/rank.html">rank()</a></code>; you’ll probably also want to set <code>na.last = "keep"</code> to keep <code>NA</code>s as <code>NA</code>.</p>
+<p><code><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number()</a></code> can also be used without any arguments when inside a dplyr verb. In this case, it’ll give the number of the “current” row. When combined with <code>%%</code> or <code>%/%</code> this can be a useful tool for dividing data into similarly sized groups:</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    row0 <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">row_number</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span>,</span>
+<span>    three_groups <span class="op">=</span> <span class="va">row0</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">3</span>,</span>
+<span>    three_in_each_group <span class="op">=</span> <span class="va">row0</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">3</span>,</span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 10 × 4</span></span>
+<span><span class="co">#&gt;         x  row0 three_groups three_in_each_group</span></span>
+<span><span class="co">#&gt;     &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;               &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 0.0808      0            0                   0</span></span>
+<span><span class="co">#&gt; 2 0.834       1            1                   0</span></span>
+<span><span class="co">#&gt; 3 0.601       2            2                   0</span></span>
+<span><span class="co">#&gt; 4 0.157       3            0                   1</span></span>
+<span><span class="co">#&gt; 5 0.00740     4            1                   1</span></span>
+<span><span class="co">#&gt; 6 0.466       5            2                   1</span></span>
+<span><span class="co">#&gt; # … with 4 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="offsets" class="level3" data-number="15.3.3"><h3 data-number="15.3.3" class="anchored" data-anchor-id="offsets">
+<span class="header-section-number">15.3.3</span> Offsets</h3>
+<p><code><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">dplyr::lead()</a></code> and <code>dplyr::lag()</code> allow you to refer the values just before or just after the “current” value. They return a vector of the same length as the input, padded with <code>NA</code>s at the start or end:</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">5</span>, <span class="fl">11</span>, <span class="fl">11</span>, <span class="fl">19</span>, <span class="fl">35</span><span class="op">)</span></span>
+<span><span class="fu">lag</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] NA  2  5 11 11 19</span></span>
+<span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/lead-lag.html">lead</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  5 11 11 19 35 NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>
+<p><code>x - lag(x)</code> gives you the difference between the current and previous value.</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">-</span> <span class="fu">lag</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] NA  3  6  0  8 16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p><code>x == lag(x)</code> tells you when the current value changes. This is often useful combined with the grouping trick described in <a href="logicals.html#sec-groups-from-logical"><span>Section&nbsp;14.6</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">==</span> <span class="fu">lag</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]    NA FALSE FALSE  TRUE FALSE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+<p>You can lead or lag by more than one position by using the second argument, <code>n</code>.</p>
+</section><section id="exercises-2" class="level3" data-number="15.3.4"><h3 data-number="15.3.4" class="anchored" data-anchor-id="exercises-2">
+<span class="header-section-number">15.3.4</span> Exercises</h3>
+<ol type="1">
+<li><p>Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for <code><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank()</a></code>.</p></li>
+<li><p>Which plane (<code>tailnum</code>) has the worst on-time record?</p></li>
+<li><p>What time of day should you fly if you want to avoid delays as much as possible?</p></li>
+<li><p>What does <code>flights |&gt; group_by(dest() |&gt; filter(row_number() &lt; 4)</code> do? What does <code>flights |&gt; group_by(dest() |&gt; filter(row_number(dep_delay) &lt; 4)</code> do?</p></li>
+<li><p>For each destination, compute the total minutes of delay. For each flight, compute the proportion of the total delay for its destination.</p></li>
+<li>
+<p>Delays are typically temporally correlated: even once the problem that caused the initial delay has been resolved, later flights are delayed to allow earlier flights to leave. Using <code>lag()</code>, explore how the average flight delay for an hour is related to the average delay for the previous hour.</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>hour <span class="op">=</span> <span class="va">dep_time</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%/%</a></span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span>, <span class="va">hour</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    dep_delay <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li><p>Look at each destination. Can you find flights that are suspiciously fast? (i.e.&nbsp;flights that represent a potential data entry error). Compute the air time of a flight relative to the shortest flight to that destination. Which flights were most delayed in the air?</p></li>
+<li><p>Find all destinations that are flown by at least two carriers. Use those destinations to come up with a relative ranking of the carriers based on their performance for the same destination.</p></li>
+</ol></section></section><section id="summaries" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="summaries">
+<span class="header-section-number">15.4</span> Summaries</h2>
+<p>Just using the counts, means, and sums that we’ve introduced already can get you a long way, but R provides many other useful summary functions. Here are a selection that you might find useful.</p>
+<section id="center" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="center">
+<span class="header-section-number">15.4.1</span> Center</h3>
+<p>So far, we’ve mostly used <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> to summarize the center of a vector of values. Because the mean is the sum divided by the count, it is sensitive to even just a few unusually high or low values. An alternative is to use the <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, which finds a value that lies in the “middle” of the vector, i.e.&nbsp;50% of the values is above it and 50% are below it. Depending on the shape of the distribution of the variable you’re interested in, mean or median might be a better measure of center. For example, for symmetric distributions we generally report the mean while for skewed distributions we usually report the median.</p>
+<p><a href="#fig-mean-vs-median">Figure&nbsp;<span>15.2</span></a> compares the mean vs the median when looking at the hourly vs median departure delay. The median delay is always smaller than the mean delay because because flights sometimes leave multiple hours late, but never leave multiple hours early.</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    median <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">mean</span>, <span class="va">median</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_abline</a></span><span class="op">(</span>slope <span class="op">=</span> <span class="fl">1</span>, intercept <span class="op">=</span> <span class="fl">0</span>, color <span class="op">=</span> <span class="st">"white"</span>, size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-mean-vs-median" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="numbers_files/figure-html/fig-mean-vs-median-1.png" class="img-fluid figure-img" alt="All points fall below a 45° line, meaning that the median delay is always less than the mean delay. Most points are clustered in a dense region of mean [0, 20] and median [0, 5]. As the mean delay increases, the spread of the median also increases. There are two outlying points with mean ~60, median ~50, and mean ~85, median ~55." width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 15.2: A scatterplot showing the differences of summarising hourly depature delay with median instead of mean.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>You might also wonder about the <strong>mode</strong>, or the most common value. This is a summary that only works well for very simple cases (which is why you might have learned about it in high school), but it doesn’t work well for many real datasets. If the data is discrete, there may be multiple most common values, and if the data is continuous, there might be no most common value because every value is ever so slightly different. For these reasons, the mode tends not to be used by statisticians and there’s no mode function included in base R<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+</section><section id="sec-min-max-summary" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="sec-min-max-summary">
+<span class="header-section-number">15.4.2</span> Minimum, maximum, and quantiles</h3>
+<p>What if you’re interested in locations other than the center? <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code> and <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code> will give you the largest and smallest values. Another powerful tool is <code><a href="https://rdrr.io/r/stats/quantile.html">quantile()</a></code> which is a generalization of the median: <code>quantile(x, 0.25)</code> will find the value of <code>x</code> that is greater than 25% of the values, <code>quantile(x, 0.5)</code> is equivalent to the median, and <code>quantile(x, 0.95)</code> will find a value that’s greater than 95% of the values.</p>
+<p>For the flights data, you might want to look at the 95% quantile of delays rather than the maximum, because it will ignore the 5% of most delayed flights which can be quite extreme.</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">dep_delay</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    q95 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">dep_delay</span>, <span class="fl">0.95</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 365 × 5</span></span>
+<span><span class="co">#&gt;    year month   day   max   q95</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  2013     1     1   853  70.1</span></span>
+<span><span class="co">#&gt; 2  2013     1     2   379  85  </span></span>
+<span><span class="co">#&gt; 3  2013     1     3   291  68  </span></span>
+<span><span class="co">#&gt; 4  2013     1     4   288  60  </span></span>
+<span><span class="co">#&gt; 5  2013     1     5   327  41  </span></span>
+<span><span class="co">#&gt; 6  2013     1     6   202  51  </span></span>
+<span><span class="co">#&gt; # … with 359 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="spread" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="spread">
+<span class="header-section-number">15.4.3</span> Spread</h3>
+<p>Sometimes you’re not so interested in where the bulk of the data lies, but how it is spread out. Two commonly used summaries are the standard deviation, <code>sd(x)</code>, and the inter-quartile range, <code><a href="https://rdrr.io/r/stats/IQR.html">IQR()</a></code>. We won’t explain <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code> here since you’re probably already familiar with it, but <code><a href="https://rdrr.io/r/stats/IQR.html">IQR()</a></code> might be new — it’s <code>quantile(x, 0.75) - quantile(x, 0.25)</code> and gives you the range that contains the middle 50% of the data.</p>
+<p>We can use this to reveal a small oddity in the flights data. You might expect that the spread of the distance between origin and destination to be zero, since airports are always in the same place. But the code below makes it looks like one airport, <a href="https://en.wikipedia.org/wiki/Eagle_County_Regional_Airport">EGE</a>, might have moved.</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">origin</span>, <span class="va">dest</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    distance_sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/IQR.html">IQR</a></span><span class="op">(</span><span class="va">distance</span><span class="op">)</span>, </span>
+<span>    n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">distance_sd</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span><span class="co">#&gt;   origin dest  distance_sd     n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 EWR    EGE             1   110</span></span>
+<span><span class="co">#&gt; 2 JFK    EGE             1   103</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="distributions" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="distributions">
+<span class="header-section-number">15.4.4</span> Distributions</h3>
+<p>It’s worth remembering that all of the summary statistics described above are a way of reducing the distribution down to a single number. This means that they’re fundamentally reductive, and if you pick the wrong summary, you can easily miss important differences between groups. That’s why it’s always a good idea to visualize the distribution before committing to your summary statistics.</p>
+<p><a href="#fig-flights-dist">Figure&nbsp;<span>15.3</span></a> shows the overall distribution of departure delays. The distribution is so skewed that we have to zoom in to see the bulk of the data. This suggests that the mean is unlikely to be a good summary and we might prefer the median instead.</p>
+<div>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Removed 8255 rows containing non-finite values (stat_bin).</span></span>
+<span></span>
+<span><span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dep_delay</span> <span class="op">&lt;=</span> <span class="fl">120</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">dep_delay</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-flights-dist" class="cell quarto-layout-panel">
+<figure class="figure"><div class="quarto-layout-row quarto-layout-valign-top">
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-flights-dist-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="numbers_files/figure-html/fig-flights-dist-1.png" class="img-fluid figure-img" alt="Two histograms of `dep_delay`. On the left, it's very hard to see any pattern except that there's a very large spike around zero, the bars rapidly decay in height, and for most of the plot, you can't see any bars because they are too short to see. On the right, where we've discarded delays of greater than two hours, we can see that the spike occurs slightly below zero (i.e. most flights leave a couple of minutes early), but there's still a very steep decay after that. " data-ref-parent="fig-flights-dist" width="384"></p>
+<p></p><figcaption class="figure-caption">(a) Histogram shows the full range of delays.</figcaption><p></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display quarto-layout-cell quarto-layout-cell-subref" style="flex-basis: 50.0%;justify-content: center;">
+<div id="fig-flights-dist-2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="numbers_files/figure-html/fig-flights-dist-2.png" class="img-fluid figure-img" alt="Two histograms of `dep_delay`. On the left, it's very hard to see any pattern except that there's a very large spike around zero, the bars rapidly decay in height, and for most of the plot, you can't see any bars because they are too short to see. On the right, where we've discarded delays of greater than two hours, we can see that the spike occurs slightly below zero (i.e. most flights leave a couple of minutes early), but there's still a very steep decay after that. " data-ref-parent="fig-flights-dist" width="384"></p>
+<p></p><figcaption class="figure-caption">(b) Histogram is zoomed in to show delays less than 2 hours.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p></p><figcaption class="figure-caption">Figure 15.3: The distribution of <code>dep_delay</code> appears highly skewed to the right in both histograms.</figcaption><p></p>
+</figure>
+</div>
+</div>
+<p>It’s also a good idea to check that distributions for subgroups resemble the whole. <a href="#fig-flights-dist-daily">Figure&nbsp;<span>15.4</span></a> overlays a frequency polygon for each day. The distributions seem to follow a common pattern, suggesting it’s fine to use the same summary for each day.</p>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">dep_delay</span> <span class="op">&lt;</span> <span class="fl">120</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">dep_delay</span>, group <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html">interaction</a></span><span class="op">(</span><span class="va">day</span>, <span class="va">month</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_freqpoly</a></span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">5</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-flights-dist-daily" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="numbers_files/figure-html/fig-flights-dist-daily-1.png" class="img-fluid figure-img" alt="The distribution of `dep_delay` is highly right skewed with a strong peak slightly less than 0. The 365 frequency polygons are mostly overlapping forming a thick black bland." width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 15.4: 365 frequency polygons of <code>dep_delay</code>, one for each day. The frequency polygons appear to have the same shape, suggesting that it’s reasonable to compare days by looking at just a few summary statistics.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Don’t be afraid to explore your own custom summaries specifically tailored for the data that you’re working with. In this case, that might mean separately summarizing the flights that left early vs the flights that left late, or given that the values are so heavily skewed, you might try a log-transformation. Finally, don’t forget what you learned in <a href="data-transform.html#sec-sample-size"><span>Section&nbsp;4.5</span></a>: whenever creating numerical summaries, it’s a good idea to include the number of observations in each group.</p>
+</section><section id="positions" class="level3" data-number="15.4.5"><h3 data-number="15.4.5" class="anchored" data-anchor-id="positions">
+<span class="header-section-number">15.4.5</span> Positions</h3>
+<p>There’s one final type of summary that’s useful for numeric vectors, but also works with every other type of value: extracting a value at specific position. You can do this with the base R <code>[</code> function, but we’re not going to cover it until <a href="vectors.html#sec-vector-subsetting"><span>Section&nbsp;28.4.5</span></a>, because it’s a very powerful and general function. For now we’ll introduce three specialized functions that you can use to extract values at a specified position: <code>first(x)</code>, <code>last(x)</code>, and <code>nth(x, n)</code>.</p>
+<p>For example, we can find the first and last departure for each day:</p>
+<div class="cell">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span></span>
+<span>    first_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">first</a></span><span class="op">(</span><span class="va">dep_time</span><span class="op">)</span>, </span>
+<span>    fifth_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">nth</a></span><span class="op">(</span><span class="va">dep_time</span>, <span class="fl">5</span><span class="op">)</span>,</span>
+<span>    last_dep <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html">last</a></span><span class="op">(</span><span class="va">dep_time</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; `summarise()` has grouped output by 'year', 'month'. You can override using the</span></span>
+<span><span class="co">#&gt; `.groups` argument.</span></span>
+<span><span class="co">#&gt; # A tibble: 365 × 6</span></span>
+<span><span class="co">#&gt; # Groups:   year, month [12]</span></span>
+<span><span class="co">#&gt;    year month   day first_dep fifth_dep last_dep</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;     &lt;int&gt;     &lt;int&gt;    &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  2013     1     1       517       554       NA</span></span>
+<span><span class="co">#&gt; 2  2013     1     2        42       535       NA</span></span>
+<span><span class="co">#&gt; 3  2013     1     3        32       520       NA</span></span>
+<span><span class="co">#&gt; 4  2013     1     4        25       531       NA</span></span>
+<span><span class="co">#&gt; 5  2013     1     5        14       534       NA</span></span>
+<span><span class="co">#&gt; 6  2013     1     6        16       555       NA</span></span>
+<span><span class="co">#&gt; # … with 359 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>(These functions currently lack an <code>na.rm</code> argument but will hopefully be fixed by the time you read this book: <a href="https://github.com/tidyverse/dplyr/issues/6242" class="uri">https://github.com/tidyverse/dplyr/issues/6242</a>).</p>
+<p>If you’re familiar with <code>[</code>, you might wonder if you ever need these functions. There are two main reasons: the <code>default</code> argument and the <code>order_by</code> argument. <code>default</code> allows you to set a default value that’s used if the requested position doesn’t exist, e.g.&nbsp;you’re trying to get the 3rd element from a two element group. <code>order_by</code> lets you locally override the existing ordering of the rows, so you can get the element at the position in the ordering by <code><a href="https://dplyr.tidyverse.org/reference/order_by.html">order_by()</a></code>.</p>
+<p>Extracting values at positions is complementary to filtering on ranks. Filtering gives you all variables, with each observation in a separate row:</p>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">flights</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">month</span>, <span class="va">day</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>r <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/ranking.html">min_rank</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/desc.html">desc</a></span><span class="op">(</span><span class="va">sched_dep_time</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">r</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,195 × 20</span></span>
+<span><span class="co">#&gt; # Groups:   year, month, day [365]</span></span>
+<span><span class="co">#&gt;    year month   day dep_time sched_dep…¹ dep_d…² arr_t…³ sched…⁴ arr_d…⁵ carrier</span></span>
+<span><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;       &lt;int&gt;   &lt;dbl&gt;   &lt;int&gt;   &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;  </span></span>
+<span><span class="co">#&gt; 1  2013     1     1      517         515       2     830     819      11 UA     </span></span>
+<span><span class="co">#&gt; 2  2013     1     1     2353        2359      -6     425     445     -20 B6     </span></span>
+<span><span class="co">#&gt; 3  2013     1     1     2353        2359      -6     418     442     -24 B6     </span></span>
+<span><span class="co">#&gt; 4  2013     1     1     2356        2359      -3     425     437     -12 B6     </span></span>
+<span><span class="co">#&gt; 5  2013     1     2       42        2359      43     518     442      36 B6     </span></span>
+<span><span class="co">#&gt; 6  2013     1     2      458         500      -2     703     650      13 US     </span></span>
+<span><span class="co">#&gt; # … with 1,189 more rows, 10 more variables: flight &lt;int&gt;, tailnum &lt;chr&gt;,</span></span>
+<span><span class="co">#&gt; #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;, r &lt;int&gt;, and abbreviated variable names</span></span>
+<span><span class="co">#&gt; #   ¹​sched_dep_time, ²​dep_delay, ³​arr_time, ⁴​sched_arr_time, ⁵​arr_delay</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="with-mutate" class="level3" data-number="15.4.6"><h3 data-number="15.4.6" class="anchored" data-anchor-id="with-mutate">
+<span class="header-section-number">15.4.6</span> With <code>mutate()</code>
+</h3>
+<p>As the names suggest, the summary functions are typically paired with <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise()</a></code>. However, because of the recycling rules we discussed in <a href="vectors.html#sec-scalars-and-recycling-rules"><span>Section&nbsp;28.4.3</span></a> they can also be usefully paired with <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code>, particularly when you want do some sort of group standardization. For example:</p>
+<ul>
+<li>
+<code>x / sum(x)</code> calculates the proportion of a total.</li>
+<li>
+<code>(x - mean(x)) / sd(x)</code> computes a Z-score (standardized to mean 0 and sd 1).</li>
+<li>
+<code>x / first(x)</code> computes an index based on the first observation.</li>
+</ul></section><section id="exercises-3" class="level3" data-number="15.4.7"><h3 data-number="15.4.7" class="anchored" data-anchor-id="exercises-3">
+<span class="header-section-number">15.4.7</span> Exercises</h3>
+<ol type="1">
+<li>
+<p>Brainstorm at least 5 different ways to assess the typical delay characteristics of a group of flights. Consider the following scenarios:</p>
+<ul>
+<li>A flight is 15 minutes early 50% of the time, and 15 minutes late 50% of the time.</li>
+<li>A flight is always 10 minutes late.</li>
+<li>A flight is 30 minutes early 50% of the time, and 30 minutes late 50% of the time.</li>
+<li>99% of the time a flight is on time. 1% of the time it’s 2 hours late.</li>
+</ul>
+<p>Which do you think is more important: arrival delay or departure delay?</p>
+</li>
+<li><p>Which destinations show the greatest variation in air speed?</p></li>
+<li><p>Create a plot to further explore the adventures of EGE. Can you find any evidence that the airport moved locations?</p></li>
+</ol>
+
+
+</section></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1" role="doc-endnote"><p>ggplot2 provides some helpers for common cases in <code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">cut_interval()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">cut_number()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/cut_interval.html">cut_width()</a></code>. ggplot2 is an admittedly weird place for these functions to live, but they are useful as part of histogram computation and were written before any other parts of the tidyverse existed.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>The <code><a href="https://rdrr.io/r/base/mode.html">mode()</a></code> function does something quite different!<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./logicals.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./strings.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">R for Data Science (2e) was written by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

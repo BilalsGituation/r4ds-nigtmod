@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R for Data Science (2e)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./preface-2e.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">R for Data Science (2e)</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R for Data Science (2e)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/hadley/r4ds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">Preface to the second edition</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">Whole game</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Workflow: basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-pipes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data import</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Workflow: scripts and projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Workflow: Getting help</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">Transform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tibble.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tibbles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Dates and times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Missing values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./column-wise.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Column-wise operations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./wrangle.html" class="sidebar-item-text sidebar-link">Wrangle</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parsing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Spreadsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Databases</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data rectangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">Program</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vectors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prog-strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Programming with strings</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">Communicate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">R Markdown</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communicate-plots.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Graphics for communication</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-formats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">R Markdown formats</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-workflow.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R Markdown workflow</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a>
+  <ul class="collapse">
+<li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/hadley/r4ds/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/hadley/r4ds/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title d-none d-lg-block">R for Data Science (2e)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+<section id="welcome" class="level1 unnumbered"><h1 class="unnumbered">Welcome</h1><p><img src="cover.png" title="R for Data Science (2e)" class="quarto-cover-image img-fluid"></p>
+<p>This is the website for the work-in-progress 2nd edition of <strong>“R for Data Science”</strong>. This book will teach you how to do data science with R: You’ll learn how to get your data into R, get it into the most useful structure, transform it, visualise it and model it. <!--# TO DO: Should "model it" stay here? Omitted? Mentioned with an explanation as to where to go for modeling? --> In this book, you will find a practicum of skills for data science. Just as a chemist learns how to clean test tubes and stock a lab, you’ll learn how to clean data and draw plots—and many other things besides. These are the skills that allow data science to happen, and here you will find the best practices for doing each of these things with R. You’ll learn how to use the grammar of graphics, literate programming, and reproducible research to save time. You’ll also learn how to manage cognitive resources to facilitate discoveries when wrangling, visualising, and exploring data.</p>
+<p>This website is (and will always be) <strong>free to use</strong>, and is licensed under the <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/us/">Creative Commons Attribution-NonCommercial-NoDerivs 3.0</a> License. If you’d like a <strong>physical copy</strong> of the book, you can order it from <a href="http://amzn.to/2aHLAQ1">amazon</a>; it was published by O’Reilly in January 2017. If you’d like to <strong>give back</strong> please make a donation to <a href="https://www.doc.govt.nz/kakapo-donate">Kākāpō Recovery</a>: the <a href="https://www.youtube.com/watch?v=9T1vfsHYiKY">kākāpō</a> (which appears on the cover of R4DS) is a critically endangered native NZ parrot; there are only 199 left.</p>
+<p>Please note that R4DS uses a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this book, you agree to abide by its terms.</p>
+<section id="acknowledgements" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>R4DS is a collaborative effort and many people have contributed fixes and improvements via pull request: adi pradhan (<a href="https://github.com/adidoit">@adidoit</a>), Andrea Gilardi (<a href="https://github.com/agila5">@agila5</a>), Ajay Deonarine (<a href="https://github.com/ajay-d">@ajay-d</a>), <a href="https://github.com/AlanFeder">@AlanFeder</a>, pete (<a href="https://github.com/alonzi">@alonzi</a>), Alex (<a href="https://github.com/ALShum">@ALShum</a>), Andrew Landgraf (<a href="https://github.com/andland">@andland</a>), <a href="https://github.com/andrewmacfarland">@andrewmacfarland</a>, Michael Henry (<a href="https://github.com/aviast">@aviast</a>), Mara Averick (<a href="https://github.com/batpigandme">@batpigandme</a>), Brent Brewington (<a href="https://github.com/bbrewington">@bbrewington</a>), Bill Behrman (<a href="https://github.com/behrman">@behrman</a>), Ben Herbertson (<a href="https://github.com/benherbertson">@benherbertson</a>), Ben Marwick (<a href="https://github.com/benmarwick">@benmarwick</a>), Ben Steinberg (<a href="https://github.com/bensteinberg">@bensteinberg</a>), Brandon Greenwell (<a href="https://github.com/bgreenwell">@bgreenwell</a>), Brett Klamer (<a href="https://github.com/bklamer">@bklamer</a>), Christian Mongeau (<a href="https://github.com/chrMongeau">@chrMongeau</a>), Cooper Morris (<a href="https://github.com/coopermor">@coopermor</a>), Colin Gillespie (<a href="https://github.com/csgillespie">@csgillespie</a>), Rademeyer Vermaak (<a href="https://github.com/csrvermaak">@csrvermaak</a>), Abhinav Singh (<a href="https://github.com/curious-abhinav">@curious-abhinav</a>), Curtis Alexander (<a href="https://github.com/curtisalexander">@curtisalexander</a>), Christian G. Warden (<a href="https://github.com/cwarden">@cwarden</a>), Kenny Darrell (<a href="https://github.com/darrkj">@darrkj</a>), David Rubinger (<a href="https://github.com/davidrubinger">@davidrubinger</a>), David Clark (<a href="https://github.com/DDClark">@DDClark</a>), Derwin McGeary (<a href="https://github.com/derwinmcgeary">@derwinmcgeary</a>), Daniel Gromer (<a href="https://github.com/dgromer">@dgromer</a>), <a href="https://github.com/djbirke">@djbirke</a>, Devin Pastoor (<a href="https://github.com/dpastoor">@dpastoor</a>), Julian During (<a href="https://github.com/duju211">@duju211</a>), Dylan Cashman (<a href="https://github.com/dylancashman">@dylancashman</a>), Dirk Eddelbuettel (<a href="https://github.com/eddelbuettel">@eddelbuettel</a>), Edwin Thoen (<a href="https://github.com/EdwinTh">@EdwinTh</a>), Ahmed El-Gabbas (<a href="https://github.com/elgabbas">@elgabbas</a>), Eric Watt (<a href="https://github.com/ericwatt">@ericwatt</a>), Erik Erhardt (<a href="https://github.com/erikerhardt">@erikerhardt</a>), Etienne B. Racine (<a href="https://github.com/etiennebr">@etiennebr</a>), Everett Robinson (<a href="https://github.com/evjrob">@evjrob</a>), Flemming Villalona (<a href="https://github.com/flemingspace">@flemingspace</a>), Floris Vanderhaeghe (<a href="https://github.com/florisvdh">@florisvdh</a>), Garrick Aden-Buie (<a href="https://github.com/gadenbuie">@gadenbuie</a>), Garrett Grolemund (<a href="https://github.com/garrettgman">@garrettgman</a>), Josh Goldberg (<a href="https://github.com/GoldbergData">@GoldbergData</a>), bahadir cankardes (<a href="https://github.com/gridgrad">@gridgrad</a>), Gustav W Delius (<a href="https://github.com/gustavdelius">@gustavdelius</a>), Hadley Wickham (<a href="https://github.com/hadley">@hadley</a>), Hao Chen (<a href="https://github.com/hao-trivago">@hao-trivago</a>), Harris McGehee (<a href="https://github.com/harrismcgehee">@harrismcgehee</a>), Hengni Cai (<a href="https://github.com/hengnicai">@hengnicai</a>), Ian Sealy (<a href="https://github.com/iansealy">@iansealy</a>), Ian Lyttle (<a href="https://github.com/ijlyttle">@ijlyttle</a>), Ivan Krukov (<a href="https://github.com/ivan-krukov">@ivan-krukov</a>), Jacob Kaplan (<a href="https://github.com/jacobkap">@jacobkap</a>), Jazz Weisman (<a href="https://github.com/jazzlw">@jazzlw</a>), John D. Storey (<a href="https://github.com/jdstorey">@jdstorey</a>), Jeff Boichuk (<a href="https://github.com/jeffboichuk">@jeffboichuk</a>), Gregory Jefferis (<a href="https://github.com/jefferis">@jefferis</a>), 蒋雨蒙 (<a href="https://github.com/JeldorPKU">@JeldorPKU</a>), Jennifer (Jenny) Bryan (<a href="https://github.com/jennybc">@jennybc</a>), Jen Ren (<a href="https://github.com/jenren">@jenren</a>), Jeroen Janssens (<a href="https://github.com/jeroenjanssens">@jeroenjanssens</a>), Jim Hester (<a href="https://github.com/jimhester">@jimhester</a>), JJ Chen (<a href="https://github.com/jjchern">@jjchern</a>), Joanne Jang (<a href="https://github.com/joannejang">@joannejang</a>), John Sears (<a href="https://github.com/johnsears">@johnsears</a>), <a href="https://github.com/jonathanflint">@jonathanflint</a>, Jon Calder (<a href="https://github.com/jonmcalder">@jonmcalder</a>), Jonathan Page (<a href="https://github.com/jonpage">@jonpage</a>), Justinas Petuchovas (<a href="https://github.com/jpetuchovas">@jpetuchovas</a>), Jose Roberto Ayala Solares (<a href="https://github.com/jroberayalas">@jroberayalas</a>), Julia Stewart Lowndes (<a href="https://github.com/jules32">@jules32</a>), Sonja (<a href="https://github.com/kaetschap">@kaetschap</a>), Kara Woo (<a href="https://github.com/karawoo">@karawoo</a>), Katrin Leinweber (<a href="https://github.com/katrinleinweber">@katrinleinweber</a>), Karandeep Singh (<a href="https://github.com/kdpsingh">@kdpsingh</a>), Kyle Humphrey (<a href="https://github.com/khumph">@khumph</a>), Kirill Sevastyanenko (<a href="https://github.com/kirillseva">@kirillseva</a>), <a href="https://github.com/koalabearski">@koalabearski</a>, Kirill Müller (<a href="https://github.com/krlmlr">@krlmlr</a>), Noah Landesberg (<a href="https://github.com/landesbergn">@landesbergn</a>), <a href="https://github.com/lindbrook">@lindbrook</a>, Mauro Lepore (<a href="https://github.com/maurolepore">@maurolepore</a>), Mark Beveridge (<a href="https://github.com/mbeveridge">@mbeveridge</a>), Matt Herman (<a href="https://github.com/mfherman">@mfherman</a>), Mine Cetinkaya-Rundel (<a href="https://github.com/mine-cetinkaya-rundel">@mine-cetinkaya-rundel</a>), Matthew Hendrickson (<a href="https://github.com/mjhendrickson">@mjhendrickson</a>), <a href="https://github.com/MJMarshall">@MJMarshall</a>, Mustafa Ascha (<a href="https://github.com/mustafaascha">@mustafaascha</a>), Nelson Areal (<a href="https://github.com/nareal">@nareal</a>), Nate Olson (<a href="https://github.com/nate-d-olson">@nate-d-olson</a>), Nathanael (<a href="https://github.com/nateaff">@nateaff</a>), Nick Clark (<a href="https://github.com/nickclark1000">@nickclark1000</a>), <a href="https://github.com/nickelas">@nickelas</a>, Nirmal Patel (<a href="https://github.com/nirmalpatel">@nirmalpatel</a>), Nina Munkholt Jakobsen (<a href="https://github.com/nmjakobsen">@nmjakobsen</a>), Jakub Nowosad (<a href="https://github.com/Nowosad">@Nowosad</a>), Peter Hurford (<a href="https://github.com/peterhurford">@peterhurford</a>), Patrick Kennedy (<a href="https://github.com/pkq">@pkq</a>), Radu Grosu (<a href="https://github.com/radugrosu">@radugrosu</a>), Ranae Dietzel (<a href="https://github.com/Ranae">@Ranae</a>), Robin Gertenbach (<a href="https://github.com/rgertenbach">@rgertenbach</a>), Richard Zijdeman (<a href="https://github.com/rlzijdeman">@rlzijdeman</a>), Robin (<a href="https://github.com/Robinlovelace">@Robinlovelace</a>), Emily Robinson (<a href="https://github.com/robinsones">@robinsones</a>), Rohan Alexander (<a href="https://github.com/RohanAlexander">@RohanAlexander</a>), Romero Morais (<a href="https://github.com/RomeroBarata">@RomeroBarata</a>), Albert Y. Kim (<a href="https://github.com/rudeboybert">@rudeboybert</a>), Saghir (<a href="https://github.com/saghirb">@saghirb</a>), Jonas (<a href="https://github.com/sauercrowd">@sauercrowd</a>), Robert Schuessler (<a href="https://github.com/schuess">@schuess</a>), Seamus McKinsey (<a href="https://github.com/seamus-mckinsey">@seamus-mckinsey</a>), <a href="https://github.com/seanpwilliams">@seanpwilliams</a>, Luke Smith (<a href="https://github.com/seasmith">@seasmith</a>), Matthew Sedaghatfar (<a href="https://github.com/sedaghatfar">@sedaghatfar</a>), Sebastian Kraus (<a href="https://github.com/sekR4">@sekR4</a>), Sam Firke (<a href="https://github.com/sfirke">@sfirke</a>), Shannon Ellis (<a href="https://github.com/ShanEllis">@ShanEllis</a>), <a href="https://github.com/shoili">@shoili</a>, S’busiso Mkhondwane (<a href="https://github.com/sibusiso16">@sibusiso16</a>), <a href="https://github.com/spirgel">@spirgel</a>, Steven M. Mortimer (<a href="https://github.com/StevenMMortimer">@StevenMMortimer</a>), Stéphane Guillou (<a href="https://github.com/stragu">@stragu</a>), Sergiusz Bleja (<a href="https://github.com/svenski">@svenski</a>), Tal Galili (<a href="https://github.com/talgalili">@talgalili</a>), Tim Waterhouse (<a href="https://github.com/timwaterhouse">@timwaterhouse</a>), TJ Mahr (<a href="https://github.com/tjmahr">@tjmahr</a>), Thomas Klebel (<a href="https://github.com/tklebel">@tklebel</a>), Tom Prior (<a href="https://github.com/tomjamesprior">@tomjamesprior</a>), Terence Teo (<a href="https://github.com/tteo">@tteo</a>), Will Beasley (<a href="https://github.com/wibeasley">@wibeasley</a>), <a href="https://github.com/yahwes">@yahwes</a>, Yihui Xie (<a href="https://github.com/yihui">@yihui</a>), Yiming (Paul) Li (<a href="https://github.com/yimingli">@yimingli</a>), Hiroaki Yutani (<a href="https://github.com/yutannihilation">@yutannihilation</a>), <a href="https://github.com/zeal626">@zeal626</a>, Azza Ahmed (<a href="https://github.com/zo0z">@zo0z</a>)</p>
+<p>R4DS is hosted by <a href="https://www.netlify.com" class="uri">https://www.netlify.com</a> as part of their support of open source software and communities.</p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./preface-2e.html" class="pagination-link">
+        <span class="nav-page-text">Preface to the second edition</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">R for Data Science (2e) was written by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R for Data Science (2e) - 17&nbsp; Regular expressions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./factors.html" rel="next">
+<link href="./strings.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script><script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script><link href="site_libs/str_view-0.1.0/str_view.css" rel="stylesheet">
+<script src="site_libs/str_view-binding-1.4.0/str_view.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R for Data Science (2e)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/hadley/r4ds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">Preface to the second edition</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">Whole game</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Workflow: basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-pipes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data import</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Workflow: scripts and projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Workflow: Getting help</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">Transform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tibble.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tibbles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Dates and times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Missing values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./column-wise.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Column-wise operations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./wrangle.html" class="sidebar-item-text sidebar-link">Wrangle</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parsing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Spreadsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Databases</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data rectangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">Program</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vectors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prog-strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Programming with strings</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">Communicate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">R Markdown</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communicate-plots.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Graphics for communication</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-formats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">R Markdown formats</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-workflow.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R Markdown workflow</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">17.1</span> Introduction</a>
+  <ul class="collapse">
+<li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"> <span class="header-section-number">17.1.1</span> Prerequisites</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"> <span class="header-section-number">17.1.2</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#pattern-language" id="toc-pattern-language" class="nav-link" data-scroll-target="#pattern-language"> <span class="header-section-number">17.2</span> Pattern language</a>
+  <ul class="collapse">
+<li><a href="#sec-regexp-escaping" id="toc-sec-regexp-escaping" class="nav-link" data-scroll-target="#sec-regexp-escaping"> <span class="header-section-number">17.2.1</span> Escaping</a></li>
+  <li><a href="#anchors" id="toc-anchors" class="nav-link" data-scroll-target="#anchors"> <span class="header-section-number">17.2.2</span> Anchors</a></li>
+  <li><a href="#character-classes" id="toc-character-classes" class="nav-link" data-scroll-target="#character-classes"> <span class="header-section-number">17.2.3</span> Character classes</a></li>
+  <li><a href="#shorthand-character-classes" id="toc-shorthand-character-classes" class="nav-link" data-scroll-target="#shorthand-character-classes"> <span class="header-section-number">17.2.4</span> Shorthand character classes</a></li>
+  <li><a href="#quantifiers" id="toc-quantifiers" class="nav-link" data-scroll-target="#quantifiers"> <span class="header-section-number">17.2.5</span> Quantifiers</a></li>
+  <li><a href="#alternation" id="toc-alternation" class="nav-link" data-scroll-target="#alternation"> <span class="header-section-number">17.2.6</span> Alternation</a></li>
+  <li><a href="#parentheses-and-operator-precedence" id="toc-parentheses-and-operator-precedence" class="nav-link" data-scroll-target="#parentheses-and-operator-precedence"> <span class="header-section-number">17.2.7</span> Parentheses and operator precedence</a></li>
+  <li><a href="#exercises-1" id="toc-exercises-1" class="nav-link" data-scroll-target="#exercises-1"> <span class="header-section-number">17.2.8</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#practice" id="toc-practice" class="nav-link" data-scroll-target="#practice"> <span class="header-section-number">17.3</span> Practice</a>
+  <ul class="collapse">
+<li><a href="#check-your-work" id="toc-check-your-work" class="nav-link" data-scroll-target="#check-your-work"> <span class="header-section-number">17.3.1</span> Check your work</a></li>
+  <li><a href="#sec-boolean-operations" id="toc-sec-boolean-operations" class="nav-link" data-scroll-target="#sec-boolean-operations"> <span class="header-section-number">17.3.2</span> Boolean operations</a></li>
+  <li><a href="#creating-a-pattern-with-code" id="toc-creating-a-pattern-with-code" class="nav-link" data-scroll-target="#creating-a-pattern-with-code"> <span class="header-section-number">17.3.3</span> Creating a pattern with code</a></li>
+  <li><a href="#exercises-2" id="toc-exercises-2" class="nav-link" data-scroll-target="#exercises-2"> <span class="header-section-number">17.3.4</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#grouping-and-capturing" id="toc-grouping-and-capturing" class="nav-link" data-scroll-target="#grouping-and-capturing"> <span class="header-section-number">17.4</span> Grouping and capturing</a>
+  <ul class="collapse">
+<li><a href="#matching-a-repeated-pattern" id="toc-matching-a-repeated-pattern" class="nav-link" data-scroll-target="#matching-a-repeated-pattern"> <span class="header-section-number">17.4.1</span> Matching a repeated pattern</a></li>
+  <li><a href="#replacing-with-the-matched-pattern" id="toc-replacing-with-the-matched-pattern" class="nav-link" data-scroll-target="#replacing-with-the-matched-pattern"> <span class="header-section-number">17.4.2</span> Replacing with the matched pattern</a></li>
+  <li><a href="#extracting-groups" id="toc-extracting-groups" class="nav-link" data-scroll-target="#extracting-groups"> <span class="header-section-number">17.4.3</span> Extracting groups</a></li>
+  <li><a href="#named-groups" id="toc-named-groups" class="nav-link" data-scroll-target="#named-groups"> <span class="header-section-number">17.4.4</span> Named groups</a></li>
+  <li><a href="#non-capturing-groups" id="toc-non-capturing-groups" class="nav-link" data-scroll-target="#non-capturing-groups"> <span class="header-section-number">17.4.5</span> Non-capturing groups</a></li>
+  <li><a href="#exercises-3" id="toc-exercises-3" class="nav-link" data-scroll-target="#exercises-3"> <span class="header-section-number">17.4.6</span> Exercises</a></li>
+  </ul>
+</li>
+  <li><a href="#flags" id="toc-flags" class="nav-link" data-scroll-target="#flags"> <span class="header-section-number">17.5</span> Flags</a></li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/hadley/r4ds/edit/main/regexps.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/hadley/r4ds/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-regular-expressions" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><div class="status">
+<p>You are reading the work-in-progress second edition of R for Data Science. This chapter is undergoing heavy restructuring and may be confusing or incomplete. You can find the complete first edition at <a href="https://r4ds.had.co.nz" class="uri">https://r4ds.had.co.nz</a>.</p>
+</div>
+<section id="introduction" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">17.1</span> Introduction</h2>
+<p>You learned the basics of regular expressions in <a href="strings.html">Chapter&nbsp;<span>16</span></a>, but regular expressions are fairly rich language so it’s worth spending some extra time on the details.</p>
+<p>The chapter starts by expanding your knowledge of patterns, to cover six important new topics (escaping, anchoring, character classes, shorthand classes, quantifiers, and alternation). Here we’ll focus mostly on the language itself, not the functions that use it. That means we’ll mostly work with toy character vectors, showing the results with <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all()</a></code>. You’ll need to take what you learn here and apply it to data frames with tidyr functions or by combining dplyr and stringr functions. We’ll then take what you’ve learned a show a few useful strategies when creating more complex patterns.</p>
+<p>Next we’ll talk about the important concepts of “grouping” and “capturing” which give you new ways to extract variables out of strings using <code>tidyr::separate_group()</code>. Grouping also allows you to use back references which allow you do things like match repeated patterns. We’ll finish by discussing the various “flags” that allow you to tweak the operation of regular expressions</p>
+<section id="prerequisites" class="level3" data-number="17.1.1"><h3 data-number="17.1.1" class="anchored" data-anchor-id="prerequisites">
+<span class="header-section-number">17.1.1</span> Prerequisites</h3>
+<p>This chapter will use regular expressions as provided by the <strong>stringr</strong> package.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s worth noting that the regular expressions used by stringr are very slightly different to those of base R. That’s because stringr is built on top of the <a href="https://stringi.gagolewski.com">stringi package</a>, which is in turn built on top of the <a href="https://unicode-org.github.io/icu/userguide/strings/regexp.html">ICU engine</a>, whereas base R functions (like <code><a href="https://rdrr.io/r/base/grep.html">gsub()</a></code> and <code><a href="https://rdrr.io/r/base/grep.html">grepl()</a></code>) use either the <a href="https://github.com/laurikari/tre">TRE engine</a> or the <a href="https://www.pcre.org">PCRE engine</a>. Fortunately, the basics of regular expressions are so well established that you’ll encounter few variations when working with the patterns you’ll learn in this book (and we’ll point them out where important). You only need to be aware of the difference when you start to rely on advanced features like complex Unicode character ranges or special features that use the <code>(?…)</code> syntax. You can learn more about these advanced features in <code><a href="https://stringr.tidyverse.org/articles/regular-expressions.html">vignette("regular-expressions", package = "stringr")</a></code>. Another useful reference is <a href="https://www.regular-expressions.info/tutorial.html">https://www.regular-expressions.info/</a>. It’s not R specific, but it covers the most advanced features and explains how regular expressions work under the hood.</p>
+</section><section id="exercises" class="level3" data-number="17.1.2"><h3 data-number="17.1.2" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">17.1.2</span> Exercises</h3>
+<ol type="1">
+<li><p>Explain why each of these strings don’t match a <code>\</code>: <code>"\"</code>, <code>"\\"</code>, <code>"\\\"</code>.</p></li>
+<li><p>How would you match the sequence <code>"'\</code>?</p></li>
+<li><p>What patterns will the regular expression <code>\..\..\..</code> match? How would you represent it as a string?</p></li>
+</ol></section></section><section id="pattern-language" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="pattern-language">
+<span class="header-section-number">17.2</span> Pattern language</h2>
+<p>You learned the very basics of the regular expression pattern language in <a href="strings.html">Chapter&nbsp;<span>16</span></a>, and now its time to dig into more of the details. First, we’ll start with <strong>escaping</strong>, which allows you to match characters that the pattern language otherwise treats specially. Next you’ll learn about <strong>anchors</strong>, which allow you to match the start or end of the string. Then you’ll learn about <strong>character classes</strong> and their shortcuts, which allow you to match any character from a set. We’ll finish up with <strong>quantifiers</strong>, which control how many times a pattern can match, and <strong>alternation</strong>, which allows you to match either <em>this</em> or <em>that.</em></p>
+<p>The terms we use here are the technical names for each component. They’re not always the most evocative of their purpose, but it’s very helpful to know the correct terms if you later want to Google for more details.</p>
+<p>We’ll concentrate on showing how these patterns work with <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all()</a></code> but remember that you can use them with any of the functions that you learned about in <a href="strings.html">Chapter&nbsp;<span>16</span></a>, i.e.:</p>
+<ul>
+<li>
+<code>str_detect(x, pattern)</code> returns a logical vector the same length as <code>x</code>, indicating whether each element matches (<code>TRUE</code>) or doesn’t match (<code>FALSE</code>) the pattern.</li>
+<li>
+<code>str_count(x, pattern)</code> returns the number of times <code>pattern</code> matches in each element of <code>x</code>.</li>
+<li>
+<code>str_replace_all(x, pattern, replacement)</code> replaces every instance of <code>pattern</code> with <code>replacement</code>.</li>
+</ul>
+<section id="sec-regexp-escaping" class="level3" data-number="17.2.1"><h3 data-number="17.2.1" class="anchored" data-anchor-id="sec-regexp-escaping">
+<span class="header-section-number">17.2.1</span> Escaping</h3>
+<p>In <a href="strings.html">Chapter&nbsp;<span>16</span></a>, you’ll learned how to match a literal <code>.</code> by using <code>fixed(".")</code>. But what if you want to match a literal <code>.</code> as part of a bigger regular expression? You’ll need to use an <strong>escape</strong>, which tells the regular expression you want it to match exactly, not use its special behavior. Like strings, regexps use the backslash for escaping, so to match a <code>.</code>, you need the regexp <code>\.</code>. Unfortunately this creates a problem. We use strings to represent regular expressions, and <code>\</code> is also used as an escape symbol in strings. So, as the following example shows, to create the regular expression <code>\.</code> we need the string <code>"\\."</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># To create the regular expression \., we need to use \\.</span></span>
+<span><span class="va">dot</span> <span class="op">&lt;-</span> <span class="st">"\\."</span></span>
+<span></span>
+<span><span class="co"># But the expression itself only contains one \</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">dot</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-ac96cb3ee4656e2e9ec3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ac96cb3ee4656e2e9ec3">{"x":{"html":"<ul>\n  <li><span class='match'>\\<\/span>.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="co"># And this tells R to look for an explicit .</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="st">"a.c"</span>, <span class="st">"bef"</span><span class="op">)</span>, <span class="st">"a\\.c"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-e5c8c404fe174e4c81bd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5c8c404fe174e4c81bd">{"x":{"html":"<ul>\n  <li>abc<\/li>\n  <li><span class='match'>a.c<\/span><\/li>\n  <li>bef<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>In this book, we’ll write regular expression as <code>\.</code> and strings that represent the regular expression as <code>"\\."</code>.</p>
+<p>If <code>\</code> is used as an escape character in regular expressions, how do you match a literal <code>\</code>? Well you need to escape it, creating the regular expression <code>\\</code>. To create that regular expression, you need to use a string, which also needs to escape <code>\</code>. That means to match a literal <code>\</code> you need to write <code>"\\\\"</code> — you need four backslashes to match one!</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"a\\b"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-36aa3d2a04d42bbc2145" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-36aa3d2a04d42bbc2145">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>\\b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\\\"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-febe03efa1a2d8d52a86" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-febe03efa1a2d8d52a86">{"x":{"html":"<ul>\n  <li>a<span class='match'>\\<\/span>b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Alternatively, you might find it easier to use the raw strings you learned about in <a href="strings.html#sec-raw-strings"><span>Section&nbsp;16.2.2</span></a>). That lets you to avoid one layer of escaping:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">r"(\\)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-1fb4450895fe099f74a1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1fb4450895fe099f74a1">{"x":{"html":"<ul>\n  <li>a<span class='match'>\\<\/span>b<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The full set of characters with special meanings that need to be escaped is <code>.^$\|*+?{}[]()</code>. In general, look at punctuation characters with suspicion; if your regular expression isn’t matching what you think it should, check if you’ve used any of these characters.</p>
+</section><section id="anchors" class="level3" data-number="17.2.2"><h3 data-number="17.2.2" class="anchored" data-anchor-id="anchors">
+<span class="header-section-number">17.2.2</span> Anchors</h3>
+<p>By default, regular expressions will match any part of a string. If you want to match at the start of end you need to <strong>anchor</strong> the regular expression using <code>^</code> or <code>$</code>.</p>
+<ul>
+<li>
+<code>^</code> to match the start of the string.</li>
+<li>
+<code>$</code> to match the end of the string.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"pear"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"a"</span><span class="op">)</span>  <span class="co"># match "a" anywhere</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-10b3b7155e8045a1b2ad" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-10b3b7155e8045a1b2ad">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li>b<span class='match'>a<\/span>nana<\/li>\n  <li>pe<span class='match'>a<\/span>r<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^a"</span><span class="op">)</span> <span class="co"># match "a" at start</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-4018eef1a407a0df6b52" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4018eef1a407a0df6b52">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span>pple<\/li>\n  <li>banana<\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"a$"</span><span class="op">)</span> <span class="co"># match "a" at end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-5b1b2f4ad92281566982" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5b1b2f4ad92281566982">{"x":{"html":"<ul>\n  <li>apple<\/li>\n  <li>banan<span class='match'>a<\/span><\/li>\n  <li>pear<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>To remember which is which, try this mnemonic which Hadley learned from <a href="https://twitter.com/emisshula/status/323863393167613953">Evan Misshula</a>: if you begin with power (<code>^</code>), you end up with money (<code>$</code>). It’s tempting to put <code>$</code> at the start, because that’s how we write sums of money, but it’s not what regular expressions want.</p>
+<p>To force a regular expression to only match the full string, anchor it with both <code>^</code> and <code>$</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"apple pie"</span>, <span class="st">"apple"</span>, <span class="st">"apple cake"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"apple"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-25c3e940e6859592f801" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-25c3e940e6859592f801">{"x":{"html":"<ul>\n  <li><span class='match'>apple<\/span> pie<\/li>\n  <li><span class='match'>apple<\/span><\/li>\n  <li><span class='match'>apple<\/span> cake<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^apple$"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-3f27c09be0c60bb52829" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3f27c09be0c60bb52829">{"x":{"html":"<ul>\n  <li>apple pie<\/li>\n  <li><span class='match'>apple<\/span><\/li>\n  <li>apple cake<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>You can also match the boundary between words (i.e.&nbsp;the start or end of a word) with <code>\b</code>. This is not that useful in R code, but it can be handy when searching in RStudio. It’s useful to find the name of a function that’s a component of other functions. For example, if to find all uses of <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, you can search for <code>\bsum\b</code> to avoid matching <code>summarise</code>, <code>summary</code>, <code>rowsum</code> and so on:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"summary(x)"</span>, <span class="st">"summarise(df)"</span>, <span class="st">"rowsum(x)"</span>, <span class="st">"sum(x)"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"sum"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-416566eb193bf50d04e6" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-416566eb193bf50d04e6">{"x":{"html":"<ul>\n  <li><span class='match'>sum<\/span>mary(x)<\/li>\n  <li><span class='match'>sum<\/span>marise(df)<\/li>\n  <li>row<span class='match'>sum<\/span>(x)<\/li>\n  <li><span class='match'>sum<\/span>(x)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bsum\\b"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-72cbf064100ce560a04c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-72cbf064100ce560a04c">{"x":{"html":"<ul>\n  <li>summary(x)<\/li>\n  <li>summarise(df)<\/li>\n  <li>rowsum(x)<\/li>\n  <li><span class='match'>sum<\/span>(x)<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>When used alone these anchors will produce a zero-width match:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abc"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"$"</span>, <span class="st">"^"</span>, <span class="st">"\\b"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-d11fc4360aa0230696d7" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d11fc4360aa0230696d7">{"x":{"html":"<ul>\n  <li>abc<span class='match'><\/span><\/li>\n  <li><span class='match'><\/span>abc<\/li>\n  <li><span class='match'><\/span>abc<span class='match'><\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="character-classes" class="level3" data-number="17.2.3"><h3 data-number="17.2.3" class="anchored" data-anchor-id="character-classes">
+<span class="header-section-number">17.2.3</span> Character classes</h3>
+<p>A <strong>character class</strong>, or character <strong>set</strong>, allows you to match any character in a set. The basic syntax lists each character you want to match inside of <code>[]</code>, so <code>[abc]</code> will match a, b, or c. Inside of <code>[]</code> only <code>-</code>, <code>^</code>, and <code>\</code> have special meanings:</p>
+<ul>
+<li>
+<code>-</code> defines a range. <code>[a-z]</code> matches any lower case letter and <code>[0-9]</code> matches any number.</li>
+<li>
+<code>^</code> takes the inverse of the set. <code>[^abc]</code>: matches anything except a, b, or c.</li>
+<li>
+<code>\</code> escapes special characters so <code>[\^\-\]]</code>: matches <code>^</code>, <code>-</code>, or <code>]</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345-!@#%."</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"[abc]"</span>, <span class="st">"[a-z]"</span>, <span class="st">"[^a-z0-9]"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-21c7483268bafca56cec" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-21c7483268bafca56cec">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span><span class='match'>b<\/span><span class='match'>c<\/span>d12345-!@#%.<\/li>\n  <li><span class='match'>a<\/span><span class='match'>b<\/span><span class='match'>c<\/span><span class='match'>d<\/span>12345-!@#%.<\/li>\n  <li>abcd12345<span class='match'>-<\/span><span class='match'>!<\/span><span class='match'>@<\/span><span class='match'>#<\/span><span class='match'>%<\/span><span class='match'>.<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="co"># You need an escape to match characters that are otherwise</span></span>
+<span><span class="co"># special inside of []</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"a-b-c"</span>, <span class="st">"[a\\-c]"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-1834a22cd196f3aa03a1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1834a22cd196f3aa03a1">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span><span class='match'>-<\/span>b<span class='match'>-<\/span><span class='match'>c<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Remember that regular expressions are case sensitive so if you want to match any lowercase or uppercase letter, you’d need to write <code>[a-zA-Z0-9]</code>.</p>
+</section><section id="shorthand-character-classes" class="level3" data-number="17.2.4"><h3 data-number="17.2.4" class="anchored" data-anchor-id="shorthand-character-classes">
+<span class="header-section-number">17.2.4</span> Shorthand character classes</h3>
+<p>There are a few character classes that are used so commonly that they get their own shortcut. You’ve already seen <code>.</code>, which matches any character apart from a newline. There are three other particularly useful pairs:</p>
+<ul>
+<li>
+<code>\d</code>: matches any digit;<br><code>\D</code> matches anything that isn’t a digit.</li>
+<li>
+<code>\s</code>: matches any whitespace (e.g.&nbsp;space, tab, newline);<br><code>\S</code> matches anything that isn’t whitespace.</li>
+<li>
+<code>\w</code> matches any “word” character, i.e.&nbsp;letters and numbers;<br><code>\W</code>, matches any non-word character.</li>
+</ul>
+<p>Remember, to create a regular expression containing <code>\d</code> or <code>\s</code>, you’ll need to escape the <code>\</code> for the string, so you’ll type <code>"\\d"</code> or <code>"\\s"</code>. The following code demonstrates the different shortcuts with a selection of letters, numbers, and punctuation characters.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\d+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-28515d92cb327f90c9eb" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-28515d92cb327f90c9eb">{"x":{"html":"<ul>\n  <li>abcd<span class='match'>12345<\/span>!@#%. <\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\D+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-0caf26d4e3c00206b0c5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0caf26d4e3c00206b0c5">{"x":{"html":"<ul>\n  <li><span class='match'>abcd<\/span>12345<span class='match'>!@#%. <\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\w+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-da0b268a2927f570ebf3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-da0b268a2927f570ebf3">{"x":{"html":"<ul>\n  <li><span class='match'>abcd12345<\/span>!@#%. <\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\W+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-0ed12bb554391c49c2e3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0ed12bb554391c49c2e3">{"x":{"html":"<ul>\n  <li>abcd12345<span class='match'>!@#%. <\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\s+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-ec658d41f8c4f2d124e9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ec658d41f8c4f2d124e9">{"x":{"html":"<ul>\n  <li>abcd12345!@#%.<span class='match'> <\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="st">"abcd12345!@#%. "</span>, <span class="st">"\\S+"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-6b83523733b890d61edc" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6b83523733b890d61edc">{"x":{"html":"<ul>\n  <li><span class='match'>abcd12345!@#%.<\/span> <\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="quantifiers" class="level3" data-number="17.2.5"><h3 data-number="17.2.5" class="anchored" data-anchor-id="quantifiers">
+<span class="header-section-number">17.2.5</span> Quantifiers</h3>
+<p>The <strong>quantifiers</strong> control how many times a pattern matches. In <a href="strings.html">Chapter&nbsp;<span>16</span></a> you learned about <code>?</code> (0 or 1 matches), <code>+</code> (1 or more matches), and <code>*</code> (0 or more matches). For example, <code>colou?r</code> will match American or British spelling, <code>\d+</code> will match one or more digits, and <code>\s?</code> will optionally match a single whitespace.</p>
+<p>You can also specify the number of matches precisely:</p>
+<ul>
+<li>
+<code>{n}</code>: exactly n</li>
+<li>
+<code>{n,}</code>: n or more</li>
+<li>
+<code>{n,m}</code>: between n and m</li>
+</ul>
+<p>The following code shows how this works for a few simple examples using to <code>\b</code> match the start or end of a word.</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">" x xx xxx xxxx"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bx{2}"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-b3f7c917b6c8ff580948" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b3f7c917b6c8ff580948">{"x":{"html":"<ul>\n  <li> x <span class='match'>xx<\/span> <span class='match'>xx<\/span>x <span class='match'>xx<\/span>xx<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bx{2,}"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-d258b2ee1c304ebe1664" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d258b2ee1c304ebe1664">{"x":{"html":"<ul>\n  <li> x <span class='match'>xx<\/span> <span class='match'>xxx<\/span> <span class='match'>xxxx<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bx{1,3}"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-b8f31ebacaee3527bb86" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8f31ebacaee3527bb86">{"x":{"html":"<ul>\n  <li> <span class='match'>x<\/span> <span class='match'>xx<\/span> <span class='match'>xxx<\/span> <span class='match'>xxx<\/span>x<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\\bx{2,3}"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-b25b670b028f478bf741" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b25b670b028f478bf741">{"x":{"html":"<ul>\n  <li> x <span class='match'>xx<\/span> <span class='match'>xxx<\/span> <span class='match'>xxx<\/span>x<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="alternation" class="level3" data-number="17.2.6"><h3 data-number="17.2.6" class="anchored" data-anchor-id="alternation">
+<span class="header-section-number">17.2.6</span> Alternation</h3>
+<p>You can use <strong>alternation</strong> to pick between one or more alternative patterns. Here are a few examples:</p>
+<ul>
+<li>Match apple, pear, or banana: <code>apple|pear|banana</code>.</li>
+<li>Match three letters or two digits: <code>\w{3}|\d{2}</code>.</li>
+</ul></section><section id="parentheses-and-operator-precedence" class="level3" data-number="17.2.7"><h3 data-number="17.2.7" class="anchored" data-anchor-id="parentheses-and-operator-precedence">
+<span class="header-section-number">17.2.7</span> Parentheses and operator precedence</h3>
+<p>What does <code>ab+</code> match? Does it match “a” followed by one or more “b”s, or does it match “ab” repeated any number of times? What does <code>^a|b$</code> match? Does it match the complete string a or the complete string b, or does it match a string starting with a or a string starting with “b”? The answer to these questions is determined by operator precedence, similar to the PEMDAS or BEDMAS rules you might have learned in school for what <code>a + b * c</code>.</p>
+<p>You already know that <code>a + b * c</code> is equivalent to <code>a + (b * c)</code> not <code>(a + b) * c</code> because <code>*</code> has high precedence and <code>+</code> has lower precedence: you compute <code>*</code> before <code>+</code>. In regular expressions, quantifiers have high precedence and alternation has low precedence. That means <code>ab+</code> is equivalent to <code>a(b+)</code>, and <code>^a|b$</code> is equivalent to <code>(^a)|(b$)</code>. Just like with algebra, you can use parentheses to override the usual order (because they have the highest precedence of all).</p>
+<p>Technically the escape, character classes, and parentheses are all operators that also have precedence. But these tend to be less likely to cause confusion because they mostly behave how you expect: it’s unlikely that you’d think that <code>\(s|d)</code> would mean <code>(\s)|(\d)</code>.</p>
+</section><section id="exercises-1" class="level3" data-number="17.2.8"><h3 data-number="17.2.8" class="anchored" data-anchor-id="exercises-1">
+<span class="header-section-number">17.2.8</span> Exercises</h3>
+<ol type="1">
+<li><p>How would you match the literal string <code>"$^$"</code>?</p></li>
+<li>
+<p>Given the corpus of common words in <code><a href="https://stringr.tidyverse.org/reference/stringr-data.html">stringr::words</a></code>, create regular expressions that find all words that:</p>
+<ol type="a">
+<li>Start with “y”.</li>
+<li>Don’t start with “y”.</li>
+<li>End with “x”.</li>
+<li>Are exactly three letters long. (Don’t cheat by using <code><a href="https://stringr.tidyverse.org/reference/str_length.html">str_length()</a></code>!)</li>
+<li>Have seven letters or more.</li>
+</ol>
+<p>Since <code>words</code> is long, you might want to use the <code>match</code> argument to <code><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view()</a></code> to show only the matching or non-matching words.</p>
+</li>
+<li><p>Create regular expressions that match the British or American spellings of the following words: grey/gray, modelling/modeling, summarize/summarise, aluminium/aluminum, defence/defense, analog/analogue, center/centre, sceptic/skeptic, aeroplane/airplane, arse/ass, doughnut/donut.</p></li>
+<li><p>What strings will <code>$a</code> match?</p></li>
+<li><p>Create a regular expression that will match telephone numbers as commonly written in your country.</p></li>
+<li><p>Write the equivalents of <code>?</code>, <code>+</code>, <code>*</code> in <code>{m,n}</code> form.</p></li>
+<li>
+<p>Describe in words what these regular expressions match: (read carefully to see if each entry is a regular expression or a string that defines a regular expression.)</p>
+<ol type="a">
+<li><code>^.*$</code></li>
+<li><code>"\\{.+\\}"</code></li>
+<li><code>\d{4}-\d{2}-\d{2}</code></li>
+<li><code>"\\\\{4}"</code></li>
+</ol>
+</li>
+<li><p>Solve the beginner regexp crosswords at <a href="https://regexcrossword.com/challenges/beginner" class="uri">https://regexcrossword.com/challenges/beginner</a>.</p></li>
+</ol></section></section><section id="practice" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="practice">
+<span class="header-section-number">17.3</span> Practice</h2>
+<p>To put these ideas in practice we’ll solve a few semi-authentic problems using the <code>words</code> and <code>sentences</code> datasets built into stringr. <code>words</code> is a list of common English words and <code>sentences</code> is a set of simple sentences originally used for testing voice transmission.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">words</span><span class="op">)</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-46d1193f7ba074d981c8" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-46d1193f7ba074d981c8">{"x":{"html":"<ul>\n  <li><span class='match'>a<\/span><\/li>\n  <li><span class='match'>a<\/span>ble<\/li>\n  <li><span class='match'>a<\/span>bout<\/li>\n  <li><span class='match'>a<\/span>bsolute<\/li>\n  <li><span class='match'>a<\/span>ccept<\/li>\n  <li><span class='match'>a<\/span>ccount<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sentences</span><span class="op">)</span>,<span class="st">""</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-382a200f56fb8e6a1fd3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-382a200f56fb8e6a1fd3">{"x":{"html":"<ul>\n  <li><span class='match'>T<\/span>he birch canoe slid on the smooth planks.<\/li>\n  <li><span class='match'>G<\/span>lue the sheet to the dark blue background.<\/li>\n  <li><span class='match'>I<\/span>t's easy to tell the depth of a well.<\/li>\n  <li><span class='match'>T<\/span>hese days a chicken leg is a rare dish.<\/li>\n  <li><span class='match'>R<\/span>ice is often served in round bowls.<\/li>\n  <li><span class='match'>T<\/span>he juice of lemons makes fine punch.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>The following three sections help you practice the components of a pattern by discussing three general techniques: checking you work by creating simple positive and negative controls, combining regular expressions with Boolean algebra, and creating complex patterns using string manipulation.</p>
+<section id="check-your-work" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="check-your-work">
+<span class="header-section-number">17.3.1</span> Check your work</h3>
+<p>First, let’s find all sentences that start with “The”. Using the <code>^</code> anchor alone is not enough:</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^The"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-da403bf8187c892ade73" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-da403bf8187c892ade73">{"x":{"html":"<ul>\n  <li><span class='match'>The<\/span> birch canoe slid on the smooth planks.<\/li>\n  <li><span class='match'>The<\/span>se days a chicken leg is a rare dish.<\/li>\n  <li><span class='match'>The<\/span> juice of lemons makes fine punch.<\/li>\n  <li><span class='match'>The<\/span> box was thrown beside the parked truck.<\/li>\n  <li><span class='match'>The<\/span> hogs were fed chopped corn and garbage.<\/li>\n  <li><span class='match'>The<\/span> boy was there when the sun rose.<\/li>\n  <li><span class='match'>The<\/span> source of the huge river is the clear spring.<\/li>\n  <li><span class='match'>The<\/span> soft cushion broke the man's fall.<\/li>\n  <li><span class='match'>The<\/span> salt breeze came across from the sea.<\/li>\n  <li><span class='match'>The<\/span> girl at the booth sold fifty bonds.<\/li>\n  <li><span class='match'>The<\/span> small pup gnawed a hole in the sock.<\/li>\n  <li><span class='match'>The<\/span> fish twisted and turned on the bent hook.<\/li>\n  <li><span class='match'>The<\/span> swan dive was far short of perfect.<\/li>\n  <li><span class='match'>The<\/span> beauty of the view stunned the young boy.<\/li>\n  <li><span class='match'>The<\/span> colt reared and threw the tall rider.<\/li>\n  <li><span class='match'>The<\/span> wrist was badly strained and hung limp.<\/li>\n  <li><span class='match'>The<\/span> stray cat gave birth to kittens.<\/li>\n  <li><span class='match'>The<\/span> young girl gave no clear response.<\/li>\n  <li><span class='match'>The<\/span> meal was cooked before the bell rang.<\/li>\n  <li><span class='match'>The<\/span> ship was torn apart on the sharp reef.<\/li>\n  <li><span class='match'>The<\/span> wide road shimmered in the hot sun.<\/li>\n  <li><span class='match'>The<\/span> lazy cow lay in the cool grass.<\/li>\n  <li><span class='match'>The<\/span> rope will bind the seven books at once.<\/li>\n  <li><span class='match'>The<\/span> friendly gang left the drug store.<\/li>\n  <li><span class='match'>The<\/span> frosty air passed through the coat.<\/li>\n  <li><span class='match'>The<\/span> crooked maze failed to fool the mouse.<\/li>\n  <li><span class='match'>The<\/span> show was a flop from the very start.<\/li>\n  <li><span class='match'>The<\/span> wagon moved on well oiled wheels.<\/li>\n  <li><span class='match'>The<\/span> clock struck to mark the third period.<\/li>\n  <li><span class='match'>The<\/span> set of china hit, the floor with a crash.<\/li>\n  <li><span class='match'>The<\/span> dune rose from the edge of the water.<\/li>\n  <li><span class='match'>The<\/span> two met while playing on the sand.<\/li>\n  <li><span class='match'>The<\/span> ink stain dried on the finished page.<\/li>\n  <li><span class='match'>The<\/span> walled town was seized without a fight.<\/li>\n  <li><span class='match'>The<\/span> lease ran out in sixteen weeks.<\/li>\n  <li><span class='match'>The<\/span> horn of the car woke the sleeping cop.<\/li>\n  <li><span class='match'>The<\/span> heart beat strongly and with firm strokes.<\/li>\n  <li><span class='match'>The<\/span> pearl was worn in a thin silver ring.<\/li>\n  <li><span class='match'>The<\/span> fruit peel was cut in thick slices.<\/li>\n  <li><span class='match'>The<\/span> Navy attacked the big task force.<\/li>\n  <li><span class='match'>The<\/span>re are more than two factors here.<\/li>\n  <li><span class='match'>The<\/span> hat brim was wide and too droopy.<\/li>\n  <li><span class='match'>The<\/span> lawyer tried to lose his case.<\/li>\n  <li><span class='match'>The<\/span> grass curled around the fence post.<\/li>\n  <li><span class='match'>The<\/span> slush lay deep along the street.<\/li>\n  <li><span class='match'>The<\/span> fin was sharp and cut the clear water.<\/li>\n  <li><span class='match'>The<\/span> play seems dull and quite stupid.<\/li>\n  <li><span class='match'>The<\/span> term ended in late June that year.<\/li>\n  <li><span class='match'>The<\/span> bill as paid every third week.<\/li>\n  <li><span class='match'>The<\/span> pipe began to rust while new.<\/li>\n  <li><span class='match'>The<\/span> ripe taste of cheese improves with age.<\/li>\n  <li><span class='match'>The<\/span> hog crawled under the high fence.<\/li>\n  <li><span class='match'>The<\/span> bark of the pine tree was shiny and dark.<\/li>\n  <li><span class='match'>The<\/span> pennant waved when the wind blew.<\/li>\n  <li><span class='match'>The<\/span> harder he tried the less he got done.<\/li>\n  <li><span class='match'>The<\/span> boss ran the show with a watchful eye.<\/li>\n  <li><span class='match'>The<\/span> cup cracked and spilled its contents.<\/li>\n  <li><span class='match'>The<\/span> slang word for raw whiskey is booze.<\/li>\n  <li><span class='match'>The<\/span> wharf could be seen at the farther shore.<\/li>\n  <li><span class='match'>The<\/span> tiny girl took off her hat.<\/li>\n  <li><span class='match'>The<\/span> glow deepened in the eyes of the sweet girl.<\/li>\n  <li><span class='match'>The<\/span> young kid jumped the rusty gate.<\/li>\n  <li><span class='match'>The<\/span> just claim got the right verdict.<\/li>\n  <li><span class='match'>The<\/span>se thistles bend in a high wind.<\/li>\n  <li><span class='match'>The<\/span> tree top waved in a graceful way.<\/li>\n  <li><span class='match'>The<\/span> spot on the blotter was made by green ink.<\/li>\n  <li><span class='match'>The<\/span> cigar burned a hole in the desk top.<\/li>\n  <li><span class='match'>The<\/span> empty flask stood on the tin tray.<\/li>\n  <li><span class='match'>The<\/span> coffee stand is too high for the couch.<\/li>\n  <li><span class='match'>The<\/span> urge to write short stories is rare.<\/li>\n  <li><span class='match'>The<\/span> pencils have all been used.<\/li>\n  <li><span class='match'>The<\/span> pirates seized the crew of the lost ship.<\/li>\n  <li><span class='match'>The<\/span> sofa cushion is red and of light weight.<\/li>\n  <li><span class='match'>The<\/span> jacket hung on the back of the wide chair.<\/li>\n  <li><span class='match'>The<\/span> office paint was a dull sad tan.<\/li>\n  <li><span class='match'>The<\/span> child almost hurt the small dog.<\/li>\n  <li><span class='match'>The<\/span>re was a sound of dry leaves outside.<\/li>\n  <li><span class='match'>The<\/span> sky that morning was clear and bright blue.<\/li>\n  <li><span class='match'>The<\/span> doctor cured him with these pills.<\/li>\n  <li><span class='match'>The<\/span> new girl was fired today at noon.<\/li>\n  <li><span class='match'>The<\/span>y felt gay when the ship arrived in port.<\/li>\n  <li><span class='match'>The<\/span> third act was dull and tired the players.<\/li>\n  <li><span class='match'>The<\/span>re the flood mark is ten inches.<\/li>\n  <li><span class='match'>The<\/span> fruit of a fig tree is apple-shaped.<\/li>\n  <li><span class='match'>The<\/span> paper box is full of thumb tacks.<\/li>\n  <li><span class='match'>The<\/span> tongs lay beside the ice pail.<\/li>\n  <li><span class='match'>The<\/span> petals fall with the next puff of wind.<\/li>\n  <li><span class='match'>The<\/span>y could laugh although they were sad.<\/li>\n  <li><span class='match'>The<\/span> brown house was on fire to the attic.<\/li>\n  <li><span class='match'>The<\/span> lure is used to catch trout and flounder.<\/li>\n  <li><span class='match'>The<\/span> club rented the rink for the fifth night.<\/li>\n  <li><span class='match'>The<\/span> hostess taught the new maid to serve.<\/li>\n  <li><span class='match'>The<\/span> cement had dried when he moved it.<\/li>\n  <li><span class='match'>The<\/span> loss of the second ship was hard to take.<\/li>\n  <li><span class='match'>The<\/span> fly made its way along the wall.<\/li>\n  <li><span class='match'>The<\/span> large house had hot water taps.<\/li>\n  <li><span class='match'>The<\/span> doorknob was made of bright clean brass.<\/li>\n  <li><span class='match'>The<\/span> wreck occurred by the bank on Main Street.<\/li>\n  <li><span class='match'>The<\/span> lamp shone with a steady green flame.<\/li>\n  <li><span class='match'>The<\/span>y took the axe and the saw to the forest.<\/li>\n  <li><span class='match'>The<\/span> ancient coin was quite dull and worn.<\/li>\n  <li><span class='match'>The<\/span> shaky barn fell with a loud crash.<\/li>\n  <li><span class='match'>The<\/span>y are pushed back each time they attack.<\/li>\n  <li><span class='match'>The<\/span>y floated on the raft to sun their white backs.<\/li>\n  <li><span class='match'>The<\/span> map had an X that meant nothing.<\/li>\n  <li><span class='match'>The<\/span> play began as soon as we sat down.<\/li>\n  <li><span class='match'>The<\/span> rush for funds reached its peak Tuesday.<\/li>\n  <li><span class='match'>The<\/span> birch looked stark white and lonesome.<\/li>\n  <li><span class='match'>The<\/span> box is held by a bright red snapper.<\/li>\n  <li><span class='match'>The<\/span> first worm gets snapped early.<\/li>\n  <li><span class='match'>The<\/span>y are men nho walk the middle of the road.<\/li>\n  <li><span class='match'>The<\/span> prince ordered his head chopped off.<\/li>\n  <li><span class='match'>The<\/span> houses are built of red clay bricks.<\/li>\n  <li><span class='match'>The<\/span>se pills do less good than others.<\/li>\n  <li><span class='match'>The<\/span> dark pot hung in the front closet.<\/li>\n  <li><span class='match'>The<\/span> train brought our hero to the big town.<\/li>\n  <li><span class='match'>The<\/span> rude laugh filled the empty room.<\/li>\n  <li><span class='match'>The<\/span> horse trotted around the field at a brisk pace.<\/li>\n  <li><span class='match'>The<\/span> red tape bound the smuggled food.<\/li>\n  <li><span class='match'>The<\/span> cold drizzle will halt the bond drive.<\/li>\n  <li><span class='match'>The<\/span> junk yard had a mouldy smell.<\/li>\n  <li><span class='match'>The<\/span> flint sputtered and lit a pine torch.<\/li>\n  <li><span class='match'>The<\/span> shelves were bare of both jam or crackers.<\/li>\n  <li><span class='match'>The<\/span> ridge on a smooth surface is a bump or flaw.<\/li>\n  <li><span class='match'>The<\/span> mute muffled the high tones of the horn.<\/li>\n  <li><span class='match'>The<\/span> gold ring fits only a pierced ear.<\/li>\n  <li><span class='match'>The<\/span> old pan was covered with hard fudge.<\/li>\n  <li><span class='match'>The<\/span> node on the stalk of wheat grew daily.<\/li>\n  <li><span class='match'>The<\/span> heap of fallen leaves was set on fire.<\/li>\n  <li><span class='match'>The<\/span> barrel of beer was a brew of malt and hops.<\/li>\n  <li><span class='match'>The<\/span> plant grew large and green in the window.<\/li>\n  <li><span class='match'>The<\/span> beam dropped down on the workmen's head.<\/li>\n  <li><span class='match'>The<\/span> tube was blown and the tire flat and useless.<\/li>\n  <li><span class='match'>The<\/span> last switch cannot be turned off.<\/li>\n  <li><span class='match'>The<\/span> fight will end in just six minutes.<\/li>\n  <li><span class='match'>The<\/span> store walls were lined with colored frocks.<\/li>\n  <li><span class='match'>The<\/span> peace league met to discuss their plans.<\/li>\n  <li><span class='match'>The<\/span> rise to fame of a person takes luck.<\/li>\n  <li><span class='match'>The<\/span> quick fox jumped on the sleeping cat.<\/li>\n  <li><span class='match'>The<\/span> nozzle of the fire hose was bright brass.<\/li>\n  <li><span class='match'>The<\/span> purple tie was ten years old.<\/li>\n  <li><span class='match'>The<\/span> crunch of feet in the snow was the only sound.<\/li>\n  <li><span class='match'>The<\/span> copper bowl shone in the sun's rays.<\/li>\n  <li><span class='match'>The<\/span> plush chair leaned against the wall.<\/li>\n  <li><span class='match'>The<\/span> beach is dry and shallow at low tide.<\/li>\n  <li><span class='match'>The<\/span> idea is to sew both edges straight.<\/li>\n  <li><span class='match'>The<\/span> kitten chased the dog down the street.<\/li>\n  <li><span class='match'>The<\/span> zones merge in the central part of town.<\/li>\n  <li><span class='match'>The<\/span> vane on top of the pole revolved in the wind.<\/li>\n  <li><span class='match'>The<\/span> clan gathered on each dull night.<\/li>\n  <li><span class='match'>The<\/span> man went to the woods to gather sticks.<\/li>\n  <li><span class='match'>The<\/span> dirt piles were lines along the road.<\/li>\n  <li><span class='match'>The<\/span> logs fell and tumbled into the clear stream.<\/li>\n  <li><span class='match'>The<\/span> thaw came early and freed the stream.<\/li>\n  <li><span class='match'>The<\/span> key you designed will fit the lock.<\/li>\n  <li><span class='match'>The<\/span> lake sparkled in the red hot sun.<\/li>\n  <li><span class='match'>The<\/span> fur of cats goes by many names.<\/li>\n  <li><span class='match'>The<\/span> drip of the rain made a pleasant sound.<\/li>\n  <li><span class='match'>The<\/span> sun came up to light the eastern sky.<\/li>\n  <li><span class='match'>The<\/span> stale smell of old beer lingers.<\/li>\n  <li><span class='match'>The<\/span> desk was firm on the shaky floor.<\/li>\n  <li><span class='match'>The<\/span> cone costs five cents on Mondays.<\/li>\n  <li><span class='match'>The<\/span> list of names is carved around the base.<\/li>\n  <li><span class='match'>The<\/span> sheep were led home by a dog.<\/li>\n  <li><span class='match'>The<\/span> sense of smell is better than that of touch.<\/li>\n  <li><span class='match'>The<\/span> news struck doubt into restless minds.<\/li>\n  <li><span class='match'>The<\/span> sand drifts over the sill of the old house.<\/li>\n  <li><span class='match'>The<\/span> point of the steel pen was bent and twisted.<\/li>\n  <li><span class='match'>The<\/span>re is a lag between thought and act.<\/li>\n  <li><span class='match'>The<\/span> boy owed his pal thirty cents.<\/li>\n  <li><span class='match'>The<\/span> chap slipped into the crowd and was lost.<\/li>\n  <li><span class='match'>The<\/span> ramp led up to the wide highway.<\/li>\n  <li><span class='match'>The<\/span> straw nest housed five robins.<\/li>\n  <li><span class='match'>The<\/span> dry wax protects the deep scratch.<\/li>\n  <li><span class='match'>The<\/span>se coins will be needed to pay his debt.<\/li>\n  <li><span class='match'>The<\/span> nag pulled the frail cart along.<\/li>\n  <li><span class='match'>The<\/span> vamp of the shoe had a gold buckle.<\/li>\n  <li><span class='match'>The<\/span> smell of burned rags itches my nose.<\/li>\n  <li><span class='match'>The<\/span> marsh will freeze when cold enough.<\/li>\n  <li><span class='match'>The<\/span>y slice the sausage thin with a knife.<\/li>\n  <li><span class='match'>The<\/span> bloom of the rose lasts a few days.<\/li>\n  <li><span class='match'>The<\/span> man wore a feather in his felt hat.<\/li>\n  <li><span class='match'>The<\/span> desk and both chairs were painted tan.<\/li>\n  <li><span class='match'>The<\/span> couch cover and hall drapes were blue.<\/li>\n  <li><span class='match'>The<\/span> stems of the tall glasses cracked and broke.<\/li>\n  <li><span class='match'>The<\/span> wall phone rang loud and often.<\/li>\n  <li><span class='match'>The<\/span> clothes dried on a thin wooden rack.<\/li>\n  <li><span class='match'>The<\/span> cleat sank deeply into the soft turf.<\/li>\n  <li><span class='match'>The<\/span> bills were mailed promptly on the tenth of the month.<\/li>\n  <li><span class='match'>The<\/span> price is fair for a good antique clock.<\/li>\n  <li><span class='match'>The<\/span> music played on while they talked.<\/li>\n  <li><span class='match'>The<\/span> bunch of grapes was pressed into wine.<\/li>\n  <li><span class='match'>The<\/span> hinge on the door creaked with old age.<\/li>\n  <li><span class='match'>The<\/span> screen before the fire kept in the sparks.<\/li>\n  <li><span class='match'>The<\/span> chair looked strong but had no bottom.<\/li>\n  <li><span class='match'>The<\/span> kite flew wildly in the high wind.<\/li>\n  <li><span class='match'>The<\/span> tin box held priceless stones.<\/li>\n  <li><span class='match'>The<\/span> case was puzzling to the old and wise.<\/li>\n  <li><span class='match'>The<\/span> bright lanterns were gay on the dark lawn.<\/li>\n  <li><span class='match'>The<\/span> youth drove with zest, but little skill.<\/li>\n  <li><span class='match'>The<\/span> way to save money is not to spend much.<\/li>\n  <li><span class='match'>The<\/span> odor of spring makes young hearts jump.<\/li>\n  <li><span class='match'>The<\/span>y told wild tales to frighten him.<\/li>\n  <li><span class='match'>The<\/span> three story house was built of stone.<\/li>\n  <li><span class='match'>The<\/span>ir eyelids droop for want. of sleep.<\/li>\n  <li><span class='match'>The<\/span> sip of tea revives his tired friend.<\/li>\n  <li><span class='match'>The<\/span>re are many ways to do these things.<\/li>\n  <li><span class='match'>The<\/span> work of the tailor is seen on each side.<\/li>\n  <li><span class='match'>The<\/span> dusty bench stood by the stone wall.<\/li>\n  <li><span class='match'>The<\/span> square wooden crate was packed to be shipped.<\/li>\n  <li><span class='match'>The<\/span> water in this well is a source of good health.<\/li>\n  <li><span class='match'>The<\/span> little tales they tell are false.<\/li>\n  <li><span class='match'>The<\/span> door was barred, locked, and bolted as well.<\/li>\n  <li><span class='match'>The<\/span> kite dipped and swayed, but stayed aloft.<\/li>\n  <li><span class='match'>The<\/span> pleasant hours fly by much too soon.<\/li>\n  <li><span class='match'>The<\/span> room was crowded with a wild mob.<\/li>\n  <li><span class='match'>The<\/span> beetle droned in the hot June sun.<\/li>\n  <li><span class='match'>The<\/span> black trunk fell from the landing.<\/li>\n  <li><span class='match'>The<\/span> bank pressed for payment of the debt.<\/li>\n  <li><span class='match'>The<\/span> theft of the pearl pin was kept secret.<\/li>\n  <li><span class='match'>The<\/span> vast space stretched into the far distance.<\/li>\n  <li><span class='match'>The<\/span> leaf drifts along with a slow spin.<\/li>\n  <li><span class='match'>The<\/span> pencil was cut to be sharp at both ends.<\/li>\n  <li><span class='match'>The<\/span> best method is to fix it in place with clips.<\/li>\n  <li><span class='match'>The<\/span> small red neon lamp went out.<\/li>\n  <li><span class='match'>The<\/span> fan whirled its round blades softly.<\/li>\n  <li><span class='match'>The<\/span> line where the edges join was clean.<\/li>\n  <li><span class='match'>The<\/span> child crawled into the dense grass.<\/li>\n  <li><span class='match'>The<\/span> hilt. of the sword was carved with fine designs.<\/li>\n  <li><span class='match'>The<\/span> pipe ran almost the length of the ditch.<\/li>\n  <li><span class='match'>The<\/span> weight. of the package was seen on the high scale.<\/li>\n  <li><span class='match'>The<\/span> green light in the brown box flickered.<\/li>\n  <li><span class='match'>The<\/span> brass tube circled the high wall.<\/li>\n  <li><span class='match'>The<\/span> lobes of her ears were pierced to hold rings.<\/li>\n  <li><span class='match'>The<\/span>y took their kids from the public school.<\/li>\n  <li><span class='match'>The<\/span> cloud moved in a stately way and was gone.<\/li>\n  <li><span class='match'>The<\/span>re is a strong chance it will happen once more.<\/li>\n  <li><span class='match'>The<\/span> duke left the park in a silver coach.<\/li>\n  <li><span class='match'>The<\/span> ram scared the school children off.<\/li>\n  <li><span class='match'>The<\/span> team with the best timing looks good.<\/li>\n  <li><span class='match'>The<\/span> farmer swapped his horse for a brown ox.<\/li>\n  <li><span class='match'>The<\/span> early phase of life moves fast.<\/li>\n  <li><span class='match'>The<\/span> latch on the beck gate needed a nail.<\/li>\n  <li><span class='match'>The<\/span> goose was brought straight from the old market.<\/li>\n  <li><span class='match'>The<\/span> sink is the thing in which we pile dishes.<\/li>\n  <li><span class='match'>The<\/span> facts dont always show who is right.<\/li>\n  <li><span class='match'>The<\/span> loss of the cruiser was a blow to the fleet.<\/li>\n  <li><span class='match'>The<\/span> square peg will settle in the round hole.<\/li>\n  <li><span class='match'>The<\/span>y sang the same tunes at each party.<\/li>\n  <li><span class='match'>The<\/span> sky in the west is tinged with orange red.<\/li>\n  <li><span class='match'>The<\/span> pods of peas ferment in bare fields.<\/li>\n  <li><span class='match'>The<\/span> horse balked and threw the tall rider.<\/li>\n  <li><span class='match'>The<\/span> hitch between the horse and cart broke.<\/li>\n  <li><span class='match'>The<\/span> gold vase is both rare and costly.<\/li>\n  <li><span class='match'>The<\/span> knife was hung inside its bright sheath.<\/li>\n  <li><span class='match'>The<\/span> rarest spice comes from the far East.<\/li>\n  <li><span class='match'>The<\/span> roof should be tilted at a sharp slant.<\/li>\n  <li><span class='match'>The<\/span> mule trod the treadmill day and night.<\/li>\n  <li><span class='match'>The<\/span> aim of the contest is to raise a great fund.<\/li>\n  <li><span class='match'>The<\/span>re is a fine hard tang in salty air.<\/li>\n  <li><span class='match'>The<\/span> slab was hewn from heavy blocks of slate.<\/li>\n  <li><span class='match'>The<\/span> poor boy missed the boat again.<\/li>\n  <li><span class='match'>The<\/span> first part of the plan needs changing.<\/li>\n  <li><span class='match'>The<\/span> good book informs of what we ought to know.<\/li>\n  <li><span class='match'>The<\/span> mail comes in three batches per day.<\/li>\n  <li><span class='match'>The<\/span> night shift men rate extra pay.<\/li>\n  <li><span class='match'>The<\/span> red paper brightened the dim stage.<\/li>\n  <li><span class='match'>The<\/span> steady drip is worse than a drenching rain.<\/li>\n  <li><span class='match'>The<\/span> stitch will serve but needs to be shortened.<\/li>\n  <li><span class='match'>The<\/span> gloss on top made it unfit to read.<\/li>\n  <li><span class='match'>The<\/span> hail pattered on the burnt brown grass.<\/li>\n  <li><span class='match'>The<\/span> store was jammed before the sale could start.<\/li>\n  <li><span class='match'>The<\/span> pot boiled, but the contents failed to jell.<\/li>\n  <li><span class='match'>The<\/span> baby puts his right foot in his mouth.<\/li>\n  <li><span class='match'>The<\/span> bombs left most of the town in ruins.<\/li>\n  <li><span class='match'>The<\/span> streets are narrow and full of sharp turns.<\/li>\n  <li><span class='match'>The<\/span> pup jerked the leash as he saw a feline shape.<\/li>\n  <li><span class='match'>The<\/span> big red apple fell to the ground.<\/li>\n  <li><span class='match'>The<\/span> curtain rose and the show was on.<\/li>\n  <li><span class='match'>The<\/span> young prince became heir to the throne.<\/li>\n  <li><span class='match'>The<\/span> corner store was robbed last night.<\/li>\n  <li><span class='match'>The<\/span> long journey home took a year.<\/li>\n  <li><span class='match'>The<\/span> grass and bushes were wet with dew.<\/li>\n  <li><span class='match'>The<\/span> blind man counted his old coins.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Because it all matches sentences starting with <code>They</code> or <code>Those</code>. We need to make sure that the “e” is the last letter in the word, which we can do by adding adding a word boundary:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^The\\b"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-756e3bf13eb93ebd21f9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-756e3bf13eb93ebd21f9">{"x":{"html":"<ul>\n  <li><span class='match'>The<\/span> birch canoe slid on the smooth planks.<\/li>\n  <li><span class='match'>The<\/span> juice of lemons makes fine punch.<\/li>\n  <li><span class='match'>The<\/span> box was thrown beside the parked truck.<\/li>\n  <li><span class='match'>The<\/span> hogs were fed chopped corn and garbage.<\/li>\n  <li><span class='match'>The<\/span> boy was there when the sun rose.<\/li>\n  <li><span class='match'>The<\/span> source of the huge river is the clear spring.<\/li>\n  <li><span class='match'>The<\/span> soft cushion broke the man's fall.<\/li>\n  <li><span class='match'>The<\/span> salt breeze came across from the sea.<\/li>\n  <li><span class='match'>The<\/span> girl at the booth sold fifty bonds.<\/li>\n  <li><span class='match'>The<\/span> small pup gnawed a hole in the sock.<\/li>\n  <li><span class='match'>The<\/span> fish twisted and turned on the bent hook.<\/li>\n  <li><span class='match'>The<\/span> swan dive was far short of perfect.<\/li>\n  <li><span class='match'>The<\/span> beauty of the view stunned the young boy.<\/li>\n  <li><span class='match'>The<\/span> colt reared and threw the tall rider.<\/li>\n  <li><span class='match'>The<\/span> wrist was badly strained and hung limp.<\/li>\n  <li><span class='match'>The<\/span> stray cat gave birth to kittens.<\/li>\n  <li><span class='match'>The<\/span> young girl gave no clear response.<\/li>\n  <li><span class='match'>The<\/span> meal was cooked before the bell rang.<\/li>\n  <li><span class='match'>The<\/span> ship was torn apart on the sharp reef.<\/li>\n  <li><span class='match'>The<\/span> wide road shimmered in the hot sun.<\/li>\n  <li><span class='match'>The<\/span> lazy cow lay in the cool grass.<\/li>\n  <li><span class='match'>The<\/span> rope will bind the seven books at once.<\/li>\n  <li><span class='match'>The<\/span> friendly gang left the drug store.<\/li>\n  <li><span class='match'>The<\/span> frosty air passed through the coat.<\/li>\n  <li><span class='match'>The<\/span> crooked maze failed to fool the mouse.<\/li>\n  <li><span class='match'>The<\/span> show was a flop from the very start.<\/li>\n  <li><span class='match'>The<\/span> wagon moved on well oiled wheels.<\/li>\n  <li><span class='match'>The<\/span> clock struck to mark the third period.<\/li>\n  <li><span class='match'>The<\/span> set of china hit, the floor with a crash.<\/li>\n  <li><span class='match'>The<\/span> dune rose from the edge of the water.<\/li>\n  <li><span class='match'>The<\/span> two met while playing on the sand.<\/li>\n  <li><span class='match'>The<\/span> ink stain dried on the finished page.<\/li>\n  <li><span class='match'>The<\/span> walled town was seized without a fight.<\/li>\n  <li><span class='match'>The<\/span> lease ran out in sixteen weeks.<\/li>\n  <li><span class='match'>The<\/span> horn of the car woke the sleeping cop.<\/li>\n  <li><span class='match'>The<\/span> heart beat strongly and with firm strokes.<\/li>\n  <li><span class='match'>The<\/span> pearl was worn in a thin silver ring.<\/li>\n  <li><span class='match'>The<\/span> fruit peel was cut in thick slices.<\/li>\n  <li><span class='match'>The<\/span> Navy attacked the big task force.<\/li>\n  <li><span class='match'>The<\/span> hat brim was wide and too droopy.<\/li>\n  <li><span class='match'>The<\/span> lawyer tried to lose his case.<\/li>\n  <li><span class='match'>The<\/span> grass curled around the fence post.<\/li>\n  <li><span class='match'>The<\/span> slush lay deep along the street.<\/li>\n  <li><span class='match'>The<\/span> fin was sharp and cut the clear water.<\/li>\n  <li><span class='match'>The<\/span> play seems dull and quite stupid.<\/li>\n  <li><span class='match'>The<\/span> term ended in late June that year.<\/li>\n  <li><span class='match'>The<\/span> bill as paid every third week.<\/li>\n  <li><span class='match'>The<\/span> pipe began to rust while new.<\/li>\n  <li><span class='match'>The<\/span> ripe taste of cheese improves with age.<\/li>\n  <li><span class='match'>The<\/span> hog crawled under the high fence.<\/li>\n  <li><span class='match'>The<\/span> bark of the pine tree was shiny and dark.<\/li>\n  <li><span class='match'>The<\/span> pennant waved when the wind blew.<\/li>\n  <li><span class='match'>The<\/span> harder he tried the less he got done.<\/li>\n  <li><span class='match'>The<\/span> boss ran the show with a watchful eye.<\/li>\n  <li><span class='match'>The<\/span> cup cracked and spilled its contents.<\/li>\n  <li><span class='match'>The<\/span> slang word for raw whiskey is booze.<\/li>\n  <li><span class='match'>The<\/span> wharf could be seen at the farther shore.<\/li>\n  <li><span class='match'>The<\/span> tiny girl took off her hat.<\/li>\n  <li><span class='match'>The<\/span> glow deepened in the eyes of the sweet girl.<\/li>\n  <li><span class='match'>The<\/span> young kid jumped the rusty gate.<\/li>\n  <li><span class='match'>The<\/span> just claim got the right verdict.<\/li>\n  <li><span class='match'>The<\/span> tree top waved in a graceful way.<\/li>\n  <li><span class='match'>The<\/span> spot on the blotter was made by green ink.<\/li>\n  <li><span class='match'>The<\/span> cigar burned a hole in the desk top.<\/li>\n  <li><span class='match'>The<\/span> empty flask stood on the tin tray.<\/li>\n  <li><span class='match'>The<\/span> coffee stand is too high for the couch.<\/li>\n  <li><span class='match'>The<\/span> urge to write short stories is rare.<\/li>\n  <li><span class='match'>The<\/span> pencils have all been used.<\/li>\n  <li><span class='match'>The<\/span> pirates seized the crew of the lost ship.<\/li>\n  <li><span class='match'>The<\/span> sofa cushion is red and of light weight.<\/li>\n  <li><span class='match'>The<\/span> jacket hung on the back of the wide chair.<\/li>\n  <li><span class='match'>The<\/span> office paint was a dull sad tan.<\/li>\n  <li><span class='match'>The<\/span> child almost hurt the small dog.<\/li>\n  <li><span class='match'>The<\/span> sky that morning was clear and bright blue.<\/li>\n  <li><span class='match'>The<\/span> doctor cured him with these pills.<\/li>\n  <li><span class='match'>The<\/span> new girl was fired today at noon.<\/li>\n  <li><span class='match'>The<\/span> third act was dull and tired the players.<\/li>\n  <li><span class='match'>The<\/span> fruit of a fig tree is apple-shaped.<\/li>\n  <li><span class='match'>The<\/span> paper box is full of thumb tacks.<\/li>\n  <li><span class='match'>The<\/span> tongs lay beside the ice pail.<\/li>\n  <li><span class='match'>The<\/span> petals fall with the next puff of wind.<\/li>\n  <li><span class='match'>The<\/span> brown house was on fire to the attic.<\/li>\n  <li><span class='match'>The<\/span> lure is used to catch trout and flounder.<\/li>\n  <li><span class='match'>The<\/span> club rented the rink for the fifth night.<\/li>\n  <li><span class='match'>The<\/span> hostess taught the new maid to serve.<\/li>\n  <li><span class='match'>The<\/span> cement had dried when he moved it.<\/li>\n  <li><span class='match'>The<\/span> loss of the second ship was hard to take.<\/li>\n  <li><span class='match'>The<\/span> fly made its way along the wall.<\/li>\n  <li><span class='match'>The<\/span> large house had hot water taps.<\/li>\n  <li><span class='match'>The<\/span> doorknob was made of bright clean brass.<\/li>\n  <li><span class='match'>The<\/span> wreck occurred by the bank on Main Street.<\/li>\n  <li><span class='match'>The<\/span> lamp shone with a steady green flame.<\/li>\n  <li><span class='match'>The<\/span> ancient coin was quite dull and worn.<\/li>\n  <li><span class='match'>The<\/span> shaky barn fell with a loud crash.<\/li>\n  <li><span class='match'>The<\/span> map had an X that meant nothing.<\/li>\n  <li><span class='match'>The<\/span> play began as soon as we sat down.<\/li>\n  <li><span class='match'>The<\/span> rush for funds reached its peak Tuesday.<\/li>\n  <li><span class='match'>The<\/span> birch looked stark white and lonesome.<\/li>\n  <li><span class='match'>The<\/span> box is held by a bright red snapper.<\/li>\n  <li><span class='match'>The<\/span> first worm gets snapped early.<\/li>\n  <li><span class='match'>The<\/span> prince ordered his head chopped off.<\/li>\n  <li><span class='match'>The<\/span> houses are built of red clay bricks.<\/li>\n  <li><span class='match'>The<\/span> dark pot hung in the front closet.<\/li>\n  <li><span class='match'>The<\/span> train brought our hero to the big town.<\/li>\n  <li><span class='match'>The<\/span> rude laugh filled the empty room.<\/li>\n  <li><span class='match'>The<\/span> horse trotted around the field at a brisk pace.<\/li>\n  <li><span class='match'>The<\/span> red tape bound the smuggled food.<\/li>\n  <li><span class='match'>The<\/span> cold drizzle will halt the bond drive.<\/li>\n  <li><span class='match'>The<\/span> junk yard had a mouldy smell.<\/li>\n  <li><span class='match'>The<\/span> flint sputtered and lit a pine torch.<\/li>\n  <li><span class='match'>The<\/span> shelves were bare of both jam or crackers.<\/li>\n  <li><span class='match'>The<\/span> ridge on a smooth surface is a bump or flaw.<\/li>\n  <li><span class='match'>The<\/span> mute muffled the high tones of the horn.<\/li>\n  <li><span class='match'>The<\/span> gold ring fits only a pierced ear.<\/li>\n  <li><span class='match'>The<\/span> old pan was covered with hard fudge.<\/li>\n  <li><span class='match'>The<\/span> node on the stalk of wheat grew daily.<\/li>\n  <li><span class='match'>The<\/span> heap of fallen leaves was set on fire.<\/li>\n  <li><span class='match'>The<\/span> barrel of beer was a brew of malt and hops.<\/li>\n  <li><span class='match'>The<\/span> plant grew large and green in the window.<\/li>\n  <li><span class='match'>The<\/span> beam dropped down on the workmen's head.<\/li>\n  <li><span class='match'>The<\/span> tube was blown and the tire flat and useless.<\/li>\n  <li><span class='match'>The<\/span> last switch cannot be turned off.<\/li>\n  <li><span class='match'>The<\/span> fight will end in just six minutes.<\/li>\n  <li><span class='match'>The<\/span> store walls were lined with colored frocks.<\/li>\n  <li><span class='match'>The<\/span> peace league met to discuss their plans.<\/li>\n  <li><span class='match'>The<\/span> rise to fame of a person takes luck.<\/li>\n  <li><span class='match'>The<\/span> quick fox jumped on the sleeping cat.<\/li>\n  <li><span class='match'>The<\/span> nozzle of the fire hose was bright brass.<\/li>\n  <li><span class='match'>The<\/span> purple tie was ten years old.<\/li>\n  <li><span class='match'>The<\/span> crunch of feet in the snow was the only sound.<\/li>\n  <li><span class='match'>The<\/span> copper bowl shone in the sun's rays.<\/li>\n  <li><span class='match'>The<\/span> plush chair leaned against the wall.<\/li>\n  <li><span class='match'>The<\/span> beach is dry and shallow at low tide.<\/li>\n  <li><span class='match'>The<\/span> idea is to sew both edges straight.<\/li>\n  <li><span class='match'>The<\/span> kitten chased the dog down the street.<\/li>\n  <li><span class='match'>The<\/span> zones merge in the central part of town.<\/li>\n  <li><span class='match'>The<\/span> vane on top of the pole revolved in the wind.<\/li>\n  <li><span class='match'>The<\/span> clan gathered on each dull night.<\/li>\n  <li><span class='match'>The<\/span> man went to the woods to gather sticks.<\/li>\n  <li><span class='match'>The<\/span> dirt piles were lines along the road.<\/li>\n  <li><span class='match'>The<\/span> logs fell and tumbled into the clear stream.<\/li>\n  <li><span class='match'>The<\/span> thaw came early and freed the stream.<\/li>\n  <li><span class='match'>The<\/span> key you designed will fit the lock.<\/li>\n  <li><span class='match'>The<\/span> lake sparkled in the red hot sun.<\/li>\n  <li><span class='match'>The<\/span> fur of cats goes by many names.<\/li>\n  <li><span class='match'>The<\/span> drip of the rain made a pleasant sound.<\/li>\n  <li><span class='match'>The<\/span> sun came up to light the eastern sky.<\/li>\n  <li><span class='match'>The<\/span> stale smell of old beer lingers.<\/li>\n  <li><span class='match'>The<\/span> desk was firm on the shaky floor.<\/li>\n  <li><span class='match'>The<\/span> cone costs five cents on Mondays.<\/li>\n  <li><span class='match'>The<\/span> list of names is carved around the base.<\/li>\n  <li><span class='match'>The<\/span> sheep were led home by a dog.<\/li>\n  <li><span class='match'>The<\/span> sense of smell is better than that of touch.<\/li>\n  <li><span class='match'>The<\/span> news struck doubt into restless minds.<\/li>\n  <li><span class='match'>The<\/span> sand drifts over the sill of the old house.<\/li>\n  <li><span class='match'>The<\/span> point of the steel pen was bent and twisted.<\/li>\n  <li><span class='match'>The<\/span> boy owed his pal thirty cents.<\/li>\n  <li><span class='match'>The<\/span> chap slipped into the crowd and was lost.<\/li>\n  <li><span class='match'>The<\/span> ramp led up to the wide highway.<\/li>\n  <li><span class='match'>The<\/span> straw nest housed five robins.<\/li>\n  <li><span class='match'>The<\/span> dry wax protects the deep scratch.<\/li>\n  <li><span class='match'>The<\/span> nag pulled the frail cart along.<\/li>\n  <li><span class='match'>The<\/span> vamp of the shoe had a gold buckle.<\/li>\n  <li><span class='match'>The<\/span> smell of burned rags itches my nose.<\/li>\n  <li><span class='match'>The<\/span> marsh will freeze when cold enough.<\/li>\n  <li><span class='match'>The<\/span> bloom of the rose lasts a few days.<\/li>\n  <li><span class='match'>The<\/span> man wore a feather in his felt hat.<\/li>\n  <li><span class='match'>The<\/span> desk and both chairs were painted tan.<\/li>\n  <li><span class='match'>The<\/span> couch cover and hall drapes were blue.<\/li>\n  <li><span class='match'>The<\/span> stems of the tall glasses cracked and broke.<\/li>\n  <li><span class='match'>The<\/span> wall phone rang loud and often.<\/li>\n  <li><span class='match'>The<\/span> clothes dried on a thin wooden rack.<\/li>\n  <li><span class='match'>The<\/span> cleat sank deeply into the soft turf.<\/li>\n  <li><span class='match'>The<\/span> bills were mailed promptly on the tenth of the month.<\/li>\n  <li><span class='match'>The<\/span> price is fair for a good antique clock.<\/li>\n  <li><span class='match'>The<\/span> music played on while they talked.<\/li>\n  <li><span class='match'>The<\/span> bunch of grapes was pressed into wine.<\/li>\n  <li><span class='match'>The<\/span> hinge on the door creaked with old age.<\/li>\n  <li><span class='match'>The<\/span> screen before the fire kept in the sparks.<\/li>\n  <li><span class='match'>The<\/span> chair looked strong but had no bottom.<\/li>\n  <li><span class='match'>The<\/span> kite flew wildly in the high wind.<\/li>\n  <li><span class='match'>The<\/span> tin box held priceless stones.<\/li>\n  <li><span class='match'>The<\/span> case was puzzling to the old and wise.<\/li>\n  <li><span class='match'>The<\/span> bright lanterns were gay on the dark lawn.<\/li>\n  <li><span class='match'>The<\/span> youth drove with zest, but little skill.<\/li>\n  <li><span class='match'>The<\/span> way to save money is not to spend much.<\/li>\n  <li><span class='match'>The<\/span> odor of spring makes young hearts jump.<\/li>\n  <li><span class='match'>The<\/span> three story house was built of stone.<\/li>\n  <li><span class='match'>The<\/span> sip of tea revives his tired friend.<\/li>\n  <li><span class='match'>The<\/span> work of the tailor is seen on each side.<\/li>\n  <li><span class='match'>The<\/span> dusty bench stood by the stone wall.<\/li>\n  <li><span class='match'>The<\/span> square wooden crate was packed to be shipped.<\/li>\n  <li><span class='match'>The<\/span> water in this well is a source of good health.<\/li>\n  <li><span class='match'>The<\/span> little tales they tell are false.<\/li>\n  <li><span class='match'>The<\/span> door was barred, locked, and bolted as well.<\/li>\n  <li><span class='match'>The<\/span> kite dipped and swayed, but stayed aloft.<\/li>\n  <li><span class='match'>The<\/span> pleasant hours fly by much too soon.<\/li>\n  <li><span class='match'>The<\/span> room was crowded with a wild mob.<\/li>\n  <li><span class='match'>The<\/span> beetle droned in the hot June sun.<\/li>\n  <li><span class='match'>The<\/span> black trunk fell from the landing.<\/li>\n  <li><span class='match'>The<\/span> bank pressed for payment of the debt.<\/li>\n  <li><span class='match'>The<\/span> theft of the pearl pin was kept secret.<\/li>\n  <li><span class='match'>The<\/span> vast space stretched into the far distance.<\/li>\n  <li><span class='match'>The<\/span> leaf drifts along with a slow spin.<\/li>\n  <li><span class='match'>The<\/span> pencil was cut to be sharp at both ends.<\/li>\n  <li><span class='match'>The<\/span> best method is to fix it in place with clips.<\/li>\n  <li><span class='match'>The<\/span> small red neon lamp went out.<\/li>\n  <li><span class='match'>The<\/span> fan whirled its round blades softly.<\/li>\n  <li><span class='match'>The<\/span> line where the edges join was clean.<\/li>\n  <li><span class='match'>The<\/span> child crawled into the dense grass.<\/li>\n  <li><span class='match'>The<\/span> hilt. of the sword was carved with fine designs.<\/li>\n  <li><span class='match'>The<\/span> pipe ran almost the length of the ditch.<\/li>\n  <li><span class='match'>The<\/span> weight. of the package was seen on the high scale.<\/li>\n  <li><span class='match'>The<\/span> green light in the brown box flickered.<\/li>\n  <li><span class='match'>The<\/span> brass tube circled the high wall.<\/li>\n  <li><span class='match'>The<\/span> lobes of her ears were pierced to hold rings.<\/li>\n  <li><span class='match'>The<\/span> cloud moved in a stately way and was gone.<\/li>\n  <li><span class='match'>The<\/span> duke left the park in a silver coach.<\/li>\n  <li><span class='match'>The<\/span> ram scared the school children off.<\/li>\n  <li><span class='match'>The<\/span> team with the best timing looks good.<\/li>\n  <li><span class='match'>The<\/span> farmer swapped his horse for a brown ox.<\/li>\n  <li><span class='match'>The<\/span> early phase of life moves fast.<\/li>\n  <li><span class='match'>The<\/span> latch on the beck gate needed a nail.<\/li>\n  <li><span class='match'>The<\/span> goose was brought straight from the old market.<\/li>\n  <li><span class='match'>The<\/span> sink is the thing in which we pile dishes.<\/li>\n  <li><span class='match'>The<\/span> facts dont always show who is right.<\/li>\n  <li><span class='match'>The<\/span> loss of the cruiser was a blow to the fleet.<\/li>\n  <li><span class='match'>The<\/span> square peg will settle in the round hole.<\/li>\n  <li><span class='match'>The<\/span> sky in the west is tinged with orange red.<\/li>\n  <li><span class='match'>The<\/span> pods of peas ferment in bare fields.<\/li>\n  <li><span class='match'>The<\/span> horse balked and threw the tall rider.<\/li>\n  <li><span class='match'>The<\/span> hitch between the horse and cart broke.<\/li>\n  <li><span class='match'>The<\/span> gold vase is both rare and costly.<\/li>\n  <li><span class='match'>The<\/span> knife was hung inside its bright sheath.<\/li>\n  <li><span class='match'>The<\/span> rarest spice comes from the far East.<\/li>\n  <li><span class='match'>The<\/span> roof should be tilted at a sharp slant.<\/li>\n  <li><span class='match'>The<\/span> mule trod the treadmill day and night.<\/li>\n  <li><span class='match'>The<\/span> aim of the contest is to raise a great fund.<\/li>\n  <li><span class='match'>The<\/span> slab was hewn from heavy blocks of slate.<\/li>\n  <li><span class='match'>The<\/span> poor boy missed the boat again.<\/li>\n  <li><span class='match'>The<\/span> first part of the plan needs changing.<\/li>\n  <li><span class='match'>The<\/span> good book informs of what we ought to know.<\/li>\n  <li><span class='match'>The<\/span> mail comes in three batches per day.<\/li>\n  <li><span class='match'>The<\/span> night shift men rate extra pay.<\/li>\n  <li><span class='match'>The<\/span> red paper brightened the dim stage.<\/li>\n  <li><span class='match'>The<\/span> steady drip is worse than a drenching rain.<\/li>\n  <li><span class='match'>The<\/span> stitch will serve but needs to be shortened.<\/li>\n  <li><span class='match'>The<\/span> gloss on top made it unfit to read.<\/li>\n  <li><span class='match'>The<\/span> hail pattered on the burnt brown grass.<\/li>\n  <li><span class='match'>The<\/span> store was jammed before the sale could start.<\/li>\n  <li><span class='match'>The<\/span> pot boiled, but the contents failed to jell.<\/li>\n  <li><span class='match'>The<\/span> baby puts his right foot in his mouth.<\/li>\n  <li><span class='match'>The<\/span> bombs left most of the town in ruins.<\/li>\n  <li><span class='match'>The<\/span> streets are narrow and full of sharp turns.<\/li>\n  <li><span class='match'>The<\/span> pup jerked the leash as he saw a feline shape.<\/li>\n  <li><span class='match'>The<\/span> big red apple fell to the ground.<\/li>\n  <li><span class='match'>The<\/span> curtain rose and the show was on.<\/li>\n  <li><span class='match'>The<\/span> young prince became heir to the throne.<\/li>\n  <li><span class='match'>The<\/span> corner store was robbed last night.<\/li>\n  <li><span class='match'>The<\/span> long journey home took a year.<\/li>\n  <li><span class='match'>The<\/span> grass and bushes were wet with dew.<\/li>\n  <li><span class='match'>The<\/span> blind man counted his old coins.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>What about finding all sentences that begin with a pronoun?</p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^She|He|It|They\\b"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-2931a41253ddcd61f464" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2931a41253ddcd61f464">{"x":{"html":"<ul>\n  <li><span class='match'>It<\/span>'s easy to tell the depth of a well.<\/li>\n  <li><span class='match'>He<\/span>lp the woman get back to her feet.<\/li>\n  <li><span class='match'>He<\/span>r purse was full of useless trash.<\/li>\n  <li><span class='match'>It<\/span> snowed, rained, and hailed the same morning.<\/li>\n  <li><span class='match'>He<\/span> ran half way to the hardware store.<\/li>\n  <li><span class='match'>He<\/span> lay prone and hardly moved a limb.<\/li>\n  <li><span class='match'>He<\/span> ordered peach pie with ice cream.<\/li>\n  <li><span class='match'>He<\/span>mp is a weed found in parts of the tropics.<\/li>\n  <li><span class='match'>It<\/span> caught its hind paw in a rusty trap.<\/li>\n  <li><span class='match'>He<\/span> said the same phrase thirty times.<\/li>\n  <li><span class='match'>He<\/span> broke a new shoelace that day.<\/li>\n  <li><span class='match'>She<\/span> sewed the torn coat quite neatly.<\/li>\n  <li><span class='match'>He<\/span> knew the skill of the great young actress.<\/li>\n  <li><span class='match'>They<\/span> felt gay when the ship arrived in port.<\/li>\n  <li><span class='match'>He<\/span> carved a head from the round block of marble.<\/li>\n  <li><span class='match'>She<\/span> has st smart way of wearing clothes.<\/li>\n  <li><span class='match'>They<\/span> could laugh although they were sad.<\/li>\n  <li><span class='match'>He<\/span> wrote his last novel there at the inn.<\/li>\n  <li><span class='match'>It<\/span> is hard to erase blue or red ink.<\/li>\n  <li><span class='match'>They<\/span> took the axe and the saw to the forest.<\/li>\n  <li><span class='match'>They<\/span> are pushed back each time they attack.<\/li>\n  <li><span class='match'>He<\/span> broke his ties with groups of former friends.<\/li>\n  <li><span class='match'>They<\/span> floated on the raft to sun their white backs.<\/li>\n  <li><span class='match'>They<\/span> are men nho walk the middle of the road.<\/li>\n  <li><span class='match'>He<\/span>dge apples may stain your hands green.<\/li>\n  <li><span class='match'>She<\/span> danced like a swan, tall and graceful.<\/li>\n  <li><span class='match'>It<\/span> is late morning on the old wall clock.<\/li>\n  <li><span class='match'>He<\/span> smoke a big pipe with strong contents.<\/li>\n  <li><span class='match'>He<\/span> used the lathe to make brass objects.<\/li>\n  <li><span class='match'>It<\/span> takes a good trap to capture a bear.<\/li>\n  <li><span class='match'>He<\/span> took the lead and kept it the whole distance.<\/li>\n  <li><span class='match'>He<\/span> crawled with care along the ledge.<\/li>\n  <li><span class='match'>It<\/span> takes a lot of help to finish these.<\/li>\n  <li><span class='match'>He<\/span> asks no person to vouch for him.<\/li>\n  <li><span class='match'>He<\/span> wrote down a long list of items.<\/li>\n  <li><span class='match'>He<\/span>ave the line over the port side.<\/li>\n  <li><span class='match'>It<\/span>'s a dense crowd in two distinct ways.<\/li>\n  <li><span class='match'>It<\/span> takes heat to bring out the odor.<\/li>\n  <li><span class='match'>He<\/span> takes the oath of office each March.<\/li>\n  <li><span class='match'>He<\/span> picked up the dice for a second roll.<\/li>\n  <li><span class='match'>They<\/span> slice the sausage thin with a knife.<\/li>\n  <li><span class='match'>He<\/span> wheeled the bike past. the winding road.<\/li>\n  <li><span class='match'>He<\/span> sent the figs, but kept the ripe cherries.<\/li>\n  <li><span class='match'>He<\/span> offered proof in the form of a lsrge chart.<\/li>\n  <li><span class='match'>They<\/span> told wild tales to frighten him.<\/li>\n  <li><span class='match'>She<\/span> was kind to sick old people.<\/li>\n  <li><span class='match'>She<\/span> blushed when he gave her a white orchid.<\/li>\n  <li><span class='match'>He<\/span> wrote his name boldly at the top of tile sheet.<\/li>\n  <li><span class='match'>It<\/span> matters not if he reads these words or those.<\/li>\n  <li><span class='match'>She<\/span> was waiting at my front lawn.<\/li>\n  <li><span class='match'>It<\/span> is a band of steel three inches wide.<\/li>\n  <li><span class='match'>It<\/span> was hidden from sight by a mass of leaves and shrubs.<\/li>\n  <li><span class='match'>He<\/span> put his last cartridge into the gun and fired.<\/li>\n  <li><span class='match'>They<\/span> took their kids from the public school.<\/li>\n  <li><span class='match'>He<\/span>lp the weak to preserve their strength.<\/li>\n  <li><span class='match'>He<\/span> lent his coat to the tall gaunt stranger.<\/li>\n  <li><span class='match'>She<\/span> flaps her cape as she parades the street.<\/li>\n  <li><span class='match'>It<\/span> was done before the boy could see it.<\/li>\n  <li><span class='match'>They<\/span> sang the same tunes at each party.<\/li>\n  <li><span class='match'>It<\/span> was a bad error on the part of the new judge.<\/li>\n  <li><span class='match'>He<\/span> sent the boy on a short errand.<\/li>\n  <li><span class='match'>She<\/span> saw a cat in the neighbor's house.<\/li>\n  <li><span class='match'>She<\/span> called his name many times.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>A quick inspection of the results shows that we’re getting some spurious matches. That’s because we’ve forgotten to use parentheses:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"^(She|He|It|They)\\b"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-853270d7a7ddd5c78dff" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-853270d7a7ddd5c78dff">{"x":{"html":"<ul>\n  <li><span class='match'>It<\/span>'s easy to tell the depth of a well.<\/li>\n  <li><span class='match'>It<\/span> snowed, rained, and hailed the same morning.<\/li>\n  <li><span class='match'>He<\/span> ran half way to the hardware store.<\/li>\n  <li><span class='match'>He<\/span> lay prone and hardly moved a limb.<\/li>\n  <li><span class='match'>He<\/span> ordered peach pie with ice cream.<\/li>\n  <li><span class='match'>It<\/span> caught its hind paw in a rusty trap.<\/li>\n  <li><span class='match'>He<\/span> said the same phrase thirty times.<\/li>\n  <li><span class='match'>He<\/span> broke a new shoelace that day.<\/li>\n  <li><span class='match'>She<\/span> sewed the torn coat quite neatly.<\/li>\n  <li><span class='match'>He<\/span> knew the skill of the great young actress.<\/li>\n  <li><span class='match'>They<\/span> felt gay when the ship arrived in port.<\/li>\n  <li><span class='match'>He<\/span> carved a head from the round block of marble.<\/li>\n  <li><span class='match'>She<\/span> has st smart way of wearing clothes.<\/li>\n  <li><span class='match'>They<\/span> could laugh although they were sad.<\/li>\n  <li><span class='match'>He<\/span> wrote his last novel there at the inn.<\/li>\n  <li><span class='match'>It<\/span> is hard to erase blue or red ink.<\/li>\n  <li><span class='match'>They<\/span> took the axe and the saw to the forest.<\/li>\n  <li><span class='match'>They<\/span> are pushed back each time they attack.<\/li>\n  <li><span class='match'>He<\/span> broke his ties with groups of former friends.<\/li>\n  <li><span class='match'>They<\/span> floated on the raft to sun their white backs.<\/li>\n  <li><span class='match'>They<\/span> are men nho walk the middle of the road.<\/li>\n  <li><span class='match'>She<\/span> danced like a swan, tall and graceful.<\/li>\n  <li><span class='match'>It<\/span> is late morning on the old wall clock.<\/li>\n  <li><span class='match'>He<\/span> smoke a big pipe with strong contents.<\/li>\n  <li><span class='match'>He<\/span> used the lathe to make brass objects.<\/li>\n  <li><span class='match'>It<\/span> takes a good trap to capture a bear.<\/li>\n  <li><span class='match'>He<\/span> took the lead and kept it the whole distance.<\/li>\n  <li><span class='match'>He<\/span> crawled with care along the ledge.<\/li>\n  <li><span class='match'>It<\/span> takes a lot of help to finish these.<\/li>\n  <li><span class='match'>He<\/span> asks no person to vouch for him.<\/li>\n  <li><span class='match'>He<\/span> wrote down a long list of items.<\/li>\n  <li><span class='match'>It<\/span>'s a dense crowd in two distinct ways.<\/li>\n  <li><span class='match'>It<\/span> takes heat to bring out the odor.<\/li>\n  <li><span class='match'>He<\/span> takes the oath of office each March.<\/li>\n  <li><span class='match'>He<\/span> picked up the dice for a second roll.<\/li>\n  <li><span class='match'>They<\/span> slice the sausage thin with a knife.<\/li>\n  <li><span class='match'>He<\/span> wheeled the bike past. the winding road.<\/li>\n  <li><span class='match'>He<\/span> sent the figs, but kept the ripe cherries.<\/li>\n  <li><span class='match'>He<\/span> offered proof in the form of a lsrge chart.<\/li>\n  <li><span class='match'>They<\/span> told wild tales to frighten him.<\/li>\n  <li><span class='match'>She<\/span> was kind to sick old people.<\/li>\n  <li><span class='match'>She<\/span> blushed when he gave her a white orchid.<\/li>\n  <li><span class='match'>He<\/span> wrote his name boldly at the top of tile sheet.<\/li>\n  <li><span class='match'>It<\/span> matters not if he reads these words or those.<\/li>\n  <li><span class='match'>She<\/span> was waiting at my front lawn.<\/li>\n  <li><span class='match'>It<\/span> is a band of steel three inches wide.<\/li>\n  <li><span class='match'>It<\/span> was hidden from sight by a mass of leaves and shrubs.<\/li>\n  <li><span class='match'>He<\/span> put his last cartridge into the gun and fired.<\/li>\n  <li><span class='match'>They<\/span> took their kids from the public school.<\/li>\n  <li><span class='match'>He<\/span> lent his coat to the tall gaunt stranger.<\/li>\n  <li><span class='match'>She<\/span> flaps her cape as she parades the street.<\/li>\n  <li><span class='match'>It<\/span> was done before the boy could see it.<\/li>\n  <li><span class='match'>They<\/span> sang the same tunes at each party.<\/li>\n  <li><span class='match'>It<\/span> was a bad error on the part of the new judge.<\/li>\n  <li><span class='match'>He<\/span> sent the boy on a short errand.<\/li>\n  <li><span class='match'>She<\/span> saw a cat in the neighbor's house.<\/li>\n  <li><span class='match'>She<\/span> called his name many times.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>You might wonder how you might spot such a mistake if it didn’t occur in the first few matches. A good technique is to create a few positive and negative matches and use them to test that you pattern works as expected.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pos</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"He is a boy"</span>, <span class="st">"She had a good time"</span><span class="op">)</span></span>
+<span><span class="va">neg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Shells come from the sea"</span>, <span class="st">"Hadley said 'It's a great day'"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"^(She|He|It|They)\\b"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">pos</span>, <span class="va">pattern</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE TRUE</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">neg</span>, <span class="va">pattern</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] FALSE FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s typically much easier to come up with positive examples than negative examples, because it takes some time until you’re good enough with regular expressions to predict where your weaknesses are. Nevertheless they’re still useful; even if you don’t get them correct right away, you can slowly accumulate them as you work on your problem. If you you later get more into programming and learn about unit tests, you can then turn these examples into automated test that ensure you never you never make the same mistake twice.)</p>
+</section><section id="sec-boolean-operations" class="level3" data-number="17.3.2"><h3 data-number="17.3.2" class="anchored" data-anchor-id="sec-boolean-operations">
+<span class="header-section-number">17.3.2</span> Boolean operations</h3>
+<p>Imagine we want to find words that only contain consonants. One technique is to create a character class that contains all letters except for the vowels (<code>[^aeiou]</code>), then allow that to match any number of letters (<code>[^aeiou]+</code>), then force it to match the whole string by anchoring to the beginning and the end (<code>^[^aeiou]+$</code>):</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"^[^aeiou]+$"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-4211ee8e5b9f7bea17a6" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4211ee8e5b9f7bea17a6">{"x":{"html":"<ul>\n  <li><span class='match'>by<\/span><\/li>\n  <li><span class='match'>dry<\/span><\/li>\n  <li><span class='match'>fly<\/span><\/li>\n  <li><span class='match'>mrs<\/span><\/li>\n  <li><span class='match'>try<\/span><\/li>\n  <li><span class='match'>why<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>But we can make this problem a bit easier by flipping the problem around. Instead of looking for words that contain only consonants, we could look for words that don’t contain any vowels:</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"[aeiou]"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] "by"  "dry" "fly" "mrs" "try" "why"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is a useful technique whenever you’re dealing with logical combinations, particularly those involving “and” or “not”. For example, imagine if you want to find all words that contain “a” and “b”. There’s no “and” operator built in to regular expressions so we have to tackle it by looking for all words that contain an “a” followed by a “b”, or a “b” followed by an “a”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a.*b|b.*a"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "able"      "about"     "absolute"  "available" "baby"      "back"     </span></span>
+<span><span class="co">#&gt;  [7] "bad"       "bag"       "balance"   "ball"      "bank"      "bar"      </span></span>
+<span><span class="co">#&gt; [13] "base"      "basis"     "bear"      "beat"      "beauty"    "because"  </span></span>
+<span><span class="co">#&gt; [19] "black"     "board"     "boat"      "break"     "brilliant" "britain"  </span></span>
+<span><span class="co">#&gt; [25] "debate"    "husband"   "labour"    "maybe"     "probable"  "table"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Its simpler to combine the results of two calls to <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "able"      "about"     "absolute"  "available" "baby"      "back"     </span></span>
+<span><span class="co">#&gt;  [7] "bad"       "bag"       "balance"   "ball"      "bank"      "bar"      </span></span>
+<span><span class="co">#&gt; [13] "base"      "basis"     "bear"      "beat"      "beauty"    "because"  </span></span>
+<span><span class="co">#&gt; [19] "black"     "board"     "boat"      "break"     "brilliant" "britain"  </span></span>
+<span><span class="co">#&gt; [25] "debate"    "husband"   "labour"    "maybe"     "probable"  "table"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What if we wanted to see if there was a word that contains all vowels? If we did it with patterns we’d need to generate 5! (120) different patterns:</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a.*e.*i.*o.*u"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; character(0)</span></span>
+<span><span class="co"># ...</span></span>
+<span><span class="va">words</span><span class="op">[</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"u.*o.*i.*e.*a"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s much simpler to combine six calls to <code><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">words</span><span class="op">[</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"a"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"e"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"i"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"o"</span><span class="op">)</span> <span class="op">&amp;</span></span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"u"</span><span class="op">)</span></span>
+<span><span class="op">]</span></span>
+<span><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In general, if you get stuck trying to create a single regexp that solves your problem, take a step back and think if you could break the problem down into smaller pieces, solving each challenge before moving onto the next one.</p>
+</section><section id="creating-a-pattern-with-code" class="level3" data-number="17.3.3"><h3 data-number="17.3.3" class="anchored" data-anchor-id="creating-a-pattern-with-code">
+<span class="header-section-number">17.3.3</span> Creating a pattern with code</h3>
+<p>What if we wanted to find all <code>sentences</code> that mention a color? The basic idea is simple: we just combine alternation with word boundaries.</p>
+<div class="cell">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="st">"\\b(red|green|blue)\\b"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-59344719eea48f3263a0" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-59344719eea48f3263a0">{"x":{"html":"<ul>\n  <li>Glue the sheet to the dark <span class='match'>blue<\/span> background.<\/li>\n  <li>Two <span class='match'>blue<\/span> fish swam in the tank.<\/li>\n  <li>A wisp of cloud hung in the <span class='match'>blue<\/span> air.<\/li>\n  <li>The spot on the blotter was made by <span class='match'>green<\/span> ink.<\/li>\n  <li>The sofa cushion is <span class='match'>red<\/span> and of light weight.<\/li>\n  <li>The sky that morning was clear and bright <span class='match'>blue<\/span>.<\/li>\n  <li>A <span class='match'>blue<\/span> crane is a tall wading bird.<\/li>\n  <li>It is hard to erase <span class='match'>blue<\/span> or red ink.<\/li>\n  <li>The lamp shone with a steady <span class='match'>green<\/span> flame.<\/li>\n  <li>The box is held by a bright <span class='match'>red<\/span> snapper.<\/li>\n  <li>The houses are built of <span class='match'>red<\/span> clay bricks.<\/li>\n  <li>The <span class='match'>red<\/span> tape bound the smuggled food.<\/li>\n  <li>Hedge apples may stain your hands <span class='match'>green<\/span>.<\/li>\n  <li>The plant grew large and <span class='match'>green<\/span> in the window.<\/li>\n  <li>Bathe and relax in the cool <span class='match'>green<\/span> grass.<\/li>\n  <li>The lake sparkled in the <span class='match'>red<\/span> hot sun.<\/li>\n  <li>Mark the spot with a sign painted <span class='match'>red<\/span>.<\/li>\n  <li>The couch cover and hall drapes were <span class='match'>blue<\/span>.<\/li>\n  <li>A man in a <span class='match'>blue<\/span> sweater sat at the desk.<\/li>\n  <li>The small <span class='match'>red<\/span> neon lamp went out.<\/li>\n  <li>Paint the sockets in the wall dull <span class='match'>green<\/span>.<\/li>\n  <li>Wake and rise, and step into the <span class='match'>green<\/span> outdoors.<\/li>\n  <li>The <span class='match'>green<\/span> light in the brown box flickered.<\/li>\n  <li>The sky in the west is tinged with orange <span class='match'>red<\/span>.<\/li>\n  <li>The <span class='match'>red<\/span> paper brightened the dim stage.<\/li>\n  <li>The big <span class='match'>red<\/span> apple fell to the ground.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>But it would be tedious to construct this pattern by hand. Wouldn’t it be nice if we could store the colours in a vector?</p>
+<div class="cell">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rgb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span>, <span class="st">"blue"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Well, we can! We’d just need to create the pattern from the vector using <code><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten()</a></code></p>
+<div class="cell">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"\\b("</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">rgb</span>, <span class="st">"|"</span><span class="op">)</span>, <span class="st">")\\b"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "\\b(red|green|blue)\\b"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We could make this pattern more comprehensive if we had a good list of colors. One place we could start from is the list of built-in colours that R can use for plots:</p>
+<div class="cell">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html">colors</a></span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "white"          "aliceblue"      "antiquewhite"   "antiquewhite1" </span></span>
+<span><span class="co">#&gt;  [5] "antiquewhite2"  "antiquewhite3"  "antiquewhite4"  "aquamarine"    </span></span>
+<span><span class="co">#&gt;  [9] "aquamarine1"    "aquamarine2"    "aquamarine3"    "aquamarine4"   </span></span>
+<span><span class="co">#&gt; [13] "azure"          "azure1"         "azure2"         "azure3"        </span></span>
+<span><span class="co">#&gt; [17] "azure4"         "beige"          "bisque"         "bisque1"       </span></span>
+<span><span class="co">#&gt; [21] "bisque2"        "bisque3"        "bisque4"        "black"         </span></span>
+<span><span class="co">#&gt; [25] "blanchedalmond" "blue"           "blue1"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>But first lets element the numbered variants:</p>
+<div class="cell">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colors.html">colors</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="va">cols</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">cols</span>, <span class="st">"\\d"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">27</span><span class="op">]</span></span>
+<span><span class="co">#&gt;  [1] "white"          "aliceblue"      "antiquewhite"   "aquamarine"    </span></span>
+<span><span class="co">#&gt;  [5] "azure"          "beige"          "bisque"         "black"         </span></span>
+<span><span class="co">#&gt;  [9] "blanchedalmond" "blue"           "blueviolet"     "brown"         </span></span>
+<span><span class="co">#&gt; [13] "burlywood"      "cadetblue"      "chartreuse"     "chocolate"     </span></span>
+<span><span class="co">#&gt; [17] "coral"          "cornflowerblue" "cornsilk"       "cyan"          </span></span>
+<span><span class="co">#&gt; [21] "darkblue"       "darkcyan"       "darkgoldenrod"  "darkgray"      </span></span>
+<span><span class="co">#&gt; [25] "darkgreen"      "darkgrey"       "darkkhaki"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Then we can turn this into one giant pattern:</p>
+<div class="cell">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_c.html">str_c</a></span><span class="op">(</span><span class="st">"\\b("</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_flatten.html">str_flatten</a></span><span class="op">(</span><span class="va">cols</span>, <span class="st">"|"</span><span class="op">)</span>, <span class="st">")\\b"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">sentences</span>, <span class="va">pattern</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-1c18eca156cc321e99f7" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c18eca156cc321e99f7">{"x":{"html":"<ul>\n  <li>Glue the sheet to the dark <span class='match'>blue<\/span> background.<\/li>\n  <li>A rod is used to catch <span class='match'>pink<\/span> salmon.<\/li>\n  <li>Two <span class='match'>blue<\/span> fish swam in the tank.<\/li>\n  <li>Cars and busses stalled in <span class='match'>snow<\/span> drifts.<\/li>\n  <li>A wisp of cloud hung in the <span class='match'>blue<\/span> air.<\/li>\n  <li>Leaves turn <span class='match'>brown<\/span> and yellow in the fall.<\/li>\n  <li>The spot on the blotter was made by <span class='match'>green<\/span> ink.<\/li>\n  <li>Mud was spattered on the front of his <span class='match'>white<\/span> shirt.<\/li>\n  <li>The sofa cushion is <span class='match'>red<\/span> and of light weight.<\/li>\n  <li>The office paint was a dull sad <span class='match'>tan<\/span>.<\/li>\n  <li>The sky that morning was clear and bright <span class='match'>blue<\/span>.<\/li>\n  <li>The <span class='match'>brown<\/span> house was on fire to the attic.<\/li>\n  <li>A <span class='match'>blue<\/span> crane is a tall wading bird.<\/li>\n  <li>It is hard to erase <span class='match'>blue<\/span> or red ink.<\/li>\n  <li>A pencil with <span class='match'>black<\/span> lead writes best.<\/li>\n  <li>The lamp shone with a steady <span class='match'>green<\/span> flame.<\/li>\n  <li>Slash the <span class='match'>gold<\/span> cloth into fine ribbons.<\/li>\n  <li>They floated on the raft to sun their <span class='match'>white<\/span> backs.<\/li>\n  <li>The birch looked stark <span class='match'>white<\/span> and lonesome.<\/li>\n  <li>The box is held by a bright <span class='match'>red<\/span> snapper.<\/li>\n  <li>The houses are built of <span class='match'>red<\/span> clay bricks.<\/li>\n  <li>Tea served from the <span class='match'>brown<\/span> jug is tasty.<\/li>\n  <li>The <span class='match'>red<\/span> tape bound the smuggled food.<\/li>\n  <li>Look in the corner to find the <span class='match'>tan<\/span> shirt.<\/li>\n  <li>Hedge apples may stain your hands <span class='match'>green<\/span>.<\/li>\n  <li>The <span class='match'>gold<\/span> ring fits only a pierced ear.<\/li>\n  <li>The node on the stalk of <span class='match'>wheat<\/span> grew daily.<\/li>\n  <li>The plant grew large and <span class='match'>green<\/span> in the window.<\/li>\n  <li>The <span class='match'>purple<\/span> tie was ten years old.<\/li>\n  <li>The crunch of feet in the <span class='match'>snow<\/span> was the only sound.<\/li>\n  <li>Bathe and relax in the cool <span class='match'>green<\/span> grass.<\/li>\n  <li>A ripe <span class='match'>plum<\/span> is fit for a king's palate.<\/li>\n  <li>Feed the <span class='match'>white<\/span> mouse some flower seeds.<\/li>\n  <li>The lake sparkled in the <span class='match'>red<\/span> hot sun.<\/li>\n  <li>Mark the spot with a sign painted <span class='match'>red<\/span>.<\/li>\n  <li>A sash of <span class='match'>gold<\/span> silk will trim her dress.<\/li>\n  <li>Draw the chart with heavy <span class='match'>black<\/span> lines.<\/li>\n  <li>The vamp of the shoe had a <span class='match'>gold<\/span> buckle.<\/li>\n  <li>A <span class='match'>gray<\/span> mare walked before the colt.<\/li>\n  <li>The desk and both chairs were painted <span class='match'>tan<\/span>.<\/li>\n  <li>The couch cover and hall drapes were <span class='match'>blue<\/span>.<\/li>\n  <li>A man in a <span class='match'>blue<\/span> sweater sat at the desk.<\/li>\n  <li>She blushed when he gave her a <span class='match'>white<\/span> orchid.<\/li>\n  <li>The <span class='match'>black<\/span> trunk fell from the landing.<\/li>\n  <li>A thick coat of <span class='match'>black<\/span> paint covered all.<\/li>\n  <li>The small <span class='match'>red<\/span> neon lamp went out.<\/li>\n  <li>A <span class='match'>brown<\/span> leather bag hung from its strap.<\/li>\n  <li>A <span class='match'>white<\/span> silk jacket goes with any shoes.<\/li>\n  <li>Paint the sockets in the wall dull <span class='match'>green<\/span>.<\/li>\n  <li>Wake and rise, and step into the <span class='match'>green<\/span> outdoors.<\/li>\n  <li>The <span class='match'>green<\/span> light in the brown box flickered.<\/li>\n  <li>Jerk the cord, and out tumbles the <span class='match'>gold<\/span>.<\/li>\n  <li>The farmer swapped his horse for a <span class='match'>brown<\/span> ox.<\/li>\n  <li>Tear a thin sheet from the <span class='match'>yellow<\/span> pad.<\/li>\n  <li>The sky in the west is tinged with <span class='match'>orange<\/span> red.<\/li>\n  <li>The <span class='match'>gold<\/span> vase is both rare and costly.<\/li>\n  <li>Dots of light betrayed the <span class='match'>black<\/span> cat.<\/li>\n  <li>The <span class='match'>red<\/span> paper brightened the dim stage.<\/li>\n  <li>Dig deep in the earth for pirate's <span class='match'>gold<\/span>.<\/li>\n  <li>The hail pattered on the burnt <span class='match'>brown<\/span> grass.<\/li>\n  <li>The big <span class='match'>red<\/span> apple fell to the ground.<\/li>\n  <li>A <span class='match'>gold<\/span> ring will please most any girl.<\/li>\n  <li>A <span class='match'>pink<\/span> shell was found on the sandy beach.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>In this example <code>cols</code> only contains numbers and letters so you don’t need to worry about metacharacters. But in general, when creating patterns from existing strings it’s good practice to run through <code>str_escape()</code> which will automatically add <code>\</code> in front of otherwise special characters.</p>
+</section><section id="exercises-2" class="level3" data-number="17.3.4"><h3 data-number="17.3.4" class="anchored" data-anchor-id="exercises-2">
+<span class="header-section-number">17.3.4</span> Exercises</h3>
+<ol type="1">
+<li>Construct patterns to find evidence for and against the rule “i before e except after c”?</li>
+<li>
+<code><a href="https://rdrr.io/r/grDevices/colors.html">colors()</a></code> contains a number of modifiers like “lightgray” and “darkblue”. How could you automatically identify these modifiers? (Think about how you might detect and removed what is being modified).</li>
+<li>Create a regular expression that finds any use of base R dataset. You can get a list of these datasets via a special use of the <code><a href="https://rdrr.io/r/utils/data.html">data()</a></code> function: <code>data(package = "datasets")$results[, "Item"]</code>. Note that a number of old datasets are individual vectors; these contain the name of the grouping “data frame” in parentheses, so you’ll need to also strip these off.</li>
+</ol></section></section><section id="grouping-and-capturing" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="grouping-and-capturing">
+<span class="header-section-number">17.4</span> Grouping and capturing</h2>
+<p>Like in algebra, parentheses are an important tool for controlling the order in which pattern operations are applied. But they also have an important additional effect: they create <strong>capturing groups</strong> that allow you to use to sub-components of the match. There are three main ways you can use them:</p>
+<ul>
+<li>To match a repeated pattern.</li>
+<li>To include a matched pattern in the replacement.</li>
+<li>To extract individual components of the match.</li>
+</ul>
+<p>If needed, there’s also a special form of parentheses that only affect operator precedence without creating capturing a group. All of these are these described below.</p>
+<section id="matching-a-repeated-pattern" class="level3" data-number="17.4.1"><h3 data-number="17.4.1" class="anchored" data-anchor-id="matching-a-repeated-pattern">
+<span class="header-section-number">17.4.1</span> Matching a repeated pattern</h3>
+<p>You can refer back to previously matched text inside parentheses by using <strong>back reference</strong>. Back references are usually numbered: <code>\1</code> refers to the match contained in the first parentheses, <code>\2</code> in the the second parentheses, and so on. For example, the following pattern finds all fruits that have a repeated pair of letters:</p>
+<div class="cell">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"(..)\\1"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-82903e20e82fe9e96ad4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-82903e20e82fe9e96ad4">{"x":{"html":"<ul>\n  <li>b<span class='match'>anan<\/span>a<\/li>\n  <li><span class='match'>coco<\/span>nut<\/li>\n  <li><span class='match'>cucu<\/span>mber<\/li>\n  <li><span class='match'>juju<\/span>be<\/li>\n  <li><span class='match'>papa<\/span>ya<\/li>\n  <li>s<span class='match'>alal<\/span> berry<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>And this one finds all words that start and end with the same pair of letters:</p>
+<div class="cell">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"^(..).*\\1$"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-91e95a97e1d3447d8bab" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-91e95a97e1d3447d8bab">{"x":{"html":"<ul>\n  <li><span class='match'>church<\/span><\/li>\n  <li><span class='match'>decide<\/span><\/li>\n  <li><span class='match'>photograph<\/span><\/li>\n  <li><span class='match'>require<\/span><\/li>\n  <li><span class='match'>sense<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section><section id="replacing-with-the-matched-pattern" class="level3" data-number="17.4.2"><h3 data-number="17.4.2" class="anchored" data-anchor-id="replacing-with-the-matched-pattern">
+<span class="header-section-number">17.4.2</span> Replacing with the matched pattern</h3>
+<p>You can also use back references when replacing with <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace()</a></code> and <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all()</a></code>. The following code will switch the order of the second and third words:</p>
+<div class="cell">
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="st">"(\\w+) (\\w+) (\\w+)"</span>, <span class="st">"\\1 \\3 \\2"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "The canoe birch slid on the smooth planks." </span></span>
+<span><span class="co">#&gt; [2] "Glue sheet the to the dark blue background."</span></span>
+<span><span class="co">#&gt; [3] "It's to easy tell the depth of a well."     </span></span>
+<span><span class="co">#&gt; [4] "These a days chicken leg is a rare dish."   </span></span>
+<span><span class="co">#&gt; [5] "Rice often is served in round bowls."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You’ll sometimes see people using <code><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace()</a></code> to extract a single match:</p>
+<div class="cell">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="st">"^.*the ([^ .,]+).*$"</span></span>
+<span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_subset.html">str_subset</a></span><span class="op">(</span><span class="va">pattern</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">pattern</span>, <span class="st">"\\1"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "smooth"  "dark"    "depth"   "parked"  "sun"     "clear"   "ball"   </span></span>
+<span><span class="co">#&gt;  [8] "woman"   "evening" "man's"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>But you’re generally better off using <code><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match()</a></code> or <code>tidyr::separate_groups()</code>, which you’ll learn about next.</p>
+</section><section id="extracting-groups" class="level3" data-number="17.4.3"><h3 data-number="17.4.3" class="anchored" data-anchor-id="extracting-groups">
+<span class="header-section-number">17.4.3</span> Extracting groups</h3>
+<p>stringr provides a lower-level function for extract matches called <code><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match()</a></code>. But it returns a matrix, so isn’t as easy to work with:</p>
+<div class="cell">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sentences</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="st">"the (\\w+) (\\w+)"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]                [,2]     [,3]    </span></span>
+<span><span class="co">#&gt; [1,] "the smooth planks" "smooth" "planks"</span></span>
+<span><span class="co">#&gt; [2,] "the sheet to"      "sheet"  "to"    </span></span>
+<span><span class="co">#&gt; [3,] "the depth of"      "depth"  "of"    </span></span>
+<span><span class="co">#&gt; [4,] NA                  NA       NA      </span></span>
+<span><span class="co">#&gt; [5,] NA                  NA       NA      </span></span>
+<span><span class="co">#&gt; [6,] NA                  NA       NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead, we recommend using tidyr’s <code>separate_groups()</code> which creates a column for each capturing group.</p>
+</section><section id="named-groups" class="level3" data-number="17.4.4"><h3 data-number="17.4.4" class="anchored" data-anchor-id="named-groups">
+<span class="header-section-number">17.4.4</span> Named groups</h3>
+<p>If you have many groups, referring to them by position can get confusing. It’s possible to give them a name with <code>(?&lt;name&gt;…)</code>. You can refer to it with <code>\k&lt;name&gt;</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">words</span>, <span class="st">"^(?&lt;first&gt;.).*\\k&lt;first&gt;$"</span>, match <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-16ec33930352bd7ed495" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-16ec33930352bd7ed495">{"x":{"html":"<ul>\n  <li><span class='match'>america<\/span><\/li>\n  <li><span class='match'>area<\/span><\/li>\n  <li><span class='match'>dad<\/span><\/li>\n  <li><span class='match'>dead<\/span><\/li>\n  <li><span class='match'>depend<\/span><\/li>\n  <li><span class='match'>educate<\/span><\/li>\n  <li><span class='match'>else<\/span><\/li>\n  <li><span class='match'>encourage<\/span><\/li>\n  <li><span class='match'>engine<\/span><\/li>\n  <li><span class='match'>europe<\/span><\/li>\n  <li><span class='match'>evidence<\/span><\/li>\n  <li><span class='match'>example<\/span><\/li>\n  <li><span class='match'>excuse<\/span><\/li>\n  <li><span class='match'>exercise<\/span><\/li>\n  <li><span class='match'>expense<\/span><\/li>\n  <li><span class='match'>experience<\/span><\/li>\n  <li><span class='match'>eye<\/span><\/li>\n  <li><span class='match'>health<\/span><\/li>\n  <li><span class='match'>high<\/span><\/li>\n  <li><span class='match'>knock<\/span><\/li>\n  <li><span class='match'>level<\/span><\/li>\n  <li><span class='match'>local<\/span><\/li>\n  <li><span class='match'>nation<\/span><\/li>\n  <li><span class='match'>non<\/span><\/li>\n  <li><span class='match'>rather<\/span><\/li>\n  <li><span class='match'>refer<\/span><\/li>\n  <li><span class='match'>remember<\/span><\/li>\n  <li><span class='match'>serious<\/span><\/li>\n  <li><span class='match'>stairs<\/span><\/li>\n  <li><span class='match'>test<\/span><\/li>\n  <li><span class='match'>tonight<\/span><\/li>\n  <li><span class='match'>transport<\/span><\/li>\n  <li><span class='match'>treat<\/span><\/li>\n  <li><span class='match'>trust<\/span><\/li>\n  <li><span class='match'>window<\/span><\/li>\n  <li><span class='match'>yesterday<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>This verbosity is a good fit with <code>comments = TRUE</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pattern</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span></span>
+<span>  <span class="st">r"(</span></span>
+<span><span class="st">    ^           # start at the beginning of the string</span></span>
+<span><span class="st">    (?&lt;first&gt;.) # and match the &lt;first&gt; letter</span></span>
+<span><span class="st">    .*          # then match any other letters</span></span>
+<span><span class="st">    \k&lt;first&gt;$  # ensuring the last letter is the same as the &lt;first&gt;</span></span>
+<span><span class="st">  )"</span>, </span>
+<span>  comments <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can also use named groups as an alternative to the <code>col_names</code> argument to <code>tidyr::separate_groups()</code>.</p>
+</section><section id="non-capturing-groups" class="level3" data-number="17.4.5"><h3 data-number="17.4.5" class="anchored" data-anchor-id="non-capturing-groups">
+<span class="header-section-number">17.4.5</span> Non-capturing groups</h3>
+<p>Occasionally, you’ll want to use parentheses without creating matching groups. You can create a non-capturing group with <code>(?:)</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"a gray cat"</span>, <span class="st">"a grey dog"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"(gr(e|a)y)"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]   [,2]   [,3]</span></span>
+<span><span class="co">#&gt; [1,] "gray" "gray" "a" </span></span>
+<span><span class="co">#&gt; [2,] "grey" "grey" "e"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"(gr(?:e|a)y)"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]   [,2]  </span></span>
+<span><span class="co">#&gt; [1,] "gray" "gray"</span></span>
+<span><span class="co">#&gt; [2,] "grey" "grey"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Typically, however, you’ll find it easier to just ignore that result by setting the <code>col_name</code> to <code>NA</code>:</p>
+</section><section id="exercises-3" class="level3" data-number="17.4.6"><h3 data-number="17.4.6" class="anchored" data-anchor-id="exercises-3">
+<span class="header-section-number">17.4.6</span> Exercises</h3>
+<ol type="1">
+<li>
+<p>Describe, in words, what these expressions will match:</p>
+<ol type="a">
+<li><code>(.)\1\1</code></li>
+<li><code>"(.)(.)\\2\\1"</code></li>
+<li><code>(..)\1</code></li>
+<li><code>"(.).\\1.\\1"</code></li>
+<li><code>"(.)(.)(.).*\\3\\2\\1"</code></li>
+</ol>
+</li>
+<li>
+<p>Construct regular expressions to match words that:</p>
+<ol type="a">
+<li>Who’s first letter is the same as the last letter, and the second letter is the same as the second to last letter.</li>
+<li>Contain one letter repeated in at least three places (e.g.&nbsp;“eleven” contains three “e”s.)</li>
+</ol>
+</li>
+</ol></section></section><section id="flags" class="level2" data-number="17.5"><h2 data-number="17.5" class="anchored" data-anchor-id="flags">
+<span class="header-section-number">17.5</span> Flags</h2>
+<p>The are a number of settings, often called <strong>flags</strong> in other programming languages, that you can use to control some of the details of the regex. In stringr, you can use these by wrapping the pattern in a call to <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># The regular call:</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="st">"nana"</span><span class="op">)</span></span>
+<span><span class="co"># is shorthand for</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">fruit</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"nana"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The most useful flag is probably <code>ignore_case = TRUE</code> because it allows characters to match either their uppercase or lowercase forms:</p>
+<div class="cell">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bananas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"banana"</span>, <span class="st">"Banana"</span>, <span class="st">"BANANA"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">bananas</span>, <span class="st">"banana"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-14ef52fbad8d1b5398fd" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-14ef52fbad8d1b5398fd">{"x":{"html":"<ul>\n  <li><span class='match'>banana<\/span><\/li>\n  <li>Banana<\/li>\n  <li>BANANA<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="va">bananas</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"banana"</span>, ignore_case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-94457e0686f905840b07" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-94457e0686f905840b07">{"x":{"html":"<ul>\n  <li><span class='match'>banana<\/span><\/li>\n  <li><span class='match'>Banana<\/span><\/li>\n  <li><span class='match'>BANANA<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>If you’re doing a lot of work with multiline strings (i.e.&nbsp;strings that contain <code>\n</code>), <code>multiline</code> and <code>dotall</code> can also be useful. <code>dotall = TRUE</code> allows <code>.</code> to match everything, including <code>\n</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"Line 1\nLine 2\nLine 3"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">".L"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-8a1f8f4a61c98a07d1d5" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8a1f8f4a61c98a07d1d5">{"x":{"html":"<ul>\n  <li>Line 1\nLine 2\nLine 3<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">".L"</span>, dotall <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-75d0c44ec49b8be5d81c" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-75d0c44ec49b8be5d81c">{"x":{"html":"<ul>\n  <li>Line 1<span class='match'>\nL<\/span>ine 2<span class='match'>\nL<\/span>ine 3<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>And <code>multiline = TRUE</code> allows <code>^</code> and <code>$</code> to match the start and end of each line rather than the start and end of the complete string:</p>
+<div class="cell">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="st">"Line 1\nLine 2\nLine 3"</span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"^Line"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-ae1bd0606873ff51f72f" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ae1bd0606873ff51f72f">{"x":{"html":"<ul>\n  <li><span class='match'>Line<\/span> 1\nLine 2\nLine 3<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"^Line"</span>, multiline <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-d67ddf96bf8a1986c594" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d67ddf96bf8a1986c594">{"x":{"html":"<ul>\n  <li><span class='match'>Line<\/span> 1\n<span class='match'>Line<\/span> 2\n<span class='match'>Line<\/span> 3<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Finally, if you’re writing a complicated regular expression and you’re worried you might not understand it in the future, <code>comments = TRUE</code> can be extremely useful. It allows you to use comments and whitespace to make complex regular expressions more understandable. Spaces and new lines are ignored, as is everything after <code>#</code>. (Note that we use a raw string here to minimize the number of escapes needed)</p>
+<div class="cell">
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">phone</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">r"(</span></span>
+<span><span class="st">  \(?     # optional opening parens</span></span>
+<span><span class="st">  (\d{3}) # area code</span></span>
+<span><span class="st">  [)\ -]?  # optional closing parens, space, or dash</span></span>
+<span><span class="st">  (\d{3}) # another three numbers</span></span>
+<span><span class="st">  [\ -]?   # optional space or dash</span></span>
+<span><span class="st">  (\d{3}) # three more numbers</span></span>
+<span><span class="st">  )"</span>, comments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_match.html">str_match</a></span><span class="op">(</span><span class="st">"514-791-8141"</span>, <span class="va">phone</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      [,1]          [,2]  [,3]  [,4] </span></span>
+<span><span class="co">#&gt; [1,] "514-791-814" "514" "791" "814"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you’re using comments and want to match a space, newline, or <code>#</code>, you’ll need to escape it:</p>
+<div class="cell">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"x x #"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">"x #"</span>, comments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-a92835ed3cd7bd7ea2cb" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a92835ed3cd7bd7ea2cb">{"x":{"html":"<ul>\n  <li><span class='match'>x<\/span> x #<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_view.html">str_view</a></span><span class="op">(</span><span class="st">"x x #"</span>, <span class="fu"><a href="https://stringr.tidyverse.org/reference/modifiers.html">regex</a></span><span class="op">(</span><span class="st">r"(x\ \#)"</span>, comments <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-09ff493b1a21a946b633" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-09ff493b1a21a946b633">{"x":{"html":"<ul>\n  <li>x <span class='match'>x #<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./strings.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./factors.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">R for Data Science (2e) was written by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

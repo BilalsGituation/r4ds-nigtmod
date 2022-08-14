@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>R for Data Science (2e) - 6&nbsp; Data tidying</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./workflow-style.html" rel="next">
+<link href="./workflow-pipes.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script defer="" data-domain="r4ds.hadley.nz" src="https://plausible.io/js/plausible.js"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R for Data Science (2e)</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/hadley/r4ds/" title="Source Code" class="sidebar-tool px-1"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./preface-2e.html" class="sidebar-item-text sidebar-link">Preface to the second edition</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./whole-game.html" class="sidebar-item-text sidebar-link">Whole game</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-visualize.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-basics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Workflow: basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-transform.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data transformation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-pipes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-tidy.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-style.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data-import.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Data import</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-scripts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Workflow: scripts and projects</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./EDA.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./workflow-help.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Workflow: Getting help</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./transform.html" class="sidebar-item-text sidebar-link">Transform</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tibble.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Tibbles</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./joins.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Joins</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logicals.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Logical vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./numbers.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Numbers</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Strings</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./regexps.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Regular expressions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./factors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Factors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./datetimes.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Dates and times</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./missing-values.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Missing values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./column-wise.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Column-wise operations</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./wrangle.html" class="sidebar-item-text sidebar-link">Wrangle</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./parsing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Parsing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./spreadsheets.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Spreadsheets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./databases.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Databases</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rectangling.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Data rectangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./webscraping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Web scraping</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./program.html" class="sidebar-item-text sidebar-link">Program</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./functions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Functions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vectors.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">Vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./iteration.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">Iteration</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./prog-strings.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">Programming with strings</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./communicate.html" class="sidebar-item-text sidebar-link">Communicate</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">R Markdown</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./communicate-plots.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">Graphics for communication</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-formats.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">R Markdown formats</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./rmarkdown-workflow.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">R Markdown workflow</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"> <span class="header-section-number">6.1</span> Introduction</a>
+  <ul class="collapse">
+<li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites"> <span class="header-section-number">6.1.1</span> Prerequisites</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#sec-tidy-data" id="toc-sec-tidy-data" class="nav-link" data-scroll-target="#sec-tidy-data"> <span class="header-section-number">6.2</span> Tidy data</a>
+  <ul class="collapse">
+<li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"> <span class="header-section-number">6.2.1</span> Exercises</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#pivoting" id="toc-pivoting" class="nav-link" data-scroll-target="#pivoting"> <span class="header-section-number">6.3</span> Pivoting</a>
+  <ul class="collapse">
+<li><a href="#sec-billboard" id="toc-sec-billboard" class="nav-link" data-scroll-target="#sec-billboard"> <span class="header-section-number">6.3.1</span> Data in column names</a></li>
+  <li><a href="#how-does-pivoting-work" id="toc-how-does-pivoting-work" class="nav-link" data-scroll-target="#how-does-pivoting-work"> <span class="header-section-number">6.3.2</span> How does pivoting work?</a></li>
+  <li><a href="#many-variables-in-column-names" id="toc-many-variables-in-column-names" class="nav-link" data-scroll-target="#many-variables-in-column-names"> <span class="header-section-number">6.3.3</span> Many variables in column names</a></li>
+  <li><a href="#data-and-variable-names-in-the-column-headers" id="toc-data-and-variable-names-in-the-column-headers" class="nav-link" data-scroll-target="#data-and-variable-names-in-the-column-headers"> <span class="header-section-number">6.3.4</span> Data and variable names in the column headers</a></li>
+  <li><a href="#widening-data" id="toc-widening-data" class="nav-link" data-scroll-target="#widening-data"> <span class="header-section-number">6.3.5</span> Widening data</a></li>
+  <li><a href="#how-does-pivot_wider-work" id="toc-how-does-pivot_wider-work" class="nav-link" data-scroll-target="#how-does-pivot_wider-work"> <span class="header-section-number">6.3.6</span> How does <code>pivot_wider()</code> work?</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#untidy-data" id="toc-untidy-data" class="nav-link" data-scroll-target="#untidy-data"> <span class="header-section-number">6.4</span> Untidy data</a>
+  <ul class="collapse">
+<li><a href="#presenting-data-to-humans" id="toc-presenting-data-to-humans" class="nav-link" data-scroll-target="#presenting-data-to-humans"> <span class="header-section-number">6.4.1</span> Presenting data to humans</a></li>
+  <li><a href="#multivariate-statistics" id="toc-multivariate-statistics" class="nav-link" data-scroll-target="#multivariate-statistics"> <span class="header-section-number">6.4.2</span> Multivariate statistics</a></li>
+  <li><a href="#pragmatic-computation" id="toc-pragmatic-computation" class="nav-link" data-scroll-target="#pragmatic-computation"> <span class="header-section-number">6.4.3</span> Pragmatic computation</a></li>
+  </ul>
+</li>
+  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/hadley/r4ds/edit/main/data-tidy.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/hadley/r4ds/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="sec-data-tidy" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Data tidying</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><div class="status">
+<p>You are reading the work-in-progress second edition of R for Data Science. This chapter is largely complete and just needs final proof reading. You can find the complete first edition at <a href="https://r4ds.had.co.nz" class="uri">https://r4ds.had.co.nz</a>.</p>
+</div>
+<section id="introduction" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="introduction">
+<span class="header-section-number">6.1</span> Introduction</h2>
+<blockquote class="blockquote">
+<p>“Happy families are all alike; every unhappy family is unhappy in its own way.”<br>
+— Leo Tolstoy</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“Tidy datasets are all alike, but every messy dataset is messy in its own way.”<br>
+— Hadley Wickham</p>
+</blockquote>
+<p>In this chapter, you will learn a consistent way to organize your data in R using a system called <strong>tidy data</strong>. Getting your data into this format requires some work up front, but that work pays off in the long term. Once you have tidy data and the tidy tools provided by packages in the tidyverse, you will spend much less time munging data from one representation to another, allowing you to spend more time on the data questions you care about.</p>
+<p>In this chapter, you’ll first learn the definition of tidy data and see it applied to simple toy dataset. Then we’ll dive into the main tool you’ll use for tidying data: pivoting. Pivoting allows you to change the form of your data, without changing any of the values. We’ll finish up with a discussion of usefully untidy data, and how you can create it if needed. If you particularly enjoy this chapter and want to learn more about the underlying theory, you can learn more about the history and theoretical underpinnings in the <a href="https://www.jstatsoft.org/article/view/v059i10">Tidy Data</a> paper published in the Journal of Statistical Software.</p>
+<section id="prerequisites" class="level3" data-number="6.1.1"><h3 data-number="6.1.1" class="anchored" data-anchor-id="prerequisites">
+<span class="header-section-number">6.1.1</span> Prerequisites</h3>
+<p>In this chapter we’ll focus on tidyr, a package that provides a bunch of tools to help tidy up your messy datasets. tidyr is a member of the core tidyverse.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From this chapter on, we’ll suppress the loading message from <code><a href="https://tidyverse.tidyverse.org">library(tidyverse)</a></code>.</p>
+</section></section><section id="sec-tidy-data" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="sec-tidy-data">
+<span class="header-section-number">6.2</span> Tidy data</h2>
+<p>You can represent the same underlying data in multiple ways. The example below shows the same data organised in four different ways. Each dataset shows the same values of four variables: <em>country</em>, <em>year</em>, <em>population</em>, and <em>cases</em> of TB (tuberculosis), but each dataset organizes the values in a different way.</p>
+
+<!-- TODO redraw as tables -->
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table1</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;   country      year  cases population</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan  1999    745   19987071</span></span>
+<span><span class="co">#&gt; 2 Afghanistan  2000   2666   20595360</span></span>
+<span><span class="co">#&gt; 3 Brazil       1999  37737  172006362</span></span>
+<span><span class="co">#&gt; 4 Brazil       2000  80488  174504898</span></span>
+<span><span class="co">#&gt; 5 China        1999 212258 1272915272</span></span>
+<span><span class="co">#&gt; 6 China        2000 213766 1280428583</span></span>
+<span><span class="va">table2</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 4</span></span>
+<span><span class="co">#&gt;   country      year type           count</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;          &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan  1999 cases            745</span></span>
+<span><span class="co">#&gt; 2 Afghanistan  1999 population  19987071</span></span>
+<span><span class="co">#&gt; 3 Afghanistan  2000 cases           2666</span></span>
+<span><span class="co">#&gt; 4 Afghanistan  2000 population  20595360</span></span>
+<span><span class="co">#&gt; 5 Brazil       1999 cases          37737</span></span>
+<span><span class="co">#&gt; 6 Brazil       1999 population 172006362</span></span>
+<span><span class="co">#&gt; # … with 6 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span>
+<span><span class="va">table3</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   country      year rate             </span></span>
+<span><span class="co">#&gt; * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            </span></span>
+<span><span class="co">#&gt; 1 Afghanistan  1999 745/19987071     </span></span>
+<span><span class="co">#&gt; 2 Afghanistan  2000 2666/20595360    </span></span>
+<span><span class="co">#&gt; 3 Brazil       1999 37737/172006362  </span></span>
+<span><span class="co">#&gt; 4 Brazil       2000 80488/174504898  </span></span>
+<span><span class="co">#&gt; 5 China        1999 212258/1272915272</span></span>
+<span><span class="co">#&gt; 6 China        2000 213766/1280428583</span></span>
+<span></span>
+<span><span class="co"># Spread across two tibbles</span></span>
+<span><span class="va">table4a</span> <span class="co"># cases</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   country     `1999` `2000`</span></span>
+<span><span class="co">#&gt; * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan    745   2666</span></span>
+<span><span class="co">#&gt; 2 Brazil       37737  80488</span></span>
+<span><span class="co">#&gt; 3 China       212258 213766</span></span>
+<span><span class="va">table4b</span> <span class="co"># population</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   country         `1999`     `2000`</span></span>
+<span><span class="co">#&gt; * &lt;chr&gt;            &lt;int&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan   19987071   20595360</span></span>
+<span><span class="co">#&gt; 2 Brazil       172006362  174504898</span></span>
+<span><span class="co">#&gt; 3 China       1272915272 1280428583</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These are all representations of the same underlying data, but they are not equally easy to use. One of them, <code>table1</code>, will be much easier to work with inside the tidyverse because it’s tidy.</p>
+<p>There are three interrelated rules that make a dataset tidy:</p>
+<ol type="1">
+<li>Each variable is a column; each column is a variable.</li>
+<li>Each observation is row; each row is an observation.</li>
+<li>Each value is a cell; each cell is a single value.</li>
+</ol>
+<p><a href="#fig-tidy-structure">Figure&nbsp;<span>6.1</span></a> shows the rules visually.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-tidy-structure" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="images/tidy-1.png" class="img-fluid figure-img" alt="Three panels, each representing a tidy data frame. The first panel shows that each variable is a column. The second panel shows that each observation is a row. The third panel shows that each value is a cell." width="683"></p>
+<p></p><figcaption class="figure-caption">Figure 6.1: The following three rules make a dataset tidy: variables are columns, observations are rows, and values are cells.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Why ensure that your data is tidy? There are two main advantages:</p>
+<ol type="1">
+<li><p>There’s a general advantage to picking one consistent way of storing data. If you have a consistent data structure, it’s easier to learn the tools that work with it because they have an underlying uniformity.</p></li>
+<li><p>There’s a specific advantage to placing variables in columns because it allows R’s vectorised nature to shine. As you learned in Sections @ref(mutate) and @ref(summarize), most built-in R functions work with vectors of values. That makes transforming tidy data feel particularly natural.</p></li>
+</ol>
+<p>dplyr, ggplot2, and all the other packages in the tidyverse are designed to work with tidy data. Here are a couple of small examples showing how you might work with <code>table1</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Compute rate per 10,000</span></span>
+<span><span class="va">table1</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    rate <span class="op">=</span> <span class="va">cases</span> <span class="op">/</span> <span class="va">population</span> <span class="op">*</span> <span class="fl">10000</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
+<span><span class="co">#&gt;   country      year  cases population  rate</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan  1999    745   19987071 0.373</span></span>
+<span><span class="co">#&gt; 2 Afghanistan  2000   2666   20595360 1.29 </span></span>
+<span><span class="co">#&gt; 3 Brazil       1999  37737  172006362 2.19 </span></span>
+<span><span class="co">#&gt; 4 Brazil       2000  80488  174504898 4.61 </span></span>
+<span><span class="co">#&gt; 5 China        1999 212258 1272915272 1.67 </span></span>
+<span><span class="co">#&gt; 6 China        2000 213766 1280428583 1.67</span></span>
+<span></span>
+<span><span class="co"># Compute cases per year</span></span>
+<span><span class="va">table1</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">year</span>, wt <span class="op">=</span> <span class="va">cases</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span><span class="co">#&gt;    year      n</span></span>
+<span><span class="co">#&gt;   &lt;int&gt;  &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1  1999 250740</span></span>
+<span><span class="co">#&gt; 2  2000 296920</span></span>
+<span></span>
+<span><span class="co"># Visualise changes over time</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">table1</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">cases</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>group <span class="op">=</span> <span class="va">country</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"grey50"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">country</span>, shape <span class="op">=</span> <span class="va">country</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1999</span>, <span class="fl">2000</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="data-tidy_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" alt="This figure shows the numbers of cases in 1999 and 2000 for Afghanistan, Brazil, and China, with year on the x-axis and number of cases on the y-axis. Each point on the plot represents the number of cases in a given country in a given year. The points for each country are differentiated from others by color and shape and connected with a line, resulting in three, non-parallel, non-intersecting lines. The numbers of cases in China are highest for both 1999 and 2000, with values above 200,000 for both years. The number of cases in Brazil is approximately 40,000 in 1999 and approximately 75,000 in 2000. The numbers of cases in Afghanistan are lowest for both 1999 and 2000, with values that appear to be very close to 0 on this scale." width="480"></p>
+</div>
+</div>
+<section id="exercises" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">6.2.1</span> Exercises</h3>
+<ol type="1">
+<li><p>Using prose, describe how the variables and observations are organised in each of the sample tables.</p></li>
+<li>
+<p>Sketch out the process you’d use to calculate the <code>rate</code> for <code>table2</code> and <code>table4a</code> + <code>table4b</code>. You will need to perform four operations:</p>
+<ol type="a">
+<li>Extract the number of TB cases per country per year.</li>
+<li>Extract the matching population per country per year.</li>
+<li>Divide cases by population, and multiply by 10000.</li>
+<li>Store back in the appropriate place.</li>
+</ol>
+<p>You haven’t yet learned all the functions you’d need to actually perform these operations, but you should still be able to think through the transformations you’d need.</p>
+</li>
+<li><p>Recreate the plot showing change in cases over time using <code>table2</code> instead of <code>table1</code>. What do you need to do first?</p></li>
+</ol></section></section><section id="pivoting" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="pivoting">
+<span class="header-section-number">6.3</span> Pivoting</h2>
+<p>The principles of tidy data might seem so obvious that you wonder if you’ll ever encounter a dataset that isn’t tidy. Unfortunately, however, most real data is untidy. There are two main reasons:</p>
+<ol type="1">
+<li><p>Data is often organised to facilitate some goal other than analysis. For example, it’s common for data to be structured to make data entry, not analysis, easy.</p></li>
+<li><p>Most people aren’t familiar with the principles of tidy data, and it’s hard to derive them yourself unless you spend a lot of time working with data.</p></li>
+</ol>
+<p>This means that most real analyses will require at least a little tidying. You’ll begin by figuring out what the underlying variables and observations are. Sometimes this is easy; other times you’ll need to consult with the people who originally generated the data. Next, you’ll <strong>pivot</strong> your data into a tidy form, with variables in the columns and observations in the rows.</p>
+<p>tidyr provides two functions for pivoting data: <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>, which makes datasets <strong>longer</strong> by increasing rows and reducing columns, and <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> which makes datasets <strong>wider</strong> by increasing columns and reducing rows. The following sections work through the use of <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> and <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> to tackle a wide range of realistic datasets. These examples are drawn from <code><a href="https://tidyr.tidyverse.org/articles/pivot.html">vignette("pivot", package = "tidyr")</a></code>, which you should check out if you want to see more variations and more challenging problems.</p>
+<p>Let’s dive in.</p>
+<section id="sec-billboard" class="level3" data-number="6.3.1"><h3 data-number="6.3.1" class="anchored" data-anchor-id="sec-billboard">
+<span class="header-section-number">6.3.1</span> Data in column names</h3>
+<p>The <code>billboard</code> dataset records the billboard rank of songs in the year 2000:</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">billboard</span></span>
+<span><span class="co">#&gt; # A tibble: 317 × 79</span></span>
+<span><span class="co">#&gt;   artist  track date.ent…¹   wk1   wk2   wk3   wk4   wk5   wk6   wk7   wk8   wk9</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2 Pac   Baby… 2000-02-26    87    82    72    77    87    94    99    NA    NA</span></span>
+<span><span class="co">#&gt; 2 2Ge+her The … 2000-09-02    91    87    92    NA    NA    NA    NA    NA    NA</span></span>
+<span><span class="co">#&gt; 3 3 Door… Kryp… 2000-04-08    81    70    68    67    66    57    54    53    51</span></span>
+<span><span class="co">#&gt; 4 3 Door… Loser 2000-10-21    76    76    72    69    67    65    55    59    62</span></span>
+<span><span class="co">#&gt; 5 504 Bo… Wobb… 2000-04-15    57    34    25    17    17    31    36    49    53</span></span>
+<span><span class="co">#&gt; 6 98^0    Give… 2000-08-19    51    39    34    26    26    19     2     2     3</span></span>
+<span><span class="co">#&gt; # … with 311 more rows, 67 more variables: wk10 &lt;dbl&gt;, wk11 &lt;dbl&gt;, wk12 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk13 &lt;dbl&gt;, wk14 &lt;dbl&gt;, wk15 &lt;dbl&gt;, wk16 &lt;dbl&gt;, wk17 &lt;dbl&gt;, wk18 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk19 &lt;dbl&gt;, wk20 &lt;dbl&gt;, wk21 &lt;dbl&gt;, wk22 &lt;dbl&gt;, wk23 &lt;dbl&gt;, wk24 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk25 &lt;dbl&gt;, wk26 &lt;dbl&gt;, wk27 &lt;dbl&gt;, wk28 &lt;dbl&gt;, wk29 &lt;dbl&gt;, wk30 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk31 &lt;dbl&gt;, wk32 &lt;dbl&gt;, wk33 &lt;dbl&gt;, wk34 &lt;dbl&gt;, wk35 &lt;dbl&gt;, wk36 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk37 &lt;dbl&gt;, wk38 &lt;dbl&gt;, wk39 &lt;dbl&gt;, wk40 &lt;dbl&gt;, wk41 &lt;dbl&gt;, wk42 &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   wk43 &lt;dbl&gt;, wk44 &lt;dbl&gt;, wk45 &lt;dbl&gt;, wk46 &lt;dbl&gt;, wk47 &lt;dbl&gt;, wk48 &lt;dbl&gt;, …</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this dataset, each observation is a song. The first three columns (<code>artist</code>, <code>track</code> and <code>date.entered</code>) are variables that describe the song. Then we have 76 columns (<code>wk1</code>-<code>wk76</code>) that describe the rank of the song in each week. Here, the column names are one variable (the <code>week</code>) and the cell values are another (the <code>rank</code>).</p>
+<p>To tidy this data, we’ll use <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>. After the data, there are three key arguments:</p>
+<ul>
+<li>
+<code>cols</code> specifies which columns need to be pivoted, i.e.&nbsp;which columns aren’t variables. This argument uses the same syntax as <code><a href="https://dplyr.tidyverse.org/reference/select.html">select()</a></code> so here we could use <code>!c(artist, track, date.entered)</code> or <code>starts_with("wk")</code>.</li>
+<li>
+<code>names_to</code> names of the variable stored in the column names, here <code>"week"</code>.</li>
+<li>
+<code>values_to</code> names the variable stored in the cell values, here <code>"rank"</code>.</li>
+</ul>
+<p>That gives the following call:</p>
+<div class="cell" data-r.options="{&quot;pillar.print_min&quot;:10}">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">billboard</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"wk"</span><span class="op">)</span>, </span>
+<span>    names_to <span class="op">=</span> <span class="st">"week"</span>, </span>
+<span>    values_to <span class="op">=</span> <span class="st">"rank"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 24,092 × 5</span></span>
+<span><span class="co">#&gt;    artist track                   date.entered week   rank</span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;  &lt;chr&gt;                   &lt;date&gt;       &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt;  1 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk1      87</span></span>
+<span><span class="co">#&gt;  2 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk2      82</span></span>
+<span><span class="co">#&gt;  3 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk3      72</span></span>
+<span><span class="co">#&gt;  4 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk4      77</span></span>
+<span><span class="co">#&gt;  5 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk5      87</span></span>
+<span><span class="co">#&gt;  6 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk6      94</span></span>
+<span><span class="co">#&gt;  7 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk7      99</span></span>
+<span><span class="co">#&gt;  8 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk8      NA</span></span>
+<span><span class="co">#&gt;  9 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk9      NA</span></span>
+<span><span class="co">#&gt; 10 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk10     NA</span></span>
+<span><span class="co">#&gt; # … with 24,082 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What happens if a song is in the top 100 for less than 76 weeks? Take 2 Pac’s “Baby Don’t Cry”, for example. The above output suggests that it was only the top 100 for 7 weeks, and all the remaining weeks are filled in with missing values. These <code>NA</code>s don’t really represent unknown observations; they’re forced to exist by the structure of the dataset<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, so we can ask <code>pivot_longer</code> to get rid of them by setting <code>values_drop_na = TRUE</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">billboard</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"wk"</span><span class="op">)</span>, </span>
+<span>    names_to <span class="op">=</span> <span class="st">"week"</span>, </span>
+<span>    values_to <span class="op">=</span> <span class="st">"rank"</span>,</span>
+<span>    values_drop_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 5,307 × 5</span></span>
+<span><span class="co">#&gt;   artist track                   date.entered week   rank</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;                   &lt;date&gt;       &lt;chr&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk1      87</span></span>
+<span><span class="co">#&gt; 2 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk2      82</span></span>
+<span><span class="co">#&gt; 3 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk3      72</span></span>
+<span><span class="co">#&gt; 4 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk4      77</span></span>
+<span><span class="co">#&gt; 5 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk5      87</span></span>
+<span><span class="co">#&gt; 6 2 Pac  Baby Don't Cry (Keep... 2000-02-26   wk6      94</span></span>
+<span><span class="co">#&gt; # … with 5,301 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You might also wonder what happens if a song is in the top 100 for more than 76 weeks? We can’t tell from this data, but you might guess that additional columns <code>wk77</code>, <code>wk78</code>, … would be added to the dataset.</p>
+<p>This data is now tidy, but we could make future computation a bit easier by converting <code>week</code> into a number using <code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> and <code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code>. You’ll learn more about <code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code> and friends in <a href="data-import.html">Chapter&nbsp;<span>8</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">billboard_tidy</span> <span class="op">&lt;-</span> <span class="va">billboard</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"wk"</span><span class="op">)</span>, </span>
+<span>    names_to <span class="op">=</span> <span class="st">"week"</span>, </span>
+<span>    values_to <span class="op">=</span> <span class="st">"rank"</span>,</span>
+<span>    values_drop_na <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    week <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number</a></span><span class="op">(</span><span class="va">week</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">billboard_tidy</span></span>
+<span><span class="co">#&gt; # A tibble: 5,307 × 5</span></span>
+<span><span class="co">#&gt;   artist track                   date.entered  week  rank</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;                   &lt;date&gt;       &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 2 Pac  Baby Don't Cry (Keep... 2000-02-26       1    87</span></span>
+<span><span class="co">#&gt; 2 2 Pac  Baby Don't Cry (Keep... 2000-02-26       2    82</span></span>
+<span><span class="co">#&gt; 3 2 Pac  Baby Don't Cry (Keep... 2000-02-26       3    72</span></span>
+<span><span class="co">#&gt; 4 2 Pac  Baby Don't Cry (Keep... 2000-02-26       4    77</span></span>
+<span><span class="co">#&gt; 5 2 Pac  Baby Don't Cry (Keep... 2000-02-26       5    87</span></span>
+<span><span class="co">#&gt; 6 2 Pac  Baby Don't Cry (Keep... 2000-02-26       6    94</span></span>
+<span><span class="co">#&gt; # … with 5,301 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we’re in a good position to look at how song ranks vary over time by drawing a plot. The code is shown below and the result is <a href="#fig-billboard-ranks">Figure&nbsp;<span>6.2</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">billboard_tidy</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">week</span>, <span class="va">rank</span>, group <span class="op">=</span> <span class="va">track</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_reverse</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-billboard-ranks" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="data-tidy_files/figure-html/fig-billboard-ranks-1.png" class="img-fluid figure-img" alt="A line plot with week on the x-axis and rank on the y-axis, where each line represents a song. Most songs appear to start at a high rank, rapidly accelerate to a low rank, and then decay again. There are suprisingly few tracks in the region when week is >20 and rank is >50." width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 6.2: A line plot showing how the rank of a song changes over time.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="how-does-pivoting-work" class="level3" data-number="6.3.2"><h3 data-number="6.3.2" class="anchored" data-anchor-id="how-does-pivoting-work">
+<span class="header-section-number">6.3.2</span> How does pivoting work?</h3>
+<p>Now that you’ve seen what pivoting can do for you, it’s worth taking a little time to gain some intuition about what it does to the data. Let’s start with a very simple dataset to make it easier to see what’s happening:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">var</span>, <span class="op">~</span><span class="va">col1</span>, <span class="op">~</span><span class="va">col2</span>,</span>
+<span>   <span class="st">"A"</span>,     <span class="fl">1</span>,     <span class="fl">2</span>,</span>
+<span>   <span class="st">"B"</span>,     <span class="fl">3</span>,     <span class="fl">4</span>,</span>
+<span>   <span class="st">"C"</span>,     <span class="fl">5</span>,     <span class="fl">6</span></span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here we’ll say there are three variables: <code>var</code> (already in a variable), <code>name</code> (the column names in the column names), and <code>value</code> (the cell values). So we can tidy it with:</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="va">col1</span><span class="op">:</span><span class="va">col2</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"names"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"values"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
+<span><span class="co">#&gt;   var   names values</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 A     col1       1</span></span>
+<span><span class="co">#&gt; 2 A     col2       2</span></span>
+<span><span class="co">#&gt; 3 B     col1       3</span></span>
+<span><span class="co">#&gt; 4 B     col2       4</span></span>
+<span><span class="co">#&gt; 5 C     col1       5</span></span>
+<span><span class="co">#&gt; 6 C     col2       6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How does this transformation take place? It’s easier to see if we take it component by component. Columns that are already variables need to be repeated, once for each column in <code>cols</code>, as shown in <a href="#fig-pivot-variables">Figure&nbsp;<span>6.3</span></a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pivot-variables" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/tidy-data/variables.png" class="img-fluid figure-img" alt="A diagram showing how `pivot_longer()` transforms a simple dataset, using color to highlight how the values in the `var` column (&quot;A&quot;, &quot;B&quot;, &quot;C&quot;) are each repeated twice in the output because there are two columns being pivotted (&quot;col1&quot; and &quot;col2&quot;)." width="469"></p>
+<p></p><figcaption class="figure-caption">Figure 6.3: Columns that are already variables need to be repeated, once for each column that is pivotted.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The column names become values in a new variable, whose name is given by <code>names_to</code>, as shown in <a href="#fig-pivot-names">Figure&nbsp;<span>6.4</span></a>. They need to be repeated once for each row in the original dataset.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pivot-names" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/tidy-data/column-names.png" class="img-fluid figure-img" alt="A diagram showing how `pivot_longer()` transforms a simple data set, using color to highlight how column names (&quot;col1&quot; and &quot;col2&quot;) become the values in a new `var` column. They are repeated three times because there were three rows in the input." width="469"></p>
+<p></p><figcaption class="figure-caption">Figure 6.4: The column names of pivoted columns become a new column.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The cell values also become values in a new variable, with a name given by <code>values_to</code>. They are unwound row by row. <a href="#fig-pivot-values">Figure&nbsp;<span>6.5</span></a> illustrates the process.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pivot-values" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/tidy-data/cell-values.png" class="img-fluid figure-img" alt="A diagram showing how `pivot_longer()` transforms data, using color to highlight how the cell values (the numbers 1 to 6) become the values in a new `value` column. They are unwound row-by-row, so the original rows (1,2), then (3,4), then (5,6), become a column running from 1 to 6." width="469"></p>
+<p></p><figcaption class="figure-caption">Figure 6.5: The number of values is preserved (not repeated), but unwound row-by-row.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="many-variables-in-column-names" class="level3" data-number="6.3.3"><h3 data-number="6.3.3" class="anchored" data-anchor-id="many-variables-in-column-names">
+<span class="header-section-number">6.3.3</span> Many variables in column names</h3>
+<p>A more challenging situation occurs when you have multiple variables crammed into the column names. For example, take the <code>who2</code> dataset:</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">who2</span> <span class="op">&lt;-</span> <span class="va">who</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"new_?"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"([mf])"</span>, <span class="st">"\\1_"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"iso"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">who2</span></span>
+<span><span class="co">#&gt; # A tibble: 7,240 × 58</span></span>
+<span><span class="co">#&gt;   country   year sp_m_…¹ sp_m_…² sp_m_…³ sp_m_…⁴ sp_m_…⁵ sp_m_…⁶ sp_m_65 sp_f_…⁷</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghani…  1980      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 2 Afghani…  1981      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 3 Afghani…  1982      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 4 Afghani…  1983      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 5 Afghani…  1984      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 6 Afghani…  1985      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; # … with 7,234 more rows, 48 more variables: sp_f_1524 &lt;int&gt;, sp_f_2534 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sp_f_3544 &lt;int&gt;, sp_f_4554 &lt;int&gt;, sp_f_5564 &lt;int&gt;, sp_f_65 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_m_014 &lt;int&gt;, sn_m_1524 &lt;int&gt;, sn_m_2534 &lt;int&gt;, sn_m_3544 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_m_4554 &lt;int&gt;, sn_m_5564 &lt;int&gt;, sn_m_65 &lt;int&gt;, sn_f_014 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_f_1524 &lt;int&gt;, sn_f_2534 &lt;int&gt;, sn_f_3544 &lt;int&gt;, sn_f_4554 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_f_5564 &lt;int&gt;, sn_f_65 &lt;int&gt;, ep_m_014 &lt;int&gt;, ep_m_1524 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   ep_m_2534 &lt;int&gt;, ep_m_3544 &lt;int&gt;, ep_m_4554 &lt;int&gt;, ep_m_5564 &lt;int&gt;, …</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span>
+<span></span>
+<span><span class="va">family</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">family</span>,  <span class="op">~</span><span class="va">dob_child1</span>,  <span class="op">~</span><span class="va">dob_child2</span>, <span class="op">~</span><span class="va">name_child1</span>, <span class="op">~</span><span class="va">name_child2</span>,</span>
+<span>        <span class="fl">1</span>, <span class="st">"1998-11-26"</span>, <span class="st">"2000-01-29"</span>,      <span class="st">"Susan"</span>,       <span class="st">"Jose"</span>,</span>
+<span>        <span class="fl">2</span>, <span class="st">"1996-06-22"</span>,           <span class="cn">NA</span>,       <span class="st">"Mark"</span>,           <span class="cn">NA</span>,</span>
+<span>        <span class="fl">3</span>, <span class="st">"2002-07-11"</span>, <span class="st">"2004-04-05"</span>,        <span class="st">"Sam"</span>,       <span class="st">"Seth"</span>,</span>
+<span>        <span class="fl">4</span>, <span class="st">"2004-10-10"</span>, <span class="st">"2009-08-27"</span>,      <span class="st">"Craig"</span>,       <span class="st">"Khai"</span>,</span>
+<span>        <span class="fl">5</span>, <span class="st">"2000-12-05"</span>, <span class="st">"2005-02-28"</span>,     <span class="st">"Parker"</span>,     <span class="st">"Gracie"</span>,</span>
+<span><span class="op">)</span></span>
+<span><span class="va">family</span> <span class="op">&lt;-</span> <span class="va">family</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"dob"</span><span class="op">)</span>, <span class="va">parse_date</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">family</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
+<span><span class="co">#&gt;   family dob_child1 dob_child2 name_child1 name_child2</span></span>
+<span><span class="co">#&gt;    &lt;dbl&gt; &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;       &lt;chr&gt;      </span></span>
+<span><span class="co">#&gt; 1      1 1998-11-26 2000-01-29 Susan       Jose       </span></span>
+<span><span class="co">#&gt; 2      2 1996-06-22 NA         Mark        &lt;NA&gt;       </span></span>
+<span><span class="co">#&gt; 3      3 2002-07-11 2004-04-05 Sam         Seth       </span></span>
+<span><span class="co">#&gt; 4      4 2004-10-10 2009-08-27 Craig       Khai       </span></span>
+<span><span class="co">#&gt; 5      5 2000-12-05 2005-02-28 Parker      Gracie</span></span>
+<span></span>
+<span><span class="va">who2</span></span>
+<span><span class="co">#&gt; # A tibble: 7,240 × 58</span></span>
+<span><span class="co">#&gt;   country   year sp_m_…¹ sp_m_…² sp_m_…³ sp_m_…⁴ sp_m_…⁵ sp_m_…⁶ sp_m_65 sp_f_…⁷</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;    &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;   &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghani…  1980      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 2 Afghani…  1981      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 3 Afghani…  1982      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 4 Afghani…  1983      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 5 Afghani…  1984      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; 6 Afghani…  1985      NA      NA      NA      NA      NA      NA      NA      NA</span></span>
+<span><span class="co">#&gt; # … with 7,234 more rows, 48 more variables: sp_f_1524 &lt;int&gt;, sp_f_2534 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sp_f_3544 &lt;int&gt;, sp_f_4554 &lt;int&gt;, sp_f_5564 &lt;int&gt;, sp_f_65 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_m_014 &lt;int&gt;, sn_m_1524 &lt;int&gt;, sn_m_2534 &lt;int&gt;, sn_m_3544 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_m_4554 &lt;int&gt;, sn_m_5564 &lt;int&gt;, sn_m_65 &lt;int&gt;, sn_f_014 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_f_1524 &lt;int&gt;, sn_f_2534 &lt;int&gt;, sn_f_3544 &lt;int&gt;, sn_f_4554 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   sn_f_5564 &lt;int&gt;, sn_f_65 &lt;int&gt;, ep_m_014 &lt;int&gt;, ep_m_1524 &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; #   ep_m_2534 &lt;int&gt;, ep_m_3544 &lt;int&gt;, ep_m_4554 &lt;int&gt;, ep_m_5564 &lt;int&gt;, …</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This dataset records information about tuberculosis data collected by the WHO. There are two columns that are already variables and are easy to interpret: <code>country</code> and <code>year</code>. They are followed by 56 columns like <code>sp_m_014</code>, <code>ep_m_4554</code>, and <code>rel_m_3544</code>. If you stare at these columns for long enough, you’ll notice there’s a pattern. Each column name is made up of three pieces separated by <code>_</code>. The first piece, <code>sp</code>/<code>rel</code>/<code>ep</code>, describes the method used for the <code>diagnosis</code>, the second piece, <code>m</code>/<code>f</code> is the <code>gender</code>, and the third piece, <code>014</code>/<code>1524</code>/<code>2535</code>/<code>3544</code>/<code>4554</code>/<code>65</code> is the <code>age</code> range.</p>
+<p>So in this case we have six variables: two variables are already columns, three variables are contained in the column name, and one variable is in the cell name. This requires two changes to our call to <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>: <code>names_to</code> gets a vector of column names and <code>names_sep</code> describes how to split the variable name up into pieces:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">who2</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="op">!</span><span class="op">(</span><span class="va">country</span><span class="op">:</span><span class="va">year</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"diagnosis"</span>, <span class="st">"gender"</span>, <span class="st">"age"</span><span class="op">)</span>, </span>
+<span>    names_sep <span class="op">=</span> <span class="st">"_"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"count"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 405,440 × 6</span></span>
+<span><span class="co">#&gt;   country      year diagnosis gender age   count</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan  1980 sp        m      014      NA</span></span>
+<span><span class="co">#&gt; 2 Afghanistan  1980 sp        m      1524     NA</span></span>
+<span><span class="co">#&gt; 3 Afghanistan  1980 sp        m      2534     NA</span></span>
+<span><span class="co">#&gt; 4 Afghanistan  1980 sp        m      3544     NA</span></span>
+<span><span class="co">#&gt; 5 Afghanistan  1980 sp        m      4554     NA</span></span>
+<span><span class="co">#&gt; 6 Afghanistan  1980 sp        m      5564     NA</span></span>
+<span><span class="co">#&gt; # … with 405,434 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An alternative to <code>names_sep</code> is <code>names_pattern</code>, which you can use to extract variables from more complicated naming scenarios, once you’ve learned about regular expressions in <a href="regexps.html">Chapter&nbsp;<span>17</span></a>.</p>
+<p>Conceptually, this is only a minor variation on the simpler case you’ve already seen. <a href="#fig-pivot-multiple-names">Figure&nbsp;<span>6.6</span></a> shows the basic idea: now, instead of the column names pivoting into a single column, they pivot into multiple columns. You can imagine this happening in two steps (first pivoting and then separating) but under the hood it happens in a single step because that gives better performance.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pivot-multiple-names" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/tidy-data/multiple-names.png" class="img-fluid figure-img" alt="A diagram that uses color to illustrate how supplying `names_sep` and multiple `names_to` creates multiple variables in the output. The input has variable names &quot;x_1&quot; and &quot;y_2&quot; which are split up by &quot;_&quot; to create name and number columns in the output. This is is similar case with a single `names_to`, but what would have been a single output variable is now separated into multiple variables." width="600"></p>
+<p></p><figcaption class="figure-caption">Figure 6.6: Pivotting with many variables in the column names means that each column name now fills in values in multiple output columns.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="data-and-variable-names-in-the-column-headers" class="level3" data-number="6.3.4"><h3 data-number="6.3.4" class="anchored" data-anchor-id="data-and-variable-names-in-the-column-headers">
+<span class="header-section-number">6.3.4</span> Data and variable names in the column headers</h3>
+<p>The next step up in complexity is when the column names include a mix of variable values and variable names. For example, take the <code>household</code> dataset:</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Can't find the household dataset online, sorry</span></span>
+<span><span class="co">#household</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This dataset contains data about five families, with the names and dates of birth of up to two children. The new challenge in this dataset is that the column names contain the names of two variables (<code>dob</code>, <code>name)</code> and the values of another (<code>child,</code> with values 1 and 2). To solve this problem we again need to supply a vector to <code>names_to</code> but this time we use the special <code>".value"</code> sentinel. This overrides the usual <code>values_to</code> argument to use the first component of the pivoted column name as a variable name in the output.</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># household |&gt; </span></span>
+<span><span class="co">#   pivot_longer(</span></span>
+<span><span class="co">#     cols = !family, </span></span>
+<span><span class="co">#     names_to = c(".value", "child"), </span></span>
+<span><span class="co">#     names_sep = "_", </span></span>
+<span><span class="co">#     values_drop_na = TRUE</span></span>
+<span><span class="co">#   ) |&gt; </span></span>
+<span><span class="co">#   mutate(</span></span>
+<span><span class="co">#     child = parse_number(child)</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We again use <code>values_drop_na = TRUE</code>, since the shape of the input forces the creation of explicit missing variables (e.g.&nbsp;for families with only one child), and <code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code> to convert (e.g.) <code>child1</code> into 1.</p>
+<p><a href="#fig-pivot-names-and-values">Figure&nbsp;<span>6.7</span></a> illustrates the basic idea with a simpler example. When you use <code>".value"</code> in <code>names_to</code>, the column names in the input contribute to both values and variable names in the output.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pivot-names-and-values" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="diagrams/tidy-data/names-and-values.png" class="img-fluid figure-img" alt="A diagram that uses color to illustrate how the special &quot;.value&quot; sentinel works. The input has names &quot;x_1&quot;, &quot;x_2&quot;, &quot;y_1&quot;, and &quot;y_2&quot;, and we want to use the first component (&quot;x&quot;, &quot;y&quot;) as a variable name and the second (&quot;1&quot;, &quot;2&quot;) as the value for a new &quot;id&quot; column." width="540"></p>
+<p></p><figcaption class="figure-caption">Figure 6.7: Pivoting with <code>names_to = c(".value", "id")</code> splits the column names into two components: the first part determines the output column name (<code>x</code> or <code>y</code>), and the second part determines the value of the <code>id</code> column.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="widening-data" class="level3" data-number="6.3.5"><h3 data-number="6.3.5" class="anchored" data-anchor-id="widening-data">
+<span class="header-section-number">6.3.5</span> Widening data</h3>
+<p>So far we’ve used <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> to solve the common class of problems where values have ended up in column names. Next we’ll pivot (HA HA) to <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code>, which helps when one observation is spread across multiple rows. This seems to arise less commonly in the wild, but it does seem to crop up a lot when dealing with governmental data.</p>
+<p>We’ll start by looking at <code>cms_patient_experience</code>, a dataset from the Centers of Medicare and Medicaid services that collects data about patient experiences:</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#cms_patient_experience &lt;- read.csv("Hospice_Provider_May2022")</span></span>
+<span><span class="co">#cms_patient_experience</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An observation is an organisation, but each organisation is spread across six rows, with one row for each variable, or measure. We can see the complete set of values for <code>measure_cd</code> and <code>measure_title</code> by using <code><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_experience |&gt; </span></span>
+<span><span class="co">#   distinct(measure_cd, measure_title)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Neither of these columns will make particularly great variable names: <code>measure_cd</code> doesn’t hint at the meaning of the variable and <code>measure_title</code> is a long sentence containing spaces. We’ll use <code>measure_cd</code> for now, but in a real analysis you might want to create your own variable names that are both short and meaningful.</p>
+<p><code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> has the opposite interface to <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code>: we need to provide the existing columns that define the values (<code>values_from</code>) and the column name (<code>names_from)</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_experience |&gt; </span></span>
+<span><span class="co">#   pivot_wider(</span></span>
+<span><span class="co">#     names_from = measure_cd,</span></span>
+<span><span class="co">#     values_from = prf_rate</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The output doesn’t look quite right; we still seem to have multiple rows for each organization. That’s because, by default, <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> will attempt to preserve all the existing columns including <code>measure_title</code> which has six distinct observations for each organisations. To fix this problem we need to tell <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> which columns identify each row; in this case those are the variables starting with <code>org</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_experience |&gt; </span></span>
+<span><span class="co">#   pivot_wider(</span></span>
+<span><span class="co">#     id_cols = starts_with("org"),</span></span>
+<span><span class="co">#     names_from = measure_cd,</span></span>
+<span><span class="co">#     values_from = prf_rate</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This gives us the output that we’re looking for.</p>
+</section><section id="how-does-pivot_wider-work" class="level3" data-number="6.3.6"><h3 data-number="6.3.6" class="anchored" data-anchor-id="how-does-pivot_wider-work">
+<span class="header-section-number">6.3.6</span> How does <code>pivot_wider()</code> work?</h3>
+<p>To understand how <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> works, let’s again start with a very simple dataset:</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">id</span>, <span class="op">~</span><span class="va">name</span>, <span class="op">~</span><span class="va">value</span>,</span>
+<span>  <span class="st">"A"</span>, <span class="st">"x"</span>, <span class="fl">1</span>,</span>
+<span>  <span class="st">"B"</span>, <span class="st">"y"</span>, <span class="fl">2</span>,</span>
+<span>  <span class="st">"B"</span>, <span class="st">"x"</span>, <span class="fl">3</span>, </span>
+<span>  <span class="st">"A"</span>, <span class="st">"y"</span>, <span class="fl">4</span>,</span>
+<span>  <span class="st">"A"</span>, <span class="st">"z"</span>, <span class="fl">5</span>,</span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We’ll take the values from the <code>value</code> column and the names from the <code>name</code> column:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    names_from <span class="op">=</span> <span class="va">name</span>,</span>
+<span>    values_from <span class="op">=</span> <span class="va">value</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span><span class="co">#&gt;   id        x     y     z</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 A         1     4     5</span></span>
+<span><span class="co">#&gt; 2 B         3     2    NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The connection between the position of the row in the input and the cell in the output is weaker than in <code><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer()</a></code> because the rows and columns in the output are primarily determined by the values of variables, not their locations.</p>
+<p>To begin the process <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> needs to first figure out what will go in the rows and columns. Finding the column names is easy: it’s just the values of <code>name</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span><span class="co">#&gt;   name </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 x    </span></span>
+<span><span class="co">#&gt; 2 y    </span></span>
+<span><span class="co">#&gt; 3 z</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By default, the rows in the output are formed by all the variables that aren’t going into the names or values. These are called the <code>id_cols</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">name</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 1</span></span>
+<span><span class="co">#&gt;   id   </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 A    </span></span>
+<span><span class="co">#&gt; 2 B</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> then combines these results to generate an empty data frame:</p>
+<div class="cell">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">name</span>, <span class="op">-</span><span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html">distinct</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NA</span>, y <span class="op">=</span> <span class="cn">NA</span>, z <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 4</span></span>
+<span><span class="co">#&gt;   id    x     y     z    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;lgl&gt; &lt;lgl&gt; &lt;lgl&gt;</span></span>
+<span><span class="co">#&gt; 1 A     NA    NA    NA   </span></span>
+<span><span class="co">#&gt; 2 B     NA    NA    NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It then fills in all the missing values using the data in the input. In this case, not every cell in the output has corresponding value in the input as there’s no entry for id “B” and name “z”, so that cell remains missing. We’ll come back to this idea that <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> can “make” missing values in <a href="missing-values.html">Chapter&nbsp;<span>20</span></a>.</p>
+<p>You might also wonder what happens if there are multiple rows in the input that correspond to one cell in the output. The example below has two rows that correspond to id “A” and name “x”:</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tribble.html">tribble</a></span><span class="op">(</span></span>
+<span>  <span class="op">~</span><span class="va">id</span>, <span class="op">~</span><span class="va">name</span>, <span class="op">~</span><span class="va">value</span>,</span>
+<span>  <span class="st">"A"</span>, <span class="st">"x"</span>, <span class="fl">1</span>,</span>
+<span>  <span class="st">"A"</span>, <span class="st">"x"</span>, <span class="fl">2</span>,</span>
+<span>  <span class="st">"A"</span>, <span class="st">"y"</span>, <span class="fl">3</span>,</span>
+<span>  <span class="st">"B"</span>, <span class="st">"x"</span>, <span class="fl">4</span>, </span>
+<span>  <span class="st">"B"</span>, <span class="st">"y"</span>, <span class="fl">5</span>, </span>
+<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we attempt to pivot this we get an output that contains list-columns, which you’ll learn more about in <a href="rectangling.html"><span>Chapter&nbsp;25</span></a>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>  names_from <span class="op">=</span> <span class="va">name</span>,</span>
+<span>  values_from <span class="op">=</span> <span class="va">value</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Values from `value` are not uniquely identified; output will contain list-cols.</span></span>
+<span><span class="co">#&gt; * Use `values_fn = list` to suppress this warning.</span></span>
+<span><span class="co">#&gt; * Use `values_fn = {summary_fun}` to summarise duplicates.</span></span>
+<span><span class="co">#&gt; * Use the following dplyr code to identify duplicates.</span></span>
+<span><span class="co">#&gt;   {data} %&gt;%</span></span>
+<span><span class="co">#&gt;     dplyr::group_by(id, name) %&gt;%</span></span>
+<span><span class="co">#&gt;     dplyr::summarise(n = dplyr::n(), .groups = "drop") %&gt;%</span></span>
+<span><span class="co">#&gt;     dplyr::filter(n &gt; 1L)</span></span>
+<span><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span><span class="co">#&gt;   id    x         y        </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;list&gt;    &lt;list&gt;   </span></span>
+<span><span class="co">#&gt; 1 A     &lt;dbl [2]&gt; &lt;dbl [1]&gt;</span></span>
+<span><span class="co">#&gt; 2 B     &lt;dbl [1]&gt; &lt;dbl [1]&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since you don’t know how to work with this sort of data yet, you’ll want to follow the hint in the warning to figure out where the problem is:</p>
+<div class="cell">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">"drop"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">1L</span><span class="op">)</span> </span>
+<span><span class="co">#&gt; # A tibble: 1 × 3</span></span>
+<span><span class="co">#&gt;   id    name      n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 A     x         2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It’s then up to you to figure out what’s gone wrong with your data and either repair the underlying damage or use your grouping and summarizing skills to ensure that each combination of row and column values only has a single row.</p>
+</section></section><section id="untidy-data" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="untidy-data">
+<span class="header-section-number">6.4</span> Untidy data</h2>
+<p>While <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> is occasionally useful for making tidy data, its real strength is making <strong>untidy</strong> data. While that sounds like a bad thing, untidy isn’t a pejorative term: there are many untidy data structures that are extremely useful. Tidy data is a great starting point for most analyses but it’s not the only data format you’ll ever need.</p>
+<p>The following sections will show a few examples of <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> making usefully untidy data for presenting data to other humans, for input to multivariate statistics algorithms, and for pragmatically solving data manipulation challenges.</p>
+<section id="presenting-data-to-humans" class="level3" data-number="6.4.1"><h3 data-number="6.4.1" class="anchored" data-anchor-id="presenting-data-to-humans">
+<span class="header-section-number">6.4.1</span> Presenting data to humans</h3>
+<p>As you’ve seen, <code><a href="https://dplyr.tidyverse.org/reference/count.html">dplyr::count()</a></code> produces tidy data: it makes one row for each group, with one column for each grouping variable, and one column for the number of observations.</p>
+<div class="cell">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">clarity</span>, <span class="va">color</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 56 × 3</span></span>
+<span><span class="co">#&gt;   clarity color     n</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt;   &lt;ord&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 I1      D        42</span></span>
+<span><span class="co">#&gt; 2 I1      E       102</span></span>
+<span><span class="co">#&gt; 3 I1      F       143</span></span>
+<span><span class="co">#&gt; 4 I1      G       150</span></span>
+<span><span class="co">#&gt; 5 I1      H       162</span></span>
+<span><span class="co">#&gt; 6 I1      I        92</span></span>
+<span><span class="co">#&gt; # … with 50 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is easy to visualize or summarize further, but it’s not the most compact form for display. You can use <code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> to create a form more suitable for display to other humans:</p>
+<div class="cell">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">diamonds</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">clarity</span>, <span class="va">color</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    names_from <span class="op">=</span> <span class="va">color</span>, </span>
+<span>    values_from <span class="op">=</span> <span class="va">n</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 8 × 8</span></span>
+<span><span class="co">#&gt;   clarity     D     E     F     G     H     I     J</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 I1         42   102   143   150   162    92    50</span></span>
+<span><span class="co">#&gt; 2 SI2      1370  1713  1609  1548  1563   912   479</span></span>
+<span><span class="co">#&gt; 3 SI1      2083  2426  2131  1976  2275  1424   750</span></span>
+<span><span class="co">#&gt; 4 VS2      1697  2470  2201  2347  1643  1169   731</span></span>
+<span><span class="co">#&gt; 5 VS1       705  1281  1364  2148  1169   962   542</span></span>
+<span><span class="co">#&gt; 6 VVS2      553   991   975  1443   608   365   131</span></span>
+<span><span class="co">#&gt; # … with 2 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This display also makes it easy to compare in two directions, horizontally and vertically, much like <code><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid()</a></code>.</p>
+<p><code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> can be great for quickly sketching out a table. But for real presentation tables, we highly suggest learning a package like <a href="https://gt.rstudio.com">gt</a>. gt is similar to ggplot2 in that it provides an extremely powerful grammar for laying out tables. It takes some work to learn but the payoff is the ability to make just about any table you can imagine.</p>
+</section><section id="multivariate-statistics" class="level3" data-number="6.4.2"><h3 data-number="6.4.2" class="anchored" data-anchor-id="multivariate-statistics">
+<span class="header-section-number">6.4.2</span> Multivariate statistics</h3>
+<p>Most classical multivariate statistical methods (like dimension reduction and clustering) require your data in matrix form, where each column is a time point, or a location, or a gene, or a species, but definitely not a variable. Sometimes these formats have substantial performance or space advantages, or sometimes they’re just necessary to get closer to the underlying matrix mathematics.</p>
+<p>We’re not going to cover these statistical methods here, but it is useful to know how to get your data into the form that they need. For example, let’s imagine you wanted to cluster the gapminder data to find countries that had similar progression of <code>gdpPercap</code> over time. To do this, we need one row for each country and one column for each year:</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jennybc/gapminder">gapminder</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">col_year</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>gdpPercap <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">gdpPercap</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span></span>
+<span>    id_cols <span class="op">=</span> <span class="va">country</span>, </span>
+<span>    names_from <span class="op">=</span> <span class="va">year</span>,</span>
+<span>    values_from <span class="op">=</span> <span class="va">gdpPercap</span></span>
+<span>  <span class="op">)</span> </span>
+<span><span class="va">col_year</span></span>
+<span><span class="co">#&gt; # A tibble: 142 × 13</span></span>
+<span><span class="co">#&gt;   country  `1952` `1957` `1962` `1967` `1972` `1977` `1982` `1987` `1992` `1997`</span></span>
+<span><span class="co">#&gt;   &lt;fct&gt;     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghani…   2.89   2.91   2.93   2.92   2.87   2.90   2.99   2.93   2.81   2.80</span></span>
+<span><span class="co">#&gt; 2 Albania    3.20   3.29   3.36   3.44   3.52   3.55   3.56   3.57   3.40   3.50</span></span>
+<span><span class="co">#&gt; 3 Algeria    3.39   3.48   3.41   3.51   3.62   3.69   3.76   3.75   3.70   3.68</span></span>
+<span><span class="co">#&gt; 4 Angola     3.55   3.58   3.63   3.74   3.74   3.48   3.44   3.39   3.42   3.36</span></span>
+<span><span class="co">#&gt; 5 Argenti…   3.77   3.84   3.85   3.91   3.98   4.00   3.95   3.96   3.97   4.04</span></span>
+<span><span class="co">#&gt; 6 Austral…   4.00   4.04   4.09   4.16   4.23   4.26   4.29   4.34   4.37   4.43</span></span>
+<span><span class="co">#&gt; # … with 136 more rows, and 2 more variables: `2002` &lt;dbl&gt;, `2007` &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider()</a></code> produces a tibble where each row is labelled by the <code>country</code> variable. But most classic statistical algorithms don’t want the identifier as an explicit variable; they want as a <strong>row name</strong>. We can turn the <code>country</code> variable into row names with <code>column_to_rowname()</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">col_year</span> <span class="op">&lt;-</span> <span class="va">col_year</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html">column_to_rownames</a></span><span class="op">(</span><span class="st">"country"</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">col_year</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                 1952     1957     1962     1967     1972     1977     1982</span></span>
+<span><span class="co">#&gt; Afghanistan 2.891786 2.914265 2.931000 2.922309 2.869221 2.895485 2.990344</span></span>
+<span><span class="co">#&gt; Albania     3.204407 3.288313 3.364155 3.440940 3.520277 3.548144 3.560012</span></span>
+<span><span class="co">#&gt; Algeria     3.388990 3.479140 3.406679 3.511481 3.621453 3.691118 3.759302</span></span>
+<span><span class="co">#&gt; Angola      3.546618 3.582965 3.630354 3.742157 3.738248 3.478371 3.440429</span></span>
+<span><span class="co">#&gt; Argentina   3.771684 3.836125 3.853282 3.905955 3.975112 4.003419 3.954141</span></span>
+<span><span class="co">#&gt; Australia   4.001716 4.039400 4.086973 4.162150 4.225015 4.263262 4.289522</span></span>
+<span><span class="co">#&gt;                 1987     1992     1997     2002     2007</span></span>
+<span><span class="co">#&gt; Afghanistan 2.930641 2.812473 2.803007 2.861376 2.988818</span></span>
+<span><span class="co">#&gt; Albania     3.572748 3.397495 3.504206 3.663155 3.773569</span></span>
+<span><span class="co">#&gt; Algeria     3.754452 3.700982 3.680996 3.723295 3.794025</span></span>
+<span><span class="co">#&gt; Angola      3.385644 3.419600 3.357390 3.442995 3.680991</span></span>
+<span><span class="co">#&gt; Argentina   3.960931 3.968876 4.040099 3.944366 4.106510</span></span>
+<span><span class="co">#&gt; Australia   4.340224 4.369675 4.431331 4.486965 4.537005</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This makes a data frame, because tibbles don’t support row names<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>.</p>
+<p>We’re now ready to cluster with (e.g.) <code>kmeans():</code></p>
+<div class="cell">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cluster</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">col_year</span>, centers <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Extracting the data out of this object into a form you can work with is a challenge you’ll need to come back to later in the book, once you’ve learned more about lists. But for now, you can get the clustering membership out with this code:</p>
+<div class="cell">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cluster_id</span> <span class="op">&lt;-</span> <span class="va">cluster</span><span class="op">$</span><span class="va">cluster</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/enframe.html">enframe</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>country <span class="op">=</span> <span class="va">name</span>, cluster_id <span class="op">=</span> <span class="va">value</span><span class="op">)</span></span>
+<span><span class="va">cluster_id</span></span>
+<span><span class="co">#&gt; # A tibble: 142 × 2</span></span>
+<span><span class="co">#&gt;   country     cluster_id</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;            &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan          4</span></span>
+<span><span class="co">#&gt; 2 Albania              2</span></span>
+<span><span class="co">#&gt; 3 Algeria              6</span></span>
+<span><span class="co">#&gt; 4 Angola               2</span></span>
+<span><span class="co">#&gt; 5 Argentina            5</span></span>
+<span><span class="co">#&gt; 6 Australia            1</span></span>
+<span><span class="co">#&gt; # … with 136 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You could then combine this back with the original data using one of the joins you’ll learn about in <a href="joins.html">Chapter&nbsp;<span>13</span></a>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gapminder</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">cluster_id</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Joining, by = "country"</span></span>
+<span><span class="co">#&gt; # A tibble: 1,704 × 7</span></span>
+<span><span class="co">#&gt;   country     continent  year lifeExp      pop gdpPercap cluster_id</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;      &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 Afghanistan Asia       1952    28.8  8425333      779.          4</span></span>
+<span><span class="co">#&gt; 2 Afghanistan Asia       1957    30.3  9240934      821.          4</span></span>
+<span><span class="co">#&gt; 3 Afghanistan Asia       1962    32.0 10267083      853.          4</span></span>
+<span><span class="co">#&gt; 4 Afghanistan Asia       1967    34.0 11537966      836.          4</span></span>
+<span><span class="co">#&gt; 5 Afghanistan Asia       1972    36.1 13079460      740.          4</span></span>
+<span><span class="co">#&gt; 6 Afghanistan Asia       1977    38.4 14880372      786.          4</span></span>
+<span><span class="co">#&gt; # … with 1,698 more rows</span></span>
+<span><span class="co">#&gt; # ℹ Use `print(n = ...)` to see more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="pragmatic-computation" class="level3" data-number="6.4.3"><h3 data-number="6.4.3" class="anchored" data-anchor-id="pragmatic-computation">
+<span class="header-section-number">6.4.3</span> Pragmatic computation</h3>
+<p>Sometimes it’s just easier to answer a question using untidy data. For example, if you’re interested in just the total number of missing values in <code>cms_patient_experience</code>, it’s easier to work with the untidy form:</p>
+<div class="cell">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_experience |&gt;</span></span>
+<span><span class="co">#   group_by(org_pac_id) |&gt;</span></span>
+<span><span class="co">#   summarize(</span></span>
+<span><span class="co">#     n_miss = sum(is.na(prf_rate)),</span></span>
+<span><span class="co">#     n = n(),</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is partly a reflection of our definition of tidy data, where we said tidy data has one variable in each column, but we didn’t actually define what a variable is (and it’s surprisingly hard to do so). It’s totally fine to be pragmatic and to say a variable is whatever makes your analysis easiest.</p>
+<p>So if you’re stuck figuring out how to do some computation, maybe it’s time to switch up the organisation of your data. For computations involving a fixed number of values (like computing differences or ratios), it’s usually easier if the data is in columns; for those with a variable number of values (like sums or means) it’s usually easier in rows. Don’t be afraid to untidy, transform, and re-tidy if needed.</p>
+<p>Let’s explore this idea by looking at <code>cms_patient_care</code>, which has a similar structure to <code>cms_patient_experience</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#cms_patient_care</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It contains information about 9 measures (<code>beliefs_addressed</code>, <code>composite_process</code>, <code>dyspena_treatment</code>, …) on 14 different facilities (identified by <code>ccn</code> with a name given by <code>facility_name</code>). Compared to <code>cms_patient_experience</code>, however, each measurement is recorded in two rows with a <code>score</code>, the percentage of patients who answered yes to the survey question, and a denominator, the number of patients that the question applies to. Depending on what you want to do next, you may find any of the following three structures useful:</p>
+<ul>
+<li>
+<p>If you want to compute the number of patients that answered yes to the question, you may pivot <code>type</code> into the columns:</p>
+<div class="cell">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_care |&gt; </span></span>
+<span><span class="co">#   pivot_wider(</span></span>
+<span><span class="co">#     names_from = type,</span></span>
+<span><span class="co">#     values_from = score</span></span>
+<span><span class="co">#   ) |&gt; </span></span>
+<span><span class="co">#   mutate(</span></span>
+<span><span class="co">#     numerator = round(observed / 100 * denominator)</span></span>
+<span><span class="co">#   )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>If you want to display the distribution of each metric, you may keep it as is so you could facet by <code>measure_abbr</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_care |&gt; </span></span>
+<span><span class="co">#   filter(type == "observed") |&gt; </span></span>
+<span><span class="co">#   ggplot(aes(score)) + </span></span>
+<span><span class="co">#   geom_histogram(binwidth = 2) + </span></span>
+<span><span class="co">#   facet_wrap(vars(measure_abbr))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+<li>
+<p>If you want to explore how different metrics are related, you may put the measure names in the columns so you could compare them in scatterplots.</p>
+<div class="cell">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># cms_patient_care |&gt; </span></span>
+<span><span class="co">#   filter(type == "observed") |&gt; </span></span>
+<span><span class="co">#   select(-type) |&gt; </span></span>
+<span><span class="co">#   pivot_wider(</span></span>
+<span><span class="co">#     names_from = measure_abbr,</span></span>
+<span><span class="co">#     values_from = score</span></span>
+<span><span class="co">#   ) |&gt; </span></span>
+<span><span class="co">#   ggplot(aes(dyspnea_screening, dyspena_treatment)) + </span></span>
+<span><span class="co">#   geom_point() + </span></span>
+<span><span class="co">#   coord_equal()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</li>
+</ul>
+
+
+</section></section><section class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
+<ol>
+<li id="fn1" role="doc-endnote"><p>We’ll come back to this idea in <a href="missing-values.html">Chapter&nbsp;<span>20</span></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>tibbles don’t use row names because they only work for a subset of important cases: when observations can be identified by a single character vector.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./workflow-pipes.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Workflow: Pipes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./workflow-style.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Workflow: code style</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">R for Data Science (2e) was written by Hadley Wickham, Mine Çetinkaya-Rundel, and Garrett Grolemund.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

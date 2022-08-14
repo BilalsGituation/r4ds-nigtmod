@@ -91,7 +91,7 @@ format:
   html:
     theme:
       - darkly
-      - r4ds.scss
+     # - r4ds.scss
     cover-image: cover.png
     code-link: true
     include-in-header: "plausible.html"

@@ -363,7 +363,7 @@ If you've encountered unusual values in your dataset, and simply want to move on
 
     ```{r}
     diamonds2 <- diamonds |> 
-      mutate(y = if_else(y < 3 | y > 20, NA, y))
+      mutate(y = if_else(y < 3 | y > 20, NA_real_, y))
     ```
 
 `if_else()` has three arguments.

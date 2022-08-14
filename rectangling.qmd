@@ -571,14 +571,22 @@ We'll finish off these case studies with a list-column that's very deeply nested
 This is a two column tibble containing five city names and the results of using Google's [geocoding API](https://developers.google.com/maps/documentation/geocoding) to determine their location:
 
 ```{r}
-gmaps_cities
+# gmaps_cities
+#> # A tibble: 5 × 2
+#>   city       json            
+#>   <chr>      <list>          
+#> 1 Houston    <named list [2]>
+#> 2 Washington <named list [2]>
+#> 3 New York   <named list [2]>
+#> 4 Chicago    <named list [2]>
+#> 5 Arlington  <named list [2]>
 ```
 
 `json` is a list-column with internal names, so we start with an `unnest_wider()`:
 
 ```{r}
-gmaps_cities |> 
-  unnest_wider(json)
+# gmaps_cities |> 
+#   unnest_wider(json)
 ```
 
 This gives us the `status` and the `results`.
@@ -586,21 +594,21 @@ We'll drop the status column since they're all `OK`; in a real analysis, you'd a
 `results` is an unnamed list, with either one or two elements (we'll see why shortly) so we'll unnest it into rows:
 
 ```{r}
-gmaps_cities |> 
-  unnest_wider(json) |> 
-  select(-status) |> 
-  unnest_longer(results)
+# gmaps_cities |> 
+#   unnest_wider(json) |> 
+#   select(-status) |> 
+#   unnest_longer(results)
 ```
 
 Now `results` is a named list, so we'll use `unnest_wider()`:
 
 ```{r}
-locations <- gmaps_cities |> 
-  unnest_wider(json) |> 
-  select(-status) |> 
-  unnest_longer(results) |> 
-  unnest_wider(results)
-locations
+# locations <- gmaps_cities |> 
+#   unnest_wider(json) |> 
+#   select(-status) |> 
+#   unnest_longer(results) |> 
+#   unnest_wider(results)
+# locations
 ```
 
 Now we can see why two cities got two results: Washington matched both Washington state and Washington, DC, and Arlington matched Arlington, Virginia and Arlington, Texas.
@@ -609,43 +617,35 @@ There are few different places we could go from here.
 We might want to determine the exact location of the match, which is stored in the `geometry` list-column:
 
 ```{r}
-locations |> 
-  select(city, formatted_address, geometry) |> 
-  unnest_wider(geometry)
+# locations |> 
+#   select(city, formatted_address, geometry) |> 
+#   unnest_wider(geometry)
 ```
 
 That gives us new `bounds` (a rectangular region) and `location` (a point).
 We can unnest `location` to see the latitude (`lat`) and longitude (`lng`):
 
 ```{r}
-locations |> 
-  select(city, formatted_address, geometry) |> 
-  unnest_wider(geometry) |> 
-  unnest_wider(location)
+# locations |> 
+#   select(city, formatted_address, geometry) |> 
+#   unnest_wider(geometry) |> 
+#   unnest_wider(location)
 ```
 
 Extracting the bounds requires a few more steps
 
 ```{r}
-locations |> 
-  select(city, formatted_address, geometry) |> 
-  unnest_wider(geometry) |> 
-  # focus on the variables of interest
-  select(!location:viewport) |>
-  unnest_wider(bounds)
+# locations |> 
+#   select(city, formatted_address, geometry) |> 
+#   unnest_wider(geometry) |> 
+#   # focus on the variables of interest
+#   select(!location:viewport) |>
+#   unnest_wider(bounds)
 ```
 
 We then rename `southwest` and `northeast` (the corners of the rectangle) so we can use `names_sep` to create short but evocative names:
 
-```{r}
-locations |> 
-  select(city, formatted_address, geometry) |> 
-  unnest_wider(geometry) |> 
-  select(!location:viewport) |>
-  unnest_wider(bounds) |> 
-  rename(ne = northeast, sw = southwest) |> 
-  unnest_wider(c(ne, sw), names_sep = "_") 
-```
+# `{r} # locations |>  #   select(city, formatted_address, geometry) |>  #   unnest_wider(geometry) |>  #   select(!location:viewport) |> #   unnest_wider(bounds) |>  #   rename(ne = northeast, sw = southwest) |>  #   unnest_wider(c(ne, sw), names_sep = "_")`
 
 Note how we unnest two columns simultaneously by supplying a vector of variable names to `unnest_wider()`.
 
@@ -653,15 +653,15 @@ This somewhere that `hoist()`, mentioned briefly above, can be useful.
 Once you've discovered the path to get to the components you're interested in, you can extract them directly using `hoist()`:
 
 ```{r}
-locations |> 
-  select(city, formatted_address, geometry) |> 
-  hoist(
-    geometry,
-    ne_lat = c("bounds", "northeast", "lat"),
-    sw_lat = c("bounds", "southwest", "lat"),
-    ne_lng = c("bounds", "northeast", "lng"),
-    sw_lng = c("bounds", "southwest", "lng"),
-  )
+# <!-- locations |>  -->
+# <!--   select(city, formatted_address, geometry) |>  -->
+# <!--   hoist( -->
+# <!--     geometry, -->
+# <!--     ne_lat = c("bounds", "northeast", "lat"), -->
+# <!--     sw_lat = c("bounds", "southwest", "lat"), -->
+# <!--     ne_lng = c("bounds", "northeast", "lng"), -->
+# <!--     sw_lng = c("bounds", "southwest", "lng"), -->
+# <!--   ) -->
 ```
 
 If these case studies have whetted your appetite for more real-life rectangling, you can see a few more examples in `vignette("rectangling", package = "tidyr")`.

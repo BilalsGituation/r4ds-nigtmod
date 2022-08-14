@@ -81,7 +81,7 @@ So, as the following example shows, to create the regular expression `\.` we nee
 dot <- "\\."
 
 # But the expression itself only contains one \
-str_view(dot)
+str_view(dot,"")
 
 # And this tells R to look for an explicit .
 str_view(c("abc", "a.c", "bef"), "a\\.c")
@@ -96,7 +96,7 @@ That means to match a literal `\` you need to write `"\\\\"` --- you need four b
 
 ```{r}
 x <- "a\\b"
-str_view(x)
+str_view(x,"")
 str_view(x, "\\\\")
 ```
 
@@ -281,8 +281,8 @@ To put these ideas in practice we'll solve a few semi-authentic problems using t
 `words` is a list of common English words and `sentences` is a set of simple sentences originally used for testing voice transmission.
 
 ```{r}
-str_view(head(words))
-str_view(head(sentences))
+str_view(head(words),"")
+str_view(head(sentences),"")
 ```
 
 The following three sections help you practice the components of a pattern by discussing three general techniques: checking you work by creating simple positive and negative controls, combining regular expressions with Boolean algebra, and creating complex patterns using string manipulation.

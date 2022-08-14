@@ -343,6 +343,24 @@ A more challenging situation occurs when you have multiple variables crammed int
 For example, take the `who2` dataset:
 
 ```{r}
+who2 <- who |> 
+  rename_with(~ str_remove(.x, "new_?")) |> 
+  rename_with(~ str_replace(.x, "([mf])", "\\1_")) |> 
+  select(!starts_with("iso"))
+who2
+
+family <- tribble(
+  ~family,  ~dob_child1,  ~dob_child2, ~name_child1, ~name_child2,
+        1, "1998-11-26", "2000-01-29",      "Susan",       "Jose",
+        2, "1996-06-22",           NA,       "Mark",           NA,
+        3, "2002-07-11", "2004-04-05",        "Sam",       "Seth",
+        4, "2004-10-10", "2009-08-27",      "Craig",       "Khai",
+        5, "2000-12-05", "2005-02-28",     "Parker",     "Gracie",
+)
+family <- family %>% 
+  mutate(across(starts_with("dob"), parse_date))
+family
+
 who2
 ```
 
@@ -395,7 +413,8 @@ The next step up in complexity is when the column names include a mix of variabl
 For example, take the `household` dataset:
 
 ```{r}
-household
+# Can't find the household dataset online, sorry
+#household
 ```
 
 This dataset contains data about five families, with the names and dates of birth of up to two children.
@@ -404,16 +423,16 @@ To solve this problem we again need to supply a vector to `names_to` but this ti
 This overrides the usual `values_to` argument to use the first component of the pivoted column name as a variable name in the output.
 
 ```{r}
-household |> 
-  pivot_longer(
-    cols = !family, 
-    names_to = c(".value", "child"), 
-    names_sep = "_", 
-    values_drop_na = TRUE
-  ) |> 
-  mutate(
-    child = parse_number(child)
-  )
+# household |> 
+#   pivot_longer(
+#     cols = !family, 
+#     names_to = c(".value", "child"), 
+#     names_sep = "_", 
+#     values_drop_na = TRUE
+#   ) |> 
+#   mutate(
+#     child = parse_number(child)
+#   )
 ```
 
 We again use `values_drop_na = TRUE`, since the shape of the input forces the creation of explicit missing variables (e.g. for families with only one child), and `parse_number()` to convert (e.g.) `child1` into 1.
@@ -447,15 +466,16 @@ This seems to arise less commonly in the wild, but it does seem to crop up a lot
 We'll start by looking at `cms_patient_experience`, a dataset from the Centers of Medicare and Medicaid services that collects data about patient experiences:
 
 ```{r}
-cms_patient_experience
+#cms_patient_experience <- read.csv("Hospice_Provider_May2022")
+#cms_patient_experience
 ```
 
 An observation is an organisation, but each organisation is spread across six rows, with one row for each variable, or measure.
 We can see the complete set of values for `measure_cd` and `measure_title` by using `distinct()`:
 
 ```{r}
-cms_patient_experience |> 
-  distinct(measure_cd, measure_title)
+# cms_patient_experience |> 
+#   distinct(measure_cd, measure_title)
 ```
 
 Neither of these columns will make particularly great variable names: `measure_cd` doesn't hint at the meaning of the variable and `measure_title` is a long sentence containing spaces.
@@ -464,11 +484,11 @@ We'll use `measure_cd` for now, but in a real analysis you might want to create 
 `pivot_wider()` has the opposite interface to `pivot_longer()`: we need to provide the existing columns that define the values (`values_from`) and the column name (`names_from)`:
 
 ```{r}
-cms_patient_experience |> 
-  pivot_wider(
-    names_from = measure_cd,
-    values_from = prf_rate
-  )
+# cms_patient_experience |> 
+#   pivot_wider(
+#     names_from = measure_cd,
+#     values_from = prf_rate
+#   )
 ```
 
 The output doesn't look quite right; we still seem to have multiple rows for each organization.
@@ -476,12 +496,12 @@ That's because, by default, `pivot_wider()` will attempt to preserve all the exi
 To fix this problem we need to tell `pivot_wider()` which columns identify each row; in this case those are the variables starting with `org`:
 
 ```{r}
-cms_patient_experience |> 
-  pivot_wider(
-    id_cols = starts_with("org"),
-    names_from = measure_cd,
-    values_from = prf_rate
-  )
+# cms_patient_experience |> 
+#   pivot_wider(
+#     id_cols = starts_with("org"),
+#     names_from = measure_cd,
+#     values_from = prf_rate
+#   )
 ```
 
 This gives us the output that we're looking for.
@@ -678,12 +698,12 @@ Sometimes it's just easier to answer a question using untidy data.
 For example, if you're interested in just the total number of missing values in `cms_patient_experience`, it's easier to work with the untidy form:
 
 ```{r}
-cms_patient_experience |> 
-  group_by(org_pac_id) |> 
-  summarize(
-    n_miss = sum(is.na(prf_rate)),
-    n = n(),
-  )
+# cms_patient_experience |>
+#   group_by(org_pac_id) |>
+#   summarize(
+#     n_miss = sum(is.na(prf_rate)),
+#     n = n(),
+#   )
 ```
 
 This is partly a reflection of our definition of tidy data, where we said tidy data has one variable in each column, but we didn't actually define what a variable is (and it's surprisingly hard to do so).
@@ -696,7 +716,7 @@ Don't be afraid to untidy, transform, and re-tidy if needed.
 Let's explore this idea by looking at `cms_patient_care`, which has a similar structure to `cms_patient_experience`:
 
 ```{r}
-cms_patient_care
+#cms_patient_care
 ```
 
 It contains information about 9 measures (`beliefs_addressed`, `composite_process`, `dyspena_treatment`, ...) on 14 different facilities (identified by `ccn` with a name given by `facility_name`).
@@ -706,14 +726,14 @@ Depending on what you want to do next, you may find any of the following three s
 -   If you want to compute the number of patients that answered yes to the question, you may pivot `type` into the columns:
 
     ```{r}
-    cms_patient_care |> 
-      pivot_wider(
-        names_from = type,
-        values_from = score
-      ) |> 
-      mutate(
-        numerator = round(observed / 100 * denominator)
-      )
+    # cms_patient_care |> 
+    #   pivot_wider(
+    #     names_from = type,
+    #     values_from = score
+    #   ) |> 
+    #   mutate(
+    #     numerator = round(observed / 100 * denominator)
+    #   )
     ```
 
 -   If you want to display the distribution of each metric, you may keep it as is so you could facet by `measure_abbr`.
@@ -721,11 +741,11 @@ Depending on what you want to do next, you may find any of the following three s
     ```{r}
     #| fig.show: "hide"
 
-    cms_patient_care |> 
-      filter(type == "observed") |> 
-      ggplot(aes(score)) + 
-      geom_histogram(binwidth = 2) + 
-      facet_wrap(vars(measure_abbr))
+    # cms_patient_care |> 
+    #   filter(type == "observed") |> 
+    #   ggplot(aes(score)) + 
+    #   geom_histogram(binwidth = 2) + 
+    #   facet_wrap(vars(measure_abbr))
     ```
 
 -   If you want to explore how different metrics are related, you may put the measure names in the columns so you could compare them in scatterplots.
@@ -733,14 +753,14 @@ Depending on what you want to do next, you may find any of the following three s
     ```{r}
     #| fig.show: "hide"
 
-    cms_patient_care |> 
-      filter(type == "observed") |> 
-      select(-type) |> 
-      pivot_wider(
-        names_from = measure_abbr,
-        values_from = score
-      ) |> 
-      ggplot(aes(dyspnea_screening, dyspena_treatment)) + 
-      geom_point() + 
-      coord_equal()
+    # cms_patient_care |> 
+    #   filter(type == "observed") |> 
+    #   select(-type) |> 
+    #   pivot_wider(
+    #     names_from = measure_abbr,
+    #     values_from = score
+    #   ) |> 
+    #   ggplot(aes(dyspnea_screening, dyspena_treatment)) + 
+    #   geom_point() + 
+    #   coord_equal()
     ```

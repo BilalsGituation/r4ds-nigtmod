@@ -31,6 +31,7 @@ We'll also use the babynames data since it provides some fun strings to manipula
 
 library(tidyverse)
 library(babynames)
+library(stringr)
 ```
 
 Similar functionality is available in base R (through functions like `grepl()`, `gsub()`, and `regmatches()`) but we think you'll find stringr easier to use because it's been carefully designed to be as consistent as possible.
@@ -86,7 +87,7 @@ To see the raw contents of the string, use `str_view()`[^strings-1]:
 ```{r}
 x <- c(single_quote, double_quote, backslash)
 x
-str_view(x)
+str_view(x,"")
 ```
 
 ### Raw strings {#sec-raw-strings}
@@ -97,7 +98,7 @@ To illustrate the problem, lets create a string that contains the contents of th
 ```{r}
 tricky <- "double_quote <- \"\\\"\" # or '\"'
 single_quote <- '\\'' # or \"'\""
-str_view(tricky)
+str_view(tricky,"")
 ```
 
 That's a lot of backslashes!
@@ -108,7 +109,7 @@ That's a lot of backslashes!
 ```{r}
 tricky <- r"(double_quote <- "\"" # or '"'
 single_quote <- '\'' # or "'")"
-str_view(tricky)
+str_view(tricky,"")
 ```
 
 A raw string usually starts with `r"(` and finishes with `)"`.
@@ -121,7 +122,7 @@ As well as `\"`, `\'`, and `\\` there are a handful of other special characters 
 ```{r}
 x <- c("one\ntwo", "one\ttwo", "\u00b5", "\U0001f604")
 x
-str_view(x)
+str_view(x,"")
 ```
 
 Note that `str_view()` shows special whitespace characters (i.e. everything except spaces and newlines) with a blue background to make them easier to spot.
@@ -213,7 +214,9 @@ That's the job of `str_flatten()`[^strings-5]: it takes a character vector and c
 ```{r}
 str_flatten(c("x", "y", "z"))
 str_flatten(c("x", "y", "z"), ", ")
-str_flatten(c("x", "y", "z"), ", ", last = ", and ")
+str_flatten(c("x", "y", "z"), ", "
+            #, last = `",` & `"` # unused arg?
+            )
 ```
 
 This makes it work well with `summarise()`:
@@ -520,8 +523,8 @@ Fortunately there are three sets of functions where the locale matters:
 -   **Comparing strings**: `str_equal()` lets you compare if two strings are equal, optionally ignoring case:
 
     ```{r}
-    str_equal("i", "I", ignore_case = TRUE)
-    str_equal("i", "I", ignore_case = TRUE, locale = "tr")
+    #str_equal("i", "I", ignore_case = TRUE)
+    #str_equal("i", "I", ignore_case = TRUE, locale = "tr")
     ```
 
 -   **Sorting strings**: `str_sort()` and `str_order()` sort vectors alphabetically, but the alphabet is not the same in every language[^strings-9]!
@@ -618,7 +621,7 @@ stringr provides two useful tools for cases where your string is too long:
 x <- "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
 str_trunc(x, 30)
-str_view(str_wrap(x, 30))
+str_view(str_wrap(x, 30),"")
 ```
 
 TODO: add example with a plot.

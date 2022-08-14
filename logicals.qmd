@@ -569,6 +569,15 @@ But how do we go from that logical vector to something that we can `group_by()`?
 `consecutive_id()` comes to the rescue:
 
 ```{r}
+consecutive_id <- function(...) {
+  ellipsis::check_dots_unnamed()
+  data <- vctrs::data_frame(..., .name_repair = "minimal")
+
+  out <- vctrs::vec_identify_runs(data)
+  attr(out, "n") <- NULL
+
+  out
+}
 events |> mutate(
   group = consecutive_id(gap)
 )

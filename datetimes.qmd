@@ -354,7 +354,8 @@ flights_dt |>
     geom_freqpoly(binwidth = 60 * 30)
 ```
 
-Computing the difference between a pair of date-times yields a difftime (more on that in @sec-intervals). We can convert that to an `hms` object to get a more useful x-axis:
+Computing the difference between a pair of date-times yields a difftime (more on that in @sec-intervals).
+We can convert that to an `hms` object to get a more useful x-axis:
 
 ```{r}
 #| fig-alt: >

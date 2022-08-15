@@ -509,9 +509,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span>  times <span class="op">=</span> <span class="fl">20</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
-<span><span class="co">#&gt;   expr   min    lq    mean median     uq    max neval</span></span>
-<span><span class="co">#&gt;  fixed  93.7  98.0 282.165  107.2 147.85 3192.0    20</span></span>
-<span><span class="co">#&gt;  regex 368.5 372.6 399.355  375.4 400.75  568.3    20</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt;   expr     min       lq     mean   median       uq      max neval cld</span></span>
+<span><span class="co">#&gt;  fixed  29.602  32.1005 117.8961  33.2515  37.8515 1630.601    20   a</span></span>
+<span><span class="co">#&gt;  regex 171.301 172.3510 188.0711 174.3010 178.8515  361.401    20   a</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As you saw with <code><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split()</a></code> you can use <code><a href="https://stringr.tidyverse.org/reference/modifiers.html">boundary()</a></code> to match boundaries. You can also use it with the other functions:</p>
 <div class="cell">
